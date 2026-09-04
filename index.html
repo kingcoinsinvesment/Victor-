@@ -956,8 +956,24 @@ function copyReferral() {
         "Referral code copied!"
     );
 }
+function openPaymentPopup(){
+  document.getElementById('paymentPopup').style.display = 'block';
+}
+
+function payWithPaystack() {
+  let handler = PaystackPop.setup({
+    key: 'pk_test_YOUR_KEY', 
+    email: 'customer@email.com',
+    amount: 100000, // ₦1000
+    callback: function(response){ 
+      alert('Payment successful! Ref: ' + response.reference); 
+      closePopup(); 
+    }}
+
+function payWithFlutterwave() {
 
 </script>
-
+<script src="https://js.paystack.co/v1/inline.js"></script>
+<script src="https://checkout.flutterwave.com/v3.js"></script>
 </body>
 </html>

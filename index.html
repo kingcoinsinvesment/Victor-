@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>King Coins Investment</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background: #050505;
+    color: white;
+    padding-bottom: 85px;
+}
+
+button {
+    cursor: pointer;
+}
+
+.gold {
+    color: #ffd21c;
+}
+
+/* ================= LOGO ================= */
+
+.logo-box {
+    text-align: center;
+    padding: 25px 0 10px;
+}
+
+.coin {
+    width: 105px;
+    height: 105px;
+    margin: auto;
+    border-radius: 50%;
+    background: radial-gradient(circle, #fff09a 0%, #ffd21c 35%, #b87900 75%, #6b4200 100%);
+    border: 5px solid #ffe36b;
+    box-shadow: 0 0 30px rgba(255, 200, 0, .35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.coin::before {
+    content: "♛";
+    position: absolute;
+    top: 7px;
+    font-size: 24px;
+    color: #5a3600;
+}
+
+.coin span {
+    font-size: 42px;
+    font-weight: 900;
+    color: #5a3600;
+}
+
+.logo-box h1 {
+    margin-top: 12px;
+    color: #ffd21c;
+    font-size: 27px;
+    letter-spacing: 2px;
+}
+
+.logo-box p {
+    color: #aaa;
+    margin-top: 5px;
+}
+
+/* ================= HEADER ================= */
+
+header {
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #242424;
+}
+
+.brand {
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffd21c;
+}
+
+.profile-circle {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #ffd21c;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* ================= PAGES ================= */
+
+.page {
+    display: none;
+    padding: 20px;
+}
+
+.page.active {
+    display: block;
+}
+
+.page-title {
+    font-size: 28px;
+    margin-bottom: 6px;
+}
+
+.subtitle {
+    color: #888;
+    margin-bottom: 20px;
+}
+
+/* ================= HERO ================= */
+
+.hero {
+    text-align: center;
+    padding: 25px 10px;
+}
+
+.hero h2 {
+    font-size: 34px;
+    color: #ffd21c;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    color: #aaa;
+    line-height: 1.6;
+}
+
+.main-button {
+    border: none;
+    background: #ffd21c;
+    color: #000;
+    padding: 14px 25px;
+    border-radius: 12px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+/* ================= BALANCE ================= */
+
+.balance-card {
+    background: linear-gradient(135deg, #211900, #101010);
+    border: 1px solid #765900;
+    border-radius: 22px;
+    padding: 25px;
+    margin-bottom: 20px;
+}
+
+.balance-card small {
+    color: #999;
+}
+
+.balance {
+    font-size: 34px;
+    font-weight: bold;
+    margin: 12px 0;
+}
+
+.balance-card p {
+    color: #aaa;
+}
+
+.balance-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.balance-actions button {
+    flex: 1;
+    padding: 13px;
+    border-radius: 10px;
+    border: none;
+    font-weight: bold;
+}
+
+.primary {
+    background: #ffd21c;
+    color: #000;
+}
+
+.secondary {
+    background: #1d1d1d;
+    color: white;
+    border: 1px solid #444 !important;
+}
+
+/* ================= CARDS ================= */
+
+.section-title {
+    font-size: 20px;
+    margin: 25px 0 15px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.card {
+    background: #111;
+    border: 1px solid #292929;
+    border-radius: 17px;
+    padding: 18px;
+}
+
+.card:hover {
+    border-color: #ffd21c;
+}
+
+.card-icon {
+    font-size: 27px;
+    margin-bottom: 10px;
+}
+
+.card h3 {
+    font-size: 16px;
+    margin-bottom: 6px;
+}
+
+.card p {
+    color: #888;
+    font-size: 13px;
+}
+
+/* ================= PLANS ================= */
+
+.plan {
+    background: #111;
+    border: 1px solid #383838;
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 14px;
+}
+
+.plan.featured {
+    border: 1px solid #ffd21c;
+}
+
+.plan h3 {
+    color: #ffd21c;
+    font-size: 21px;
+}
+
+.plan .amount {
+    font-size: 25px;
+    margin: 12px 0;
+    font-weight: bold;
+}
+
+.plan p {
+    color: #999;
+    margin-bottom: 15px;
+}
+
+.plan button {
+    width: 100%;
+    padding: 13px;
+    background: #ffd21c;
+    color: #000;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+/* ================= MARKET ================= */
+
+.market-item {
+    background: #111;
+    border: 1px solid #292929;
+    padding: 16px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.market-name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.market-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #222;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffd21c;
+    font-weight: bold;
+}
+
+.price {
+    text-align: right;
+}
+
+.price small {
+    color: #35d07f;
+}
+
+/* ================= REFERRAL ================= */
+
+.referral {
+    background: linear-gradient(135deg, #261d00, #111);
+    border: 1px solid #735800;
+    border-radius: 20px;
+    padding: 25px;
+    text-align: center;
+}
+
+.referral h2 {
+    color: #ffd21c;
+    margin-bottom: 10px;
+}
+
+.referral p {
+    color: #aaa;
+    line-height: 1.5;
+}
+
+.referral-code {
+    margin-top: 20px;
+    padding: 14px;
+    background: #050505;
+    border: 1px dashed #ffd21c;
+    border-radius: 10px;
+    color: #ffd21c;
+}
+
+/* ================= PROFILE ================= */
+
+.profile-card {
+    text-align: center;
+    background: #111;
+    border: 1px solid #292929;
+    border-radius: 20px;
+    padding: 25px;
+}
+
+.big-profile {
+    width: 80px;
+    height: 80px;
+    margin: auto;
+    border-radius: 50%;
+    background: #ffd21c;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.profile-card h2 {
+    margin-top: 15px;
+}
+
+.profile-menu {
+    margin-top: 20px;
+}
+
+.profile-menu div {
+    padding: 16px;
+    background: #151515;
+    border-bottom: 1px solid #292929;
+    text-align: left;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+/* ================= BOTTOM NAV ================= */
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 75px;
+    background: #0d0d0d;
+    border-top: 1px solid #292929;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 100;
+}
+
+.nav-item {
+    text-align: center;
+    color: #777;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.nav-item span {
+    display: block;
+    font-size: 22px;
+    margin-bottom: 4px;
+}
+
+.nav-item.active {
+    color: #ffd21c;
+}
+
+/* ================= POPUP ================= */
+
+.popup {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    padding: 20px;
+}
+
+.popup-box {
+    background: #111;
+    border: 1px solid #ffd21c;
+    border-radius: 20px;
+    padding: 25px;
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+}
+
+.popup-box h2 {
+    color: #ffd21c;
+    margin-bottom: 10px;
+}
+
+.popup-box p {
+    color: #aaa;
+    line-height: 1.5;
+}
+
+.close {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px;
+    background: #ffd21c;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+/* ================= DESKTOP ================= */
+
+@media (min-width: 700px) {
+
+    body {
+        max-width: 1100px;
+        margin: auto;
+        padding-bottom: 30px;
+    }
+
+    .bottom-nav {
+        position: relative;
+        max-width: 1100px;
+        margin: 30px auto 0;
+        border: 1px solid #292929;
+        border-radius: 15px;
+    }
+
+    .grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .plans-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+    }
+
+    .plan {
+        margin-bottom: 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="brand">👑 KING COINS</div>
+    <div class="profile-circle">KC</div>
+</header>
+
+<!-- ================= HOME ================= -->
+
+<section id="home" class="page active">
+
+    <div class="logo-box">
+        <div class="coin">
+            <span>KC</span>
+        </div>
+
+        <h1>KING COINS</h1>
+        <p>Investment Platform</p>
+    </div>
+
+    <div class="hero">
+        <h2>Invest Today</h2>
+
+        <p>
+            Welcome to King Coins. Explore our platform,
+            learn about investment concepts and manage
+            your demo portfolio.
+        </p>
+
+        <button class="main-button"
+                onclick="openPopup('Welcome to King Coins!')">
+            Get Started
+        </button>
+    </div>
+
+    <div class="balance-card">
+
+        <small>Demo Portfolio Balance</small>
+
+        <div class="balance">
+            $2,450.00
+        </div>
+
+        <p>Example balance — not real funds</p>
+
+        <div class="balance-actions">
+            <button class="primary"
+                    onclick="openPopup('Demo deposit screen')">
+                + Add
+            </button>
+
+            <button class="secondary"
+                    onclick="openPopup('Demo transfer screen')">
+                Transfer
+            </button>
+        </div>
+
+    </div>
+
+    <h2 class="section-title">Quick Access</h2>
+
+    <div class="grid">
+
+        <div class="card" onclick="showPage('invest')">
+            <div class="card-icon">💰</div>
+            <h3>Invest</h3>
+            <p>Explore plans</p>
+        </div>
+
+        <div class="card" onclick="showPage('market')">
+            <div class="card-icon">📈</div>
+            <h3>Market</h3>
+            <p>Market information</p>
+        </div>
+
+        <div class="card" onclick="showPage('referral')">
+            <div class="card-icon">👥</div>
+            <h3>Referral</h3>
+            <p>Invite friends</p>
+        </div>
+
+        <div class="card" onclick="showPage('profile')">
+            <div class="card-icon">👤</div>
+            <h3>Profile</h3>
+            <p>Account settings</p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= INVESTMENT ================= -->
+
+<section id="invest" class="page">
+
+    <h1 class="page-title">Investment Plans</h1>
+
+    <p class="subtitle">
+        Educational examples of different investment concepts.
+    </p>
+
+    <div class="plans-grid">
+
+        <div class="plan">
+
+            <h3>Starter</h3>
+
+            <div class="amount">$100</div>
+
+            <p>
+                Example beginner portfolio allocation.
+            </p>
+
+            <button onclick="openPopup('Starter plan information')">
+                Learn More
+            </button>
+
+        </div>
+
+        <div class="plan featured">
+
+            <h3>Gold</h3>
+
+            <div class="amount">$500</div>
+
+            <p>
+                Example diversified portfolio concept.
+            </p>
+
+            <button onclick="openPopup('Gold plan information')">
+                Learn More
+            </button>
+
+        </div>
+
+        <div class="plan">
+
+            <h3>Royal</h3>
+
+            <div class="amount">$1,000</div>
+
+            <p>
+                Example advanced portfolio concept.
+            </p>
+
+            <button onclick="openPopup('Royal plan information')">
+                Learn More
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="card" style="margin-top:20px">
+
+        <h3>⚠️ Investment Information</h3>
+
+        <p style="margin-top:10px;line-height:1.6">
+            Investments can gain or lose value. Always research
+            financial products carefully and seek advice from
+            a qualified professional before making financial
+            decisions.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ================= MARKET ================= -->
+
+<section id="market" class="page">
+
+    <h1 class="page-title">Market</h1>
+
+    <p class="subtitle">
+        Sample market display for the website design.
+    </p>
+
+    <div class="market-item">
+
+        <div class="market-name">
+            <div class="market-icon">₿</div>
+
+            <div>
+                <b>Bitcoin</b>
+                <small style="display:block;color:#777">
+                    BTC
+                </small>
+            </div>
+        </div>
+
+        <div class="price">
+            <b>$67,250</b>
+            <small> +2.4%</small>
+        </div>
+
+    </div>
+
+    <div class="market-item">
+
+        <div class="market-name">
+            <div class="market-icon">KC</div>
+
+            <div>
+                <b>King Coin</b>
+                <small style="display:block;color:#777">
+                    KC
+                </small>
+            </div>
+        </div>
+
+        <div class="price">
+            <b>$12.50</b>
+            <small> +5.6%</small>
+        </div>
+
+    </div>
+
+    <div class="market-item">
+
+        <div class="market-name">
+            <div class="market-icon">Ξ</div>
+
+            <div>
+                <b>Ethereum</b>
+                <small style="display:block;color:#777">
+                    ETH
+                </small>
+            </div>
+        </div>
+
+        <div class="price">
+            <b>$3,250</b>
+            <small> +3.1%</small>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= REFERRAL ================= -->
+
+<section id="referral" class="page">
+
+    <h1 class="page-title">Referral</h1>
+
+    <p class="subtitle">
+        Invite people to learn about King Coins.
+    </p>
+
+    <div class="referral">
+
+        <div style="font-size:50px">👑</div>
+
+        <h2>Invite & Earn</h2>
+
+        <p>
+            Share your referral code with friends.
+            This demo page does not process real commissions.
+        </p>
+
+        <div class="referral-code">
+            KINGCOINS-DEMO
+        </div>
+
+        <button class="main-button"
+                onclick="copyReferral()">
+            Copy Code
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ================= PROFILE ================= -->
+
+<section id="profile" class="page">
+
+    <h1 class="page-title">Profile</h1>
+
+    <p class="subtitle">
+        Manage your demo profile.
+    </p>
+
+    <div class="profile-card">
+
+        <div class="big-profile">
+            KC
+        </div>
+
+        <h2>King Coins User</h2>
+
+        <p style="color:#777;margin-top:5px">
+            demo@kingcoins.example
+        </p>
+
+        <div class="profile-menu">
+
+            <div onclick="openPopup('Account settings')">
+                ⚙️ Account Settings
+            </div>
+
+            <div onclick="openPopup('Security settings')">
+                🔐 Security
+            </div>
+
+            <div onclick="openPopup('Transaction history')">
+                📊 Transaction History
+            </div>
+
+            <div onclick="openPopup('Help and Support')">
+                💬 Help & Support
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= BOTTOM NAV ================= -->
+
+<nav class="bottom-nav">
+
+    <div class="nav-item active"
+         onclick="showPage('home')">
+        <span>🏠</span>
+        Home
+    </div>
+
+    <div class="nav-item"
+         onclick="showPage('invest')">
+        <span>💰</span>
+        Invest
+    </div>
+
+    <div class="nav-item"
+         onclick="showPage('market')">
+        <span>📈</span>
+        Market
+    </div>
+
+    <div class="nav-item"
+         onclick="showPage('referral')">
+        <span>👥</span>
+        Referral
+    </div>
+
+    <div class="nav-item"
+         onclick="showPage('profile')">
+        <span>👤</span>
+        Profile
+    </div>
+
+</nav>
+
+
+<!-- ================= POPUP ================= -->
+
+<div class="popup" id="popup">
+
+    <div class="popup-box">
+
+        <h2>King Coins</h2>
+
+        <p id="popupText">
+            Welcome!
+        </p>
+
+        <button class="close"
+                onclick="closePopup()">
+            Close
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* PAGE NAVIGATION */
+
+function showPage(pageName) {
+
+    const pages = document.querySelectorAll(".page");
+
+    pages.forEach(page => {
+        page.classList.remove("active");
+    });
+
+    document.getElementById(pageName)
+        .classList.add("active");
+
+    const navItems = document.querySelectorAll(".nav-item");
+
+    navItems.forEach(item => {
+        item.classList.remove("active");
+    });
+
+    const names = [
+        "home",
+        "invest",
+        "market",
+        "referral",
+        "profile"
+    ];
+
+    const index = names.indexOf(pageName);
+
+    if (index >= 0) {
+        navItems[index].classList.add("active");
+    }
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+
+/* POPUP */
+
+function openPopup(message) {
+
+    document.getElementById("popupText")
+        .innerText = message;
+
+    document.getElementById("popup")
+        .style.display = "flex";
+}
+
+function closePopup() {
+
+    document.getElementById("popup")
+        .style.display = "none";
+}
+
+
+/* REFERRAL */
+
+function copyReferral() {
+
+    navigator.clipboard.writeText(
+        "KINGCOINS-DEMO"
+    );
+
+    openPopup(
+        "Referral code copied!"
+    );
+}
+
+</script>
+
+</body>
+</html>

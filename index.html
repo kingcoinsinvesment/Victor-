@@ -322,3 +322,68 @@
 
 </body>
 </html>
+let walletBalance = 0;
+
+function depositDemo() {
+
+  const amount = Number(
+    prompt("Enter demo deposit amount ($):")
+  );
+
+  if (!amount || amount <= 0) {
+    alert("Please enter a valid amount.");
+    return;
+  }
+
+  walletBalance += amount;
+
+  updateWallet();
+
+  alert(
+    "Demo deposit successful: $" +
+    amount.toFixed(2)
+  );
+}
+
+
+function withdrawDemo() {
+
+  if (walletBalance <= 0) {
+    alert("You don't have enough demo balance.");
+    return;
+  }
+
+  const amount = Number(
+    prompt(
+      "Enter demo withdrawal amount ($):"
+    )
+  );
+
+  if (!amount || amount <= 0) {
+    alert("Please enter a valid amount.");
+    return;
+  }
+
+  if (amount > walletBalance) {
+    alert("Insufficient demo balance.");
+    return;
+  }
+
+  walletBalance -= amount;
+
+  updateWallet();
+
+  alert(
+    "Demo withdrawal successful: $" +
+    amount.toFixed(2)
+  );
+}
+
+
+function updateWallet() {
+
+  document.getElementById(
+    "walletBalance"
+  ).textContent =
+    "$" + walletBalance.toFixed(2);
+}

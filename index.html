@@ -327,3 +327,18 @@ function copyLink(){navigator.clipboard.writeText(document.getElementById('refLi
 function shareWA(){window.open(`https://wa.me/?text=Join King Coins! ${document.getElementById('refLinkBox').innerText}`,'_blank');}
 
 function withdraw(){const amt=parseFloat(document.getElementById('withdrawAmount').value);const acc=document.getElementById('withdrawAccount').value;const name=document.getElementById('withdrawName').value;if(amt<7000){showPopup('Error','Min ₦7000');return;}if(acc.length!=10){showPopup('Error','Invalid account');return;}if(balance<amt){showPopup('Error','Insufficient');return;}balance-=amt;currentUser.balance=balance;const withdrawId=Date.now().toString();withdrawals.push({id:withdrawId,email:currentUser.email,name:currentUser.name,amount:amt,account
+,accountName:name,status:'pending',date:new Date().toLocaleString()});
+localStorage.setItem('kingWithdrawals',JSON.stringify(withdrawals));
+let i=allUsers.findIndex(x=>x.email==currentUser.email);
+allUsers[i]=currentUser;
+localStorage.setItem('allKingUsers',JSON.stringify(allUsers));
+localStorage.setItem('kingUser',JSON.stringify(currentUser));
+localStorage.setItem('kingBalance',balance);
+addTransaction(currentUser.email,'withdraw',amt,`Request to ${acc}`);
+showPopup('Success',`₦${amt} withdrawal request sent to admin`);
+updateUI();
+}
+init();
+</script>
+</body>
+</html>

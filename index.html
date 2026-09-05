@@ -5,26 +5,28 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>King Coins 👑</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
-body{background:#0a0a0a;color:white;padding-bottom:80px}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial}
+body{background:#070707;color:white;padding-bottom:80px}
 .page{display:none;padding:20px}
 .page.active{display:block}
-.nav{position:fixed;bottom:0;left:0;right:0;background:#111;display:flex;justify-content:space-around;padding:10px 0;border-top:2px solid #FFD700}
-.nav button{background:none;border:none;color:#aaa;font-size:11px;cursor:pointer;padding:8px;display:flex;flex-direction:column;align-items:center;gap:4px}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#0f0f0f;display:flex;justify-content:space-around;padding:10px 0;border-top:2px solid #FFD700}
+.nav button{background:none;border:none;color:#888;font-size:11px;cursor:pointer;padding:8px;display:flex;flex-direction:column;align-items:center;gap:4px;transition:0.3s}
 .nav button.active{color:#FFD700}
-.card{background:#1a1a1a;padding:20px;border-radius:15px;margin:15px 0;border:1px solid #333}
-.btn{background:#FFD700;color:black;border:none;padding:12px;width:100%;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:10px}
-.btn-red{background:#ff4444;color:white}
-.btn-wa{background:#25D366;color:white}
-.btn-tg{background:#0088cc;color:white}
-.btn:disabled{background:#444;color:#888;cursor:not-allowed}
+.card{background:#121212;padding:20px;border-radius:16px;margin:15px 0;border:1px solid #222}
+.btn{background:linear-gradient(135deg,#FFD700,#FFA500);color:black;border:none;padding:14px;width:100%;border-radius:10px;font-weight:bold;cursor:pointer;margin-top:15px;font-size:15px;transition:0.3s}
+.btn:hover{transform:scale(1.02)}
+.btn-red{background:linear-gradient(135deg,#ff4444,#cc0000);color:white}
+.btn-wa{background:linear-gradient(135deg,#25D366,#128C7E);color:white}
+.btn-tg{background:linear-gradient(135deg,#0088cc,#005f99);color:white}
+.btn:disabled{background:#333;color:#666;cursor:not-allowed;transform:none}
 .plan{margin-bottom:15px}
 .plan h3{color:#FFD700;margin-bottom:5px}
-input{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #333;background:#222;color:white}
-label{font-size:12px;color:#aaa;display:block;margin-top:8px}
+input{width:100%;padding:14px;margin:8px 0;border-radius:10px;border:1px solid #2a2a2a;background:#1a1a1a;color:white;font-size:15px;transition:0.3s}
+input:focus{border-color:#FFD700;outline:none;background:#1f1f1f}
+label{font-size:12px;color:#aaa;display:block;margin-top:12px;font-weight:600}
 .warning{background:#ff000033;border:1px solid #ff4444;padding:12px;border-radius:8px;margin:15px 0;color:#ff9999;font-size:13px}
 .success{background:#00ff0033;border:1px solid #00ff44;padding:12px;border-radius:8px;margin:15px 0;color:#99ff99;font-size:14px;text-align:center}
-#customPopup{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.9);justify-content:center;align-items:center;z-index:1000;animation:fadeIn 0.3s}
+#customPopup{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.95);justify-content:center;align-items:center;z-index:1000;animation:fadeIn 0.3s}
 #customPopup div{background:linear-gradient(135deg,#1a1a1a,#222);padding:30px;border-radius:20px;text-align:center;border:2px solid #FFD700;max-width:380px;width:90%;box-shadow:0 0 30px rgba(255,215,0,0.4)}
 #customPopup .icon{font-size:40px;margin-bottom:10px}
 #customPopup h3{color:#FFD700;margin-bottom:10px;font-size:22px}
@@ -38,6 +40,16 @@ label{font-size:12px;color:#aaa;display:block;margin-top:8px}
 .tab{flex:1;padding:10px;background:#222;border:none;color:#aaa;border-radius:8px;cursor:pointer}
 .tab.active{background:#FFD700;color:black;font-weight:bold}
 @keyframes fadeIn{from{opacity:0;transform:scale(0.9)}to{opacity:1;transform:scale(1)}}
+
+/* NEW WITHDRAWAL STYLES */
+.balance-card{background:linear-gradient(135deg,#1a1a1a,#0f0f0f);border:2px solid #FFD700;text-align:center}
+.balance-card h3{color:#aaa;font-size:14px}
+.balance-card h1{color:#FFD700;font-size:36px;margin-top:8px}
+.input-group{position:relative}
+.input-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:18px;opacity:0.6}
+.input-group input{padding-left:45px}
+.processing-badge{background:#0088cc33;border:1px solid #0088cc;color:#4db8ff;padding:10px;border-radius:8px;text-align:center;font-size:12px;margin-top:10px}
+.security-note{background:#FFD70011;border-left:3px solid #FFD700;padding:10px;margin-top:15px;border-radius:5px;font-size:12px;color:#ccc}
 </style>
 </head>
 <body>
@@ -54,23 +66,48 @@ label{font-size:12px;color:#aaa;display:block;margin-top:8px}
 
 <div id="investPage" class="page"><h1>Investment Plans</h1><div class="plan card"><h3>Starter</h3><h2>₦500</h2><button class="btn" onclick="invest(500,'Starter')">Invest Now</button></div><div class="plan card"><h3>Gold</h3><h2>₦800</h2><button class="btn" onclick="invest(800,'Gold')">Invest Now</button></div><div class="plan card"><h3>Royal</h3><h2>₦1000</h2><button class="btn" onclick="invest(1000,'Royal')">Invest Now</button></div><div class="plan card"><h3>Diamond</h3><h2>₦2000</h2><button class="btn" onclick="invest(2000,'Diamond')">Invest Now</button></div><div id="paymentSection" class="card" style="display:none"><h3>Payment - OPay</h3><p><b>Account:</b> <span id="opayNum">6587483968</span> <button onclick="copyOPay()">Copy</button></p><p><b>Name:</b> VICTOR OTUOSIRISOCHUKWU ODU</p><p style="color:#FFD700">Amount: ₦<span id="investAmount">0</span></p><button class="btn btn-wa" onclick="sendProof()">Send Proof to Admin</button></div></div>
 
-<div id="withdrawPage" class="page"><h1>Withdraw</h1><div class="card"><h3>Available Balance</h3><h2 style="color:#FFD700">₦<span id="withdrawBalance">1000.00</span></h2></div>
-<div class="card">
-<input type="number" id="withdrawAmount" placeholder="Amount - Min ₦7000">
-<label>OPay Account Number</label>
-<input type="text" id="withdrawAccount" placeholder="Enter 10 digits" maxlength="10">
-<label>Account Name</label>
-<input type="text" id="withdrawName" placeholder="Enter Account Name exactly as on OPay">
+<!-- NEW PROFESSIONAL WITHDRAWAL PAGE -->
+<div id="withdrawPage" class="page">
+<h1>💳 Withdraw Funds</h1>
 
-<div id="confirmBox" style="display:none;background:#00ff0033;border:1px solid #00ff44;padding:15px;border-radius:10px;margin:15px 0">
-<b style="color:#00ff44">Please Confirm Your Details:</b><br><br>
+<div class="card balance-card">
+<h3>Available Balance</h3>
+<h1>₦<span id="withdrawBalance">1000.00</span></h1>
+</div>
+
+<div class="card">
+<div class="input-group">
+<span class="input-icon">₦</span>
+<input type="number" id="withdrawAmount" placeholder="Enter Amount - Min ₦7000">
+</div>
+
+<label>🏦 OPay Account Number</label>
+<div class="input-group">
+<span class="input-icon">📱</span>
+<input type="text" id="withdrawAccount" placeholder="Enter 10 digits" maxlength="10">
+</div>
+
+<label>👤 Account Name</label>
+<div class="input-group">
+<span class="input-icon">✍️</span>
+<input type="text" id="withdrawName" placeholder="Enter name exactly as on OPay" onkeyup="this.value=this.value.toUpperCase()">
+</div>
+
+<div id="confirmBox" style="display:none;background:linear-gradient(135deg,#00ff0033,#00cc0033);border:1px solid #00ff44;padding:18px;border-radius:12px;margin:20px 0">
+<b style="color:#00ff44;font-size:16px">🔒 Confirm Withdrawal Details</b><br><br>
 <b>Account:</b> <span id="confirmAcc"></span><br>
 <b>Name:</b> <span id="confirmName"></span><br>
-<b>Amount:</b> ₦<span id="confirmAmount"></span>
+<b>Amount:</b> ₦<span id="confirmAmount"></span><br>
+<b>Fee:</b> ₦0.00
 </div>
 
 <button class="btn btn-red" id="withdrawBtn" onclick="confirmWithdraw()">Proceed to Withdraw</button>
-<p style="font-size:12px;color:#aaa;margin-top:8px">Withdrawal takes 5-30 minutes to process</p>
+
+<div class="processing-badge">⏱️ Processing Time: 5-30 minutes</div>
+
+<div class="security-note">
+<b>🛡️ Security Note:</b> Please ensure your account details are correct. Withdrawals to wrong accounts cannot be reversed.
+</div>
 </div></div>
 
 <div id="referralPage" class="page"><h1>👑 Referral</h1><div class="card" style="background:linear-gradient(135deg,#FFD700,#FFA500)"><h2 style="color:black">Invite & Earn ₦500</h2><p style="color:black">You earn ₦500 for each person who joins!</p><p style="color:black">Your Code:</p><div id="refCodeBox" style="background:black;color:#FFD700;padding:12px;border-radius:8px;text-align:center;margin:10px 0">LOADING...</div><button class="btn" onclick="copyCode()">Copy Code</button><p style="color:black">Your Link:</p><div id="refLinkBox" style="background:#222;color:white;padding:12px;border-radius:8px;font-size:12px;word-break:break-all;margin:10px 0">loading...</div><button class="btn" id="copyLinkBtn">Copy Link</button><button class="btn btn-wa" id="waBtn">📱 Share on WhatsApp</button></div>
@@ -233,7 +270,6 @@ function invest(amount,plan){document.getElementById('paymentSection').style.dis
 function copyOPay(){navigator.clipboard.writeText(OPAY_NUM);showPopup('Copied!', 'OPay number copied to clipboard', '📋')}
 function sendProof(){const pending=JSON.parse(localStorage.getItem('pendingInvest'));const msg=`New Payment Proof\nPlan: ${pending.plan}\nAmount: ₦${pending.amount}\nFrom: ${currentUser.name}`;window.open(`${TELEGRAM_ADMIN}?text=${encodeURIComponent(msg)}`,'_blank');showPopup('Proof Sent', 'Your payment proof has been sent to @kingcoi channel', '📤')}
 
-// NEW WITHDRAW FUNCTIONS WITH CONFIRMATION
 function confirmWithdraw(){
 const amount=parseFloat(document.getElementById('withdrawAmount').value);
 const acc=document.getElementById('withdrawAccount').value;
@@ -256,10 +292,9 @@ document.getElementById('withdrawBtn').onclick = finalWithdraw;
 
 function finalWithdraw(){
 showPopup('Withdrawal Requested', 
-`Request Submitted Successfully\n\nAmount: ₦${withdrawData.amount.toFixed(2)}\nTo: ${withdrawData.acc}\nName: ${withdrawData.name.toUpperCase()}\n\nYour withdrawal will be processed within 30 minutes`, 
+`Request Submitted Successfully\nAmount: ₦${withdrawData.amount.toFixed(2)}\nTo: ${withdrawData.acc}\nName: ${withdrawData.name.toUpperCase()}\n\nYour withdrawal will be processed within 30 minutes`, 
 '✅');
 
-// Reset form
 document.getElementById('withdrawAmount').value = '';
 document.getElementById('withdrawAccount').value = '';
 document.getElementById('withdrawName').value = '';

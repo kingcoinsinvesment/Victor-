@@ -42,12 +42,10 @@ a{color:#ffd700;text-decoration:none}
 </div>
 
 <script>
-// ONLY 2 THINGS CHANGED HERE
 const BASE_URL="https://kingcoinsinvestment.github.io/Kingcoinsng/";
 const TELEGRAM_ADMIN="https://t.me/kingcoi";
 const OPAY_NUM="6587483968";
 
-// This makes the referral link use new username
 const urlParams = new URLSearchParams(window.location.search);
 const myUsername = urlParams.get('ref') || "guest";
 document.getElementById('refLink').innerText = BASE_URL + "?ref=" + myUsername;

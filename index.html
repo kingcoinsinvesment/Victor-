@@ -96,6 +96,14 @@ header { padding: 15px 20px; display: flex; justify-content: space-between; alig
 .profile-menu { margin-top: 20px; }
 .profile-menu div { padding: 16px; background: #151515; border-bottom: 1px solid #292929; text-align: left; border-radius: 8px; margin-bottom: 8px; }
 
+/* ================= PAYMENT SECTION ================= */
+.payment-section { background: linear-gradient(135deg, #1a1a1a, #0a0a0a); border: 1px solid #ffd21c; border-radius: 20px; padding: 25px; margin: 30px 0; }
+.payment-section h2 { color: #ffd21c; margin-bottom: 20px; font-size: 24px; }
+.payment-steps p { margin-bottom: 15px; line-height: 1.7; }
+.bank-details { background: #111; padding: 20px; border-radius: 12px; margin: 20px 0; border: 1px dashed #ffd21c; }
+.bank-details p { margin-bottom: 10px; }
+.telegram-link { display: inline-block; margin-top: 10px; padding: 12px 20px; background: #ffd21c; color: #000; text-decoration: none; border-radius: 10px; font-weight: bold; }
+
 /* ================= BOTTOM NAV ================= */
 .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; background: #0d0d0d; border-top: 1px solid #292929; display: flex; justify-content: space-around; align-items: center; z-index: 100; }
 .nav-item { text-align: center; color: #777; font-size: 11px; cursor: pointer; }
@@ -122,10 +130,10 @@ header { padding: 15px 20px; display: flex; justify-content: space-between; alig
 /* ================= DESKTOP ================= */
 @media (min-width: 700px) {
     body { max-width: 1100px; margin: auto; padding-bottom: 30px; }
-   .bottom-nav { position: relative; max-width: 1100px; margin: 30px auto 0; border: 1px solid #292929; border-radius: 15px; }
-   .grid { grid-template-columns: repeat(4, 1fr); }
-   .plans-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
-   .plan { margin-bottom: 0; }
+  .bottom-nav { position: relative; max-width: 1100px; margin: 30px auto 0; border: 1px solid #292929; border-radius: 15px; }
+  .grid { grid-template-columns: repeat(4, 1fr); }
+  .plans-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+  .plan { margin-bottom: 0; }
 }
 </style>
 </head>
@@ -166,6 +174,40 @@ header { padding: 15px 20px; display: flex; justify-content: space-between; alig
         <div class="card" onclick="showPage('referral')"><div class="card-icon">👥</div><h3>Referral</h3><p>Invite friends</p></div>
         <div class="card" onclick="showPage('profile')"><div class="card-icon">👤</div><h3>Profile</h3><p>Account settings</p></div>
     </div>
+
+    <!-- ================= NEW PAYMENT SECTION ================= -->
+    <div class="payment-section">
+        <h2>How to Invest in 3 Easy Steps</h2>
+        <div class="payment-steps">
+            <p><b>Step 1: Make Payment</b><br>
+            Send your investment amount to our official OPay account below.</p>
+
+            <p><b>Step 2: Send Payment Proof</b><br>
+            After payment, click the Telegram link below and send your payment screenshot + Full Name.</p>
+
+            <p><b>Step 3: Get Confirmation</b><br>
+            We will confirm your payment and activate your investment within 30 minutes.</p>
+        </div>
+
+        <h2 style="margin-top:30px;">Payment Instructions</h2>
+        <p>To complete your investment with <b>KING COINS INVESTMENT</b>, please make payment to the account details below.<br>
+        After payment, send your payment proof to our Telegram for confirmation.</p>
+
+        <div class="bank-details">
+            <p><b>Bank Name:</b> OPay</p>
+            <p><b>Account Number:</b> 6587483968</p>
+            <p><b>Account Name:</b> VICTOR OTUOSIRISOCHUKWU ODU</p>
+            <p><b>For:</b> KING COINS INVESTMENT</p>
+        </div>
+
+        <p style="font-size:14px; color:#aaa;">
+            <b>Note:</b> The account name will display as VICTOR OTUOSIRISOCHUKWU ODU. This is the official account for KING COINS INVESTMENT.
+        </p>
+
+        <a href="https://t.me/Kingcoinsinvestment" target="_blank" class="telegram-link">Send Payment Proof on Telegram</a>
+    </div>
+    <!-- ================= END PAYMENT SECTION ================= -->
+
 </section>
 
 <!-- ================= INVESTMENT ================= -->
@@ -319,4 +361,4 @@ function copyReferral() {
 <script src="https://checkout.flutterwave.com/v3.js"></script>
 
 </body>
-</html>
+        </html>

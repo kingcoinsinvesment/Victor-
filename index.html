@@ -5,19 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>King Coins Investment</title>
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
-}
-body {
-    background: #050505;
-    color: white;
-    padding-bottom: 85px;
-}
+* {margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, Helvetica, sans-serif;}
+body {background: #050505; color: white; padding-bottom: 85px;}
 button { cursor: pointer; }
 .gold { color: #ffd21c; }
+
+/* ================= AUTH MODAL ================= */
+.auth-modal { position: fixed; inset: 0; background: rgba(0,0,0,.95); display: flex; align-items: center; justify-content: center; z-index: 999; padding: 20px; }
+.auth-box { background: #111; border: 2px solid #ffd21c; border-radius: 20px; padding: 30px; width: 100%; max-width: 400px; }
+.auth-box h2 { color: #ffd21c; text-align: center; margin-bottom: 20px; font-size: 26px; }
+.auth-tabs { display: flex; margin-bottom: 20px; border-bottom: 1px solid #333; }
+.auth-tab { flex: 1; padding: 12px; background: none; border: none; color: #888; font-weight: bold; font-size: 16px; }
+.auth-tab.active { color: #ffd21c; border-bottom: 2px solid #ffd21c; }
+.auth-form { display: none; }
+.auth-form.active { display: block; }
+.auth-form input { width: 100%; padding: 14px; margin-bottom: 15px; background: #1a1a1a; border: 1px solid #333; border-radius: 10px; color: white; font-size: 15px; }
+.auth-form input:focus { border-color: #ffd21c; outline: none; }
+.auth-btn { width: 100%; padding: 14px; background: #ffd21c; color: #000; border: none; border-radius: 10px; font-weight: bold; font-size: 16px; margin-top: 10px; }
+.auth-note { text-align: center; color: #777; font-size: 12px; margin-top: 15px; }
 
 /* ================= LOGO ================= */
 .logo-box { text-align: center; padding: 25px 0 10px; }
@@ -35,7 +40,7 @@ button { cursor: pointer; }
 /* ================= HEADER ================= */
 header { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #242424; }
 .brand { font-size: 20px; font-weight: bold; color: #ffd21c; }
-.profile-circle { width: 42px; height: 42px; border-radius: 50%; background: #ffd21c; color: #000; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+.profile-circle { width: 42px; height: 42px; border-radius: 50%; background: #ffd21c; color: #000; display: flex; align-items: center; justify-content: center; font-weight: bold; cursor: pointer; }
 
 /* ================= PAGES ================= */
 .page { display: none; padding: 20px; }
@@ -54,10 +59,15 @@ header { padding: 15px 20px; display: flex; justify-content: space-between; alig
 .balance-card small { color: #999; }
 .balance { font-size: 34px; font-weight: bold; margin: 12px 0; }
 .balance-card p { color: #aaa; }
-.balance-actions { display: flex; gap: 10px; margin-top: 20px; }
-.balance-actions button { flex: 1; padding: 13px; border-radius: 10px; border: none; font-weight: bold; }
-.primary { background: #ffd21c; color: #000; }
-.secondary { background: #1d1d1d; color: white; border: 1px solid #444!important; }
+
+/* ================= PAYMENT SECTION ================= */
+.payment-section { background: linear-gradient(135deg, #1a1a1a, #0a0a0a); border: 1px solid #ffd21c; border-radius: 20px; padding: 25px; margin-top: 20px; }
+.payment-section h2 { color: #ffd21c; margin-bottom: 20px; font-size: 22px; }
+.payment-steps p { margin-bottom: 15px; line-height: 1.7; }
+.bank-details { background: #111; padding: 20px; border-radius: 12px; margin: 20px 0; border: 1px dashed #ffd21c; }
+.bank-details p { margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+.copy-btn { background: #ffd21c; color: #000; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: bold; }
+.telegram-link { display: inline-block; margin-top: 10px; width: 100%; text-align: center; padding: 14px 20px; background: #ffd21c; color: #000; text-decoration: none; border-radius: 10px; font-weight: bold; font-size: 16px; }
 
 /* ================= CARDS ================= */
 .section-title { font-size: 20px; margin: 25px 0 15px; }
@@ -76,35 +86,6 @@ header { padding: 15px 20px; display: flex; justify-content: space-between; alig
 .plan p { color: #999; margin-bottom: 15px; }
 .plan button { width: 100%; padding: 13px; background: #ffd21c; color: #000; border: none; border-radius: 10px; font-weight: bold; }
 
-/* ================= MARKET ================= */
-.market-item { background: #111; border: 1px solid #292929; padding: 16px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-.market-name { display: flex; align-items: center; gap: 10px; }
-.market-icon { width: 40px; height: 40px; border-radius: 50%; background: #222; display: flex; align-items: center; justify-content: center; color: #ffd21c; font-weight: bold; }
-.price { text-align: right; }
-.price small { color: #35d07f; }
-
-/* ================= REFERRAL ================= */
-.referral { background: linear-gradient(135deg, #261d00, #111); border: 1px solid #735800; border-radius: 20px; padding: 25px; text-align: center; }
-.referral h2 { color: #ffd21c; margin-bottom: 10px; }
-.referral p { color: #aaa; line-height: 1.5; }
-.referral-code { margin-top: 20px; padding: 14px; background: #050505; border: 1px dashed #ffd21c; border-radius: 10px; color: #ffd21c; }
-
-/* ================= PROFILE ================= */
-.profile-card { text-align: center; background: #111; border: 1px solid #292929; border-radius: 20px; padding: 25px; }
-.big-profile { width: 80px; height: 80px; margin: auto; border-radius: 50%; background: #ffd21c; color: #000; display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: bold; }
-.profile-card h2 { margin-top: 15px; }
-.profile-menu { margin-top: 20px; }
-.profile-menu div { padding: 16px; background: #151515; border-bottom: 1px solid #292929; text-align: left; border-radius: 8px; margin-bottom: 8px; }
-
-/* ================= PAYMENT SECTION ================= */
-.payment-section { background: linear-gradient(135deg, #1a1a1a, #0a0a0a); border: 1px solid #ffd21c; border-radius: 20px; padding: 25px; margin-top: 20px; }
-.payment-section h2 { color: #ffd21c; margin-bottom: 20px; font-size: 22px; }
-.payment-steps p { margin-bottom: 15px; line-height: 1.7; }
-.bank-details { background: #111; padding: 20px; border-radius: 12px; margin: 20px 0; border: 1px dashed #ffd21c; }
-.bank-details p { margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
-.copy-btn { background: #ffd21c; color: #000; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: bold; }
-.telegram-link { display: inline-block; margin-top: 10px; width: 100%; text-align: center; padding: 14px 20px; background: #ffd21c; color: #000; text-decoration: none; border-radius: 10px; font-weight: bold; font-size: 16px; }
-
 /* ================= BOTTOM NAV ================= */
 .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; background: #0d0d0d; border-top: 1px solid #292929; display: flex; justify-content: space-around; align-items: center; z-index: 100; }
 .nav-item { text-align: center; color: #777; font-size: 11px; cursor: pointer; }
@@ -121,18 +102,46 @@ header { padding: 15px 20px; display: flex; justify-content: space-between; alig
 /* ================= DESKTOP ================= */
 @media (min-width: 700px) {
     body { max-width: 1100px; margin: auto; padding-bottom: 30px; }
- .bottom-nav { position: relative; max-width: 1100px; margin: 30px auto 0; border: 1px solid #292929; border-radius: 15px; }
- .grid { grid-template-columns: repeat(4, 1fr); }
- .plans-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
- .plan { margin-bottom: 0; }
+.bottom-nav { position: relative; max-width: 1100px; margin: 30px auto 0; border: 1px solid #292929; border-radius: 15px; }
+.grid { grid-template-columns: repeat(4, 1fr); }
+.plans-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+.plan { margin-bottom: 0; }
 }
 </style>
 </head>
 <body>
 
+<!-- ================= AUTH MODAL ================= -->
+<div class="auth-modal" id="authModal">
+    <div class="auth-box">
+        <h2>👑 KING COINS</h2>
+        <div class="auth-tabs">
+            <button class="auth-tab active" onclick="switchAuth('login')">Login</button>
+            <button class="auth-tab" onclick="switchAuth('signup')">Sign Up</button>
+        </div>
+
+        <!-- LOGIN FORM -->
+        <form class="auth-form active" id="loginForm" onsubmit="handleLogin(event)">
+            <input type="email" id="loginEmail" placeholder="Email Address" required>
+            <input type="password" id="loginPassword" placeholder="Password" required>
+            <button type="submit" class="auth-btn">Login</button>
+        </form>
+
+        <!-- SIGNUP FORM -->
+        <form class="auth-form" id="signupForm" onsubmit="handleSignup(event)">
+            <input type="text" id="signupName" placeholder="Full Name" required>
+            <input type="email" id="signupEmail" placeholder="Email Address" required>
+            <input type="tel" id="signupPhone" placeholder="Phone Number" required>
+            <input type="password" id="signupPassword" placeholder="Create Password" required>
+            <button type="submit" class="auth-btn">Create Account</button>
+        </form>
+        <p class="auth-note">Your data is saved locally on this device</p>
+    </div>
+</div>
+
 <header>
     <div class="brand">👑 KING COINS</div>
-    <div class="profile-circle">KC</div>
+    <div class="profile-circle" id="userInitial" onclick="logout()">KC</div>
 </header>
 
 <!-- ================= HOME ================= -->
@@ -143,9 +152,8 @@ header { padding: 15px 20px; display: flex; justify-content: space-between; alig
         <p>Investment Platform</p>
     </div>
     <div class="hero">
-        <h2>Invest Today</h2>
-        <p>Welcome to King Coins. Grow your wealth with our trusted investment plans.</p>
-        <button class="main-button" onclick="openPopup('Welcome to King Coins!')">Get Started</button>
+        <h2>Welcome, <span id="userName">Investor</span></h2>
+        <p>Grow your wealth with our trusted investment plans.</p>
     </div>
 
     <div class="balance-card">
@@ -153,18 +161,12 @@ header { padding: 15px 20px; display: flex; justify-content: space-between; alig
         <div class="balance">$2,450.00</div>
         <p>Your active investment capital</p>
 
-        <!-- REPLACED PAYMENT POPUP WITH DIRECT INSTRUCTIONS -->
         <div class="payment-section">
             <h2>How to Invest in 3 Easy Steps</h2>
             <div class="payment-steps">
-                <p><b>Step 1: Make Payment</b><br>
-                Send your investment amount to our official OPay account below.</p>
-
-                <p><b>Step 2: Send Payment Proof</b><br>
-                After payment, click the Telegram button below and send your payment screenshot + Full Name.</p>
-
-                <p><b>Step 3: Get Confirmation</b><br>
-                We will confirm your payment and activate your investment within 30 minutes.</p>
+                <p><b>Step 1: Make Payment</b><br>Send your investment amount to our official OPay account below.</p>
+                <p><b>Step 2: Send Payment Proof</b><br>After payment, click the Telegram button below and send your payment screenshot + Full Name.</p>
+                <p><b>Step 3: Get Confirmation</b><br>We will confirm your payment and activate your investment within 30 minutes.</p>
             </div>
 
             <h2 style="margin-top:25px;">Payment Instructions</h2>
@@ -197,47 +199,35 @@ header { padding: 15px 20px; display: flex; justify-content: space-between; alig
     <h1 class="page-title">Investment Plans</h1>
     <p class="subtitle">Choose a plan that works for you.</p>
     <div class="plans-grid">
-        <div class="plan"><h3>Starter</h3><div class="amount">$100</div><p>Beginner portfolio allocation.</p><button onclick="openPopup('Starter plan information')">Learn More</button></div>
-        <div class="plan featured"><h3>Gold</h3><div class="amount">$500</div><p>Diversified portfolio concept.</p><button onclick="openPopup('Gold plan information')">Learn More</button></div>
-        <div class="plan"><h3>Royal</h3><div class="amount">$1,000</div><p>Advanced portfolio concept.</p><button onclick="openPopup('Royal plan information')">Learn More</button></div>
+        <div class="plan"><h3>Starter</h3><div class="amount">$100</div><p>Beginner portfolio allocation.</p><button onclick="openPopup('Starter plan: Contact admin to activate')">Invest Now</button></div>
+        <div class="plan featured"><h3>Gold</h3><div class="amount">$500</div><p>Diversified portfolio concept.</p><button onclick="openPopup('Gold plan: Contact admin to activate')">Invest Now</button></div>
+        <div class="plan"><h3>Royal</h3><div class="amount">$1,000</div><p>Advanced portfolio concept.</p><button onclick="openPopup('Royal plan: Contact admin to activate')">Invest Now</button></div>
     </div>
-    <div class="card" style="margin-top:20px"><h3>⚠️ Investment Information</h3><p style="margin-top:10px;line-height:1.6">Investments can gain or lose value. Always research financial products carefully and seek advice from a qualified professional before making financial decisions.</p></div>
 </section>
 
 <!-- ================= MARKET ================= -->
 <section id="market" class="page">
     <h1 class="page-title">Market</h1>
     <p class="subtitle">Live market information.</p>
-    <div class="market-item"><div class="market-name"><div class="market-icon">₿</div><div><b>Bitcoin</b><small style="display:block;color:#777">BTC</small></div></div><div class="price"><b>$67,250</b><small> +2.4%</small></div></div>
-    <div class="market-item"><div class="market-name"><div class="market-icon">KC</div><div><b>King Coin</b><small style="display:block;color:#777">KC</small></div></div><div class="price"><b>$12.50</b><small> +5.6%</small></div></div>
-    <div class="market-item"><div class="market-name"><div class="market-icon">Ξ</div><div><b>Ethereum</b><small style="display:block;color:#777">ETH</small></div></div><div class="price"><b>$3,250</b><small> +3.1%</small></div></div>
+    <div class="card"><div class="card-icon">₿</div><h3>Bitcoin</h3><p>$67,250 <span style="color:#35d07f">+2.4%</span></p></div>
 </section>
 
 <!-- ================= REFERRAL ================= -->
 <section id="referral" class="page">
     <h1 class="page-title">Referral</h1>
     <p class="subtitle">Invite people to join King Coins.</p>
-    <div class="referral">
-        <div style="font-size:50px">👑</div><h2>Invite & Earn</h2>
-        <p>Share your referral code with friends and earn rewards.</p>
-        <div class="referral-code">KINGCOINS-DEMO</div>
-        <button class="main-button" onclick="copyReferral()">Copy Code</button>
-    </div>
+    <div class="card" style="text-align:center"><div style="font-size:50px">👑</div><h2>Invite & Earn</h2><p>Share your referral code and earn rewards.</p><div class="bank-details"><b id="refCode">KING-</b><button class="copy-btn" onclick="copyReferral()">Copy</button></div></div>
 </section>
 
 <!-- ================= PROFILE ================= -->
 <section id="profile" class="page">
     <h1 class="page-title">Profile</h1>
-    <p class="subtitle">Manage your profile.</p>
-    <div class="profile-card">
-        <div class="big-profile">KC</div><h2>King Coins User</h2>
-        <p style="color:#777;margin-top:5px">user@kingcoins.com</p>
-        <div class="profile-menu">
-            <div onclick="openPopup('Account settings')">⚙️ Account Settings</div>
-            <div onclick="openPopup('Security settings')">🔐 Security</div>
-            <div onclick="openPopup('Transaction history')">📊 Transaction History</div>
-            <div onclick="openPopup('Help and Support')">💬 Help & Support</div>
-        </div>
+    <p class="subtitle">Manage your account.</p>
+    <div class="card" style="text-align:center">
+        <div class="coin" style="width:80px; height:80px;"><span id="profileInitial">KC</span></div>
+        <h2 id="profileName">King Coins User</h2>
+        <p style="color:#777;margin-top:5px" id="profileEmail">user@kingcoins.com</p>
+        <button class="main-button" onclick="logout()" style="background:#ff3b30; color:white;">Logout</button>
     </div>
 </section>
 
@@ -256,6 +246,67 @@ header { padding: 15px 20px; display: flex; justify-content: space-between; alig
 </div>
 
 <script>
+let currentUser = null;
+
+/* AUTH FUNCTIONS */
+function switchAuth(tab) {
+    document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById(tab + 'Form').classList.add('active');
+}
+
+function handleSignup(e) {
+    e.preventDefault();
+    const user = {
+        name: document.getElementById('signupName').value,
+        email: document.getElementById('signupEmail').value,
+        phone: document.getElementById('signupPhone').value,
+        password: document.getElementById('signupPassword').value
+    };
+    localStorage.setItem('kingcoins_user', JSON.stringify(user));
+    loginUser(user);
+    openPopup('Account created successfully!');
+}
+
+function handleLogin(e) {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+    const savedUser = JSON.parse(localStorage.getItem('kingcoins_user'));
+
+    if(savedUser && savedUser.email === email && savedUser.password === password) {
+        loginUser(savedUser);
+        openPopup('Login successful!');
+    } else {
+        openPopup('Invalid email or password');
+    }
+}
+
+function loginUser(user) {
+    currentUser = user;
+    document.getElementById('authModal').style.display = 'none';
+    document.getElementById('userName').innerText = user.name.split(' ')[0];
+    document.getElementById('userInitial').innerText = user.name.charAt(0).toUpperCase();
+    document.getElementById('profileName').innerText = user.name;
+    document.getElementById('profileEmail').innerText = user.email;
+    document.getElementById('profileInitial').innerText = user.name.charAt(0).toUpperCase();
+    document.getElementById('refCode').innerText = 'KING-' + user.name.split(' ')[0].toUpperCase();
+}
+
+function logout() {
+    localStorage.removeItem('kingcoins_user');
+    location.reload();
+}
+
+/* Check if user is already logged in */
+window.onload = function() {
+    const savedUser = JSON.parse(localStorage.getItem('kingcoins_user'));
+    if(savedUser) {
+        loginUser(savedUser);
+    }
+}
+
 /* PAGE NAVIGATION */
 function showPage(pageName) {
     const pages = document.querySelectorAll(".page");
@@ -278,15 +329,13 @@ function closePopup() {
     document.getElementById("popup").style.display = "none";
 }
 
-/* COPY ACCOUNT NUMBER */
+/* COPY FUNCTIONS */
 function copyAccount() {
     navigator.clipboard.writeText("6587483968");
-    openPopup("Account number 6587483968 copied!");
+    openPopup("Account number copied!");
 }
-
-/* REFERRAL */
 function copyReferral() {
-    navigator.clipboard.writeText("KINGCOINS-DEMO");
+    navigator.clipboard.writeText(document.getElementById('refCode').innerText);
     openPopup("Referral code copied!");
 }
 </script>

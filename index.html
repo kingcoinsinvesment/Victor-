@@ -3,69 +3,64 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>👑 King Coins Investment</title>
+<title>King Coins</title>
 <style>
-  body{font-family:Arial;background:#0a0a0a;color:#fff;margin:0;padding:20px;text-align:center}
-  h1{color:#ffd700;margin-bottom:5px}
-  .box{background:#161616;padding:20px;border-radius:12px;margin:15px auto;max-width:400px;border:1px solid #333}
-  button{background:#ffd700;color:#000;border:none;padding:12px 20px;border-radius:8px;font-weight:bold;cursor:pointer;width:90%;margin:8px 0}
-  input{padding:12px;width:85%;border-radius:6px;border:1px solid #444;background:#222;color:#fff;margin:8px 0}
-  a{color:#ffd700;text-decoration:none}
-  .ref-box{background:#222;padding:10px;border-radius:6px;word-break:break-all}
+body{font-family:Arial;background:#0b0b0b;color:#fff;margin:0;padding:20px;text-align:center}
+h1{color:#ffd700}
+.box{background:#1a1a1a;padding:20px;border-radius:12px;margin:15px 0}
+button{background:#ffd700;color:#000;border:none;padding:12px 20px;border-radius:8px;font-weight:bold;cursor:pointer}
+input{padding:10px;width:80%;border-radius:6px;border:none;margin:8px 0}
+a{color:#ffd700;text-decoration:none}
 </style>
 </head>
 <body>
-
 <h1>👑 KING COINS INVESTMENT</h1>
-<p>Earn by Investing & Referring</p>
 
 <div class="box">
-  <h2>💰 Deposit</h2>
-  <p>Send to Opay: <b>6587483968</b> - KING COINS</p>
-  <input id="depAmount" type="number" placeholder="Enter amount e.g 5000">
-  <button onclick="deposit()">I Have Paid - Submit</button>
+<h2>Deposit</h2>
+<p>Send to Opay: <b>6587483968</b></p>
+<input id="depAmount" placeholder="Enter amount">
+<button onclick="deposit()">I Have Paid - Submit</button>
 </div>
 
 <div class="box">
-  <h2>💸 Withdraw</h2>
-  <input id="witAmount" type="number" placeholder="Enter amount to withdraw">
-  <button onclick="withdraw()">Request Withdrawal</button>
+<h2>Withdraw</h2>
+<input id="witAmount" placeholder="Enter amount to withdraw">
+<button onclick="withdraw()">Request Withdrawal</button>
 </div>
 
 <div class="box">
-  <h2>👥 Your Referral Link</h2>
-  <p>Share this link and earn 10%</p>
-  <div class="ref-box" id="refLink">Loading...</div>
-  <button onclick="copyRef()">Copy Link</button>
+<h2>👥 Your Referral Link</h2>
+<p>Share this link and earn 10%</p>
+<div id="refLink" style="background:#222;padding:10px;border-radius:6px;word-break:break-all"></div>
+<button onclick="copyRef()">Copy Link</button>
 </div>
 
 <div class="box">
-  <h2>📞 Support</h2>
-  <a href="https://t.me/kingcoi"><button>Chat Admin on Telegram</button></a>
+<h2>Support</h2>
+<a href="https://t.me/kingcoi"><button>Chat Admin on Telegram</button></a>
 </div>
 
 <script>
-// ===== IMPORTANT SETTINGS =====
+// ONLY 2 THINGS CHANGED HERE
 const BASE_URL="https://kingcoinsinvestment.github.io/Kingcoinsng/";
 const TELEGRAM_ADMIN="https://t.me/kingcoi";
 const OPAY_NUM="6587483968";
 
-// Get username from URL ?ref=username or use "guest"
+// This makes the referral link use new username
 const urlParams = new URLSearchParams(window.location.search);
 const myUsername = urlParams.get('ref') || "guest";
-
-// Show your referral link
 document.getElementById('refLink').innerText = BASE_URL + "?ref=" + myUsername;
 
 function deposit(){
   let amt=document.getElementById('depAmount').value;
-  if(amt=="" || amt<1000){alert("Minimum deposit is N1000");return;}
-  alert("1. Send N"+amt+" to Opay "+OPAY_NUM+"\n2. Chat admin with proof");
+  if(amt==""){alert("Enter amount first");return;}
+  alert("Send N"+amt+" to Opay "+OPAY_NUM+" then chat admin");
   window.open(TELEGRAM_ADMIN);
 }
 function withdraw(){
   let amt=document.getElementById('witAmount').value;
-  if(amt=="" || amt<2000){alert("Minimum withdrawal is N2000");return;}
+  if(amt==""){alert("Enter amount first");return;}
   alert("Withdrawal request for N"+amt+" sent to admin");
   window.open(TELEGRAM_ADMIN);
 }
@@ -74,6 +69,5 @@ function copyRef(){
   alert("Referral link copied!");
 }
 </script>
-
 </body>
 </html>

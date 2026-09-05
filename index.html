@@ -386,7 +386,15 @@ function shareInvite() {
     const text = `Join me on KING COINS Investment Platform! 👑\nUse my invite link to get started:\n${link}`;
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
 }
-
+/* REFERRAL LINK HANDLER - FIX FOR 404 */
+window.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const ref = urlParams.get('ref');
+    if(ref) {
+        localStorage.setItem('kingcoins_temp_ref', ref);
+        openPopup(`You were invited by: ${ref}`);
+    }
+});
 /* INVEST BUTTON TO TELEGRAM */
 function sendToTelegram(plan, amount) {
     const user = JSON.parse(localStorage.getItem('kingcoins_user'));

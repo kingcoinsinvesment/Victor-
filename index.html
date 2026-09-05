@@ -16,7 +16,6 @@ body{background:#0a0a0a;color:white;padding-bottom:80px}
 .btn{background:#FFD700;color:black;border:none;padding:12px;width:100%;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:10px}
 .btn-red{background:#ff4444;color:white}
 .btn-wa{background:#25D366;color:white}
-.btn-outline{background:transparent;border:2px solid #FFD700;color:#FFD700}
 .plan{margin-bottom:15px}
 .plan h3{color:#FFD700;margin-bottom:5px}
 input{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #333;background:#222;color:white}
@@ -33,7 +32,7 @@ input{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #3
 <body>
 
 <!-- WELCOME POPUP -->
-<div id="welcomePopup"><div><h2>Welcome! 👑</h2><p id="welcomeText">You were invited by: GUEST</p><button class="btn" onclick="document.getElementById('welcomePopup').style.display='none'">Continue</button></div></div>
+<div id="welcomePopup"><div><h2>Welcome! 👑</h2><p id="welcomeText">You were invited by: GUEST</p><p style="color:#FFD700">You both get ₦500 bonus!</p><button class="btn" onclick="document.getElementById('welcomePopup').style.display='none'">Continue</button></div></div>
 
 <!-- AUTH POPUP -->
 <div id="authPopup"><div>
@@ -89,22 +88,24 @@ input{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #3
 <div id="referralPage" class="page">
 <h1>👑 Referral</h1><p>Invite people to join King Coins and earn rewards.</p>
 <div class="card" style="background:linear-gradient(135deg,#FFD700,#FFA500)">
-<h2 style="color:black;text-align:center">Invite & Earn</h2>
-<p style="color:black;font-weight:bold">Your Code:</p>
-<div id="refCodeBox" style="background:black;color:#FFD700;padding:12px;border-radius:8px;font-size:18px;font-weight:bold;text-align:center;margin:10px 0">KING-GLOVIC</div>
+<h2 style="color:black;text-align:center">Invite & Earn ₦500</h2>
+<p style="color:black;font-weight:bold">You earn ₦500 for each person who signs up!</p>
+<p style="color:black;font-weight:bold;margin-top:10px">Your Code:</p>
+<div id="refCodeBox" style="background:black;color:#FFD700;padding:12px;border-radius:8px;font-size:18px;font-weight:bold;text-align:center;margin:10px 0">LOADING...</div>
 <button class="btn" onclick="copyCode()">Copy Code</button>
 <p style="color:black;font-weight:bold;margin-top:15px">Your Link:</p>
 <div id="refLinkBox" style="background:#222;color:white;padding:12px;border-radius:8px;font-size:12px;word-break:break-all;margin:10px 0">loading...</div>
 <button class="btn" id="copyLinkBtn">Copy Link</button>
 <button class="btn btn-wa" id="waBtn">📱 Share on WhatsApp</button>
 </div>
+<div class="card"><h3>Total Referrals: <span id="refCount">0</span></h3><h3>Earned: ₦<span id="refEarned">0</span></h3></div>
 </div>
 
 <!-- PROFILE PAGE -->
 <div id="profilePage" class="page">
 <h1>Profile</h1>
 <div class="card" style="text-align:center">
-<div style="font-size:50px;background:#FFD700;color:black;width:70px;height:70px;border-radius:50%;margin:0 auto;line-height:70px">G</div>
+<div style="font-size:50px;background:#FFD700;color:black;width:70px;height:70px;border-radius:50%;margin:0 auto;line-height:70px" id="profileAvatar">G</div>
 <h2 id="profileName">Glovic</h2>
 <p id="profileEmail">user@email.com</p>
 <button class="btn btn-red" onclick="logout()">Logout</button>
@@ -121,13 +122,18 @@ input{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #3
 </div>
 
 <script>
-const USER_REF_CODE="KING-GLOVIC";
 const BASE_URL="https://gmailcom-cpu.github.io";
-const REF_LINK=`${BASE_URL}?ref=${USER_REF_CODE}`;
 const OPAY_NUM="6587483968";
-const TELEGRAM_LINK="https://t.me/KingCoinsAdmin"; // CHANGE THIS TO YOUR TELEGRAM
+const TELEGRAM_LINK="https://t.me/KingCoinsAdmin"; // CHANGE THIS
+const REF_BONUS = 500; // ₦500 per referral
+
 let currentUser = JSON.parse(localStorage.getItem('kingUser')) || null;
 let balance = parseFloat(localStorage.getItem('kingBalance')) || 1000;
+let refData = JSON.parse(localStorage.getItem('kingRefData')) || {count:0, earned:0};
+
+function generateRefCode(name){
+return "KING-" + name.toUpperCase().replace(/\s/g,'').substring(0,8) + Math.floor(Math.random()*100);
+}
 
 function showPage(id){
 if(!currentUser && id!='referralPage'){document.getElementById('authPopup').style.display='flex';return;}
@@ -149,8 +155,18 @@ const name=document.getElementById('signupName').value;
 const email=document.getElementById('signupEmail').value;
 const pass=document.getElementById('signupPass').value;
 if(!name||!email||!pass){alert('Fill all fields');return;}
-currentUser={name,email,pass};
+
+const refCode = generateRefCode(name);
+currentUser={name,email,pass,refCode};
 localStorage.setItem('kingUser',JSON.stringify(currentUser));
+
+// CHECK IF THEY CAME WITH A REFERRAL
+const urlParams=new URLSearchParams(window.location.search);
+const referrerCode=urlParams.get('ref');
+if(referrerCode && referrerCode != refCode){
+localStorage.setItem('pendingReferral', referrerCode);
+}
+
 document.getElementById('authPopup').style.display='none';
 updateUI();
 }
@@ -159,7 +175,23 @@ function login(){
 const email=document.getElementById('loginEmail').value;
 const pass=document.getElementById('loginPass').value;
 const user=JSON.parse(localStorage.getItem('kingUser'));
-if(user && user.email==email && user.pass==pass){currentUser=user;document.getElementById('authPopup').style.display='none';updateUI();}
+if(user && user.email==email && user.pass==pass){
+currentUser=user;
+document.getElementById('authPopup').style.display='none';
+
+// GIVE REFERRAL BONUS ON FIRST LOGIN
+const pendingRef = localStorage.getItem('pendingReferral');
+if(pendingRef){
+balance += REF_BONUS;
+localStorage.setItem('kingBalance', balance);
+// In real app, you would also credit the referrer. Here we simulate
+refData.count += 1;
+refData.earned += REF_BONUS;
+localStorage.setItem('kingRefData', JSON.stringify(refData));
+localStorage.removeItem('pendingReferral');
+}
+updateUI();
+}
 else{alert('Wrong email or password')}
 }
 
@@ -170,9 +202,17 @@ if(currentUser){
 document.getElementById('userName').innerText=currentUser.name;
 document.getElementById('profileName').innerText=currentUser.name;
 document.getElementById('profileEmail').innerText=currentUser.email;
+document.getElementById('profileAvatar').innerText=currentUser.name[0].toUpperCase();
+
+// SET UNIQUE REF CODE + LINK
+const REF_LINK=`${BASE_URL}?ref=${currentUser.refCode}`;
+document.getElementById('refCodeBox').innerText=currentUser.refCode;
+document.getElementById('refLinkBox').innerText=REF_LINK;
 }
 document.getElementById('balance').innerText=balance.toFixed(2);
 document.getElementById('withdrawBalance').innerText=balance.toFixed(2);
+document.getElementById('refCount').innerText=refData.count;
+document.getElementById('refEarned').innerText=refData.earned;
 }
 
 function invest(amount,plan){
@@ -200,11 +240,9 @@ if(!acc||!name){alert('Fill all fields');return;}
 alert(`Withdrawal request of ₦${amount} to ${acc} sent! Admin will process in 24hrs`);
 }
 
-document.getElementById('refLinkBox').innerText=REF_LINK;
-document.getElementById('refCodeBox').innerText=USER_REF_CODE;
-function copyCode(){navigator.clipboard.writeText(USER_REF_CODE);alert("Referral code copied!")}
-document.getElementById('copyLinkBtn').onclick=()=>{navigator.clipboard.writeText(REF_LINK);alert("Invite link copied!")};
-document.getElementById('waBtn').onclick=()=>{const message=`Join King Coins and earn rewards! 🔥\n\nUse my referral link to get started:\n${REF_LINK}`;window.open(`https://wa.me/?text=${encodeURIComponent(message)}`,'_blank')};
+function copyCode(){navigator.clipboard.writeText(currentUser.refCode);alert("Referral code copied!")}
+document.getElementById('copyLinkBtn').onclick=()=>{const link=document.getElementById('refLinkBox').innerText;navigator.clipboard.writeText(link);alert("Invite link copied!")};
+document.getElementById('waBtn').onclick=()=>{const link=document.getElementById('refLinkBox').innerText;const message=`Join King Coins and earn ₦500 bonus! 🔥\n\nUse my referral link to get started:\n${link}`;window.open(`https://wa.me/?text=${encodeURIComponent(message)}`,'_blank')};
 
 window.onload=()=>{
 const urlParams=new URLSearchParams(window.location.search);

@@ -17,11 +17,17 @@ body{background:#0a0a0a;color:white;padding-bottom:80px}
 .btn-red{background:#ff4444;color:white}
 .btn-wa{background:#25D366;color:white}
 .btn-tg{background:#0088cc;color:white}
+.btn:disabled{background:#444;color:#888;cursor:not-allowed}
 .plan{margin-bottom:15px}
 .plan h3{color:#FFD700;margin-bottom:5px}
 input{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #333;background:#222;color:white}
 .warning{background:#ff000033;border:1px solid #ff4444;padding:12px;border-radius:8px;margin:15px 0;color:#ff9999;font-size:13px}
 .success{background:#00ff0033;border:1px solid #00ff44;padding:12px;border-radius:8px;margin:15px 0;color:#99ff99;font-size:14px;text-align:center}
+#customPopup{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.9);justify-content:center;align-items:center;z-index:1000;animation:fadeIn 0.3s}
+#customPopup div{background:linear-gradient(135deg,#1a1a1a,#222);padding:30px;border-radius:20px;text-align:center;border:2px solid #FFD700;max-width:380px;width:90%;box-shadow:0 0 30px rgba(255,215,0,0.4)}
+#customPopup .icon{font-size:40px;margin-bottom:10px}
+#customPopup h3{color:#FFD700;margin-bottom:10px;font-size:22px}
+#customPopup p{color:#ddd;margin-bottom:20px;font-size:15px;line-height:1.5}
 #welcomePopup{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.9);justify-content:center;align-items:center;z-index:999}
 #welcomePopup div{background:#1a1a1a;padding:30px;border-radius:15px;text-align:center;border:2px solid #FFD700}
 #welcomePopup h2{color:#FFD700}
@@ -30,40 +36,53 @@ input{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #3
 .tabs{display:flex;gap:10px;margin-bottom:15px}
 .tab{flex:1;padding:10px;background:#222;border:none;color:#aaa;border-radius:8px;cursor:pointer}
 .tab.active{background:#FFD700;color:black;font-weight:bold}
+@keyframes fadeIn{from{opacity:0;transform:scale(0.9)}to{opacity:1;transform:scale(1)}}
 </style>
 </head>
 <body>
+
+<div id="customPopup"><div><div class="icon" id="popupIcon">👑</div><h3 id="popupTitle">Notice</h3><p id="popupMessage">Message here</p><button class="btn" onclick="closePopup()">OK</button></div></div>
 
 <div id="welcomePopup"><div><h2>Welcome! 👑</h2><p id="welcomeText">You were invited by: GUEST</p><div id="bonusMessage"></div><button class="btn" onclick="document.getElementById('welcomePopup').style.display='none'">Continue</button></div></div>
 
 <div id="authPopup"><div><h2 style="color:#FFD700;text-align:center">KING COINS</h2><div class="tabs"><button class="tab active" onclick="switchTab('login')">Login</button><button class="tab" onclick="switchTab('signup')">Sign Up</button></div><div id="loginForm"><input type="email" id="loginEmail" placeholder="Email Address"><input type="password" id="loginPass" placeholder="Password"><button class="btn" onclick="login()">Login</button></div><div id="signupForm" style="display:none"><input type="text" id="signupName" placeholder="Full Name"><input type="email" id="signupEmail" placeholder="Email Address"><input type="password" id="signupPass" placeholder="Password"><button class="btn" onclick="signup()">Sign Up</button></div></div></div>
 
 <div id="homePage" class="page active"><h1>👑 KING COINS</h1><div class="card" style="text-align:center"><div style="font-size:40px">KC</div><h2>Welcome, <span id="userName">Guest</span></h2></div><div class="card"><h2>Portfolio Balance</h2><h1 style="color:#FFD700;font-size:32px">₦<span id="balance">1000.00</span></h1></div>
-<div class="card"><h3>🎁 Earn More</h3><button class="btn btn-tg" onclick="joinTelegram()">Join Telegram Channel - Get ₦200</button></div>
+<div class="card"><h3>🎁 Earn More</h3><button class="btn btn-tg" id="tgBtn" onclick="joinTelegram()">Join Telegram Channel - Get ₦200</button><p style="font-size:12px;color:#aaa;margin-top:8px">@kingcoi</p></div>
 </div>
 
-<div id="investPage" class="page"><h1>Investment Plans</h1><div class="plan card"><h3>Starter</h3><h2>₦500</h2><button class="btn" onclick="invest(500,'Starter')">Invest Now</button></div><div class="plan card"><h3>Gold</h3><h2>₦800</h2><button class="btn" onclick="invest(800,'Gold')">Invest Now</button></div><div class="plan card"><h3>Royal</h3><h2>₦1000</h2><button class="btn" onclick="invest(1000,'Royal')">Invest Now</button></div><div class="plan card"><h3>Diamond</h3><h2>₦2000</h2><button class="btn" onclick="invest(2000,'Diamond')">Invest Now</button></div><div id="paymentSection" class="card" style="display:none"><h3>Payment - OPay</h3><p><b>Account:</b> <span id="opayNum">6587483968</span> <button onclick="copyOPay()">Copy</button></p><p><b>Name:</b> VICTOR OTUOSIRISOCHUKWU ODU</p><p style="color:#FFD700">Amount: ₦<span id="investAmount">0</span></p><button class="btn btn-wa" onclick="sendProof()">Send Proof on Telegram</button></div></div>
+<div id="investPage" class="page"><h1>Investment Plans</h1><div class="plan card"><h3>Starter</h3><h2>₦500</h2><button class="btn" onclick="invest(500,'Starter')">Invest Now</button></div><div class="plan card"><h3>Gold</h3><h2>₦800</h2><button class="btn" onclick="invest(800,'Gold')">Invest Now</button></div><div class="plan card"><h3>Royal</h3><h2>₦1000</h2><button class="btn" onclick="invest(1000,'Royal')">Invest Now</button></div><div class="plan card"><h3>Diamond</h3><h2>₦2000</h2><button class="btn" onclick="invest(2000,'Diamond')">Invest Now</button></div><div id="paymentSection" class="card" style="display:none"><h3>Payment - OPay</h3><p><b>Account:</b> <span id="opayNum">6587483968</span> <button onclick="copyOPay()">Copy</button></p><p><b>Name:</b> VICTOR OTUOSIRISOCHUKWU ODU</p><p style="color:#FFD700">Amount: ₦<span id="investAmount">0</span></p><button class="btn btn-wa" onclick="sendProof()">Send Proof to Admin</button></div></div>
 
 <div id="withdrawPage" class="page"><h1>Withdraw</h1><div class="card"><h3>Available Balance</h3><h2 style="color:#FFD700">₦<span id="withdrawBalance">1000.00</span></h2></div><div class="card"><input type="number" id="withdrawAmount" placeholder="Amount"><input type="text" id="withdrawAccount" placeholder="OPay Number"><input type="text" id="withdrawName" placeholder="Account Name"><button class="btn btn-red" onclick="withdraw()">Withdraw</button><p style="font-size:12px;color:#aaa">Minimum ₦7000</p></div></div>
 
 <div id="referralPage" class="page"><h1>👑 Referral</h1><div class="card" style="background:linear-gradient(135deg,#FFD700,#FFA500)"><h2 style="color:black">Invite & Earn ₦500</h2><p style="color:black">You earn ₦500 for each person who joins!</p><p style="color:black">Your Code:</p><div id="refCodeBox" style="background:black;color:#FFD700;padding:12px;border-radius:8px;text-align:center;margin:10px 0">LOADING...</div><button class="btn" onclick="copyCode()">Copy Code</button><p style="color:black">Your Link:</p><div id="refLinkBox" style="background:#222;color:white;padding:12px;border-radius:8px;font-size:12px;word-break:break-all;margin:10px 0">loading...</div><button class="btn" id="copyLinkBtn">Copy Link</button><button class="btn btn-wa" id="waBtn">📱 Share on WhatsApp</button></div>
 <div class="card"><h3>📊 Your Referral Stats</h3><p>People Referred: <b><span id="refCount">0</span></b></p><p>Total Earned: <b>₦<span id="refEarned">0</span></b></p></div></div>
 
-<div id="profilePage" class="page"><h1>Profile</h1><div class="card" style="text-align:center"><div style="font-size:50px;background:#FFD700;color:black;width:70px;height:70px;border-radius:50%;margin:0 auto;line-height:70px" id="profileAvatar">G</div><h2 id="profileName">Glovic</h2><p id="profileEmail">user@email.com</p><button class="btn btn-red" onclick="logout()">Logout</button></div></div>
+<div id="profilePage" class="page"><h1>Profile</h1><div class="card" style="text-align:center"><div style="font-size:50px;background:#FFD700;color:black;width:70px;height:70px;border-radius:50%;margin:0 auto;line-height:70px" id="profileAvatar">G</div><h2 id="profileName">Glovic</h2><p id="profileEmail">user@email.com</p><button class="btn btn-red" onclick="logout()">Logout</button></div><div class="card"><h3>Join Our Community</h3><button class="btn btn-tg" onclick="window.open(TELEGRAM_GROUP,'_blank')">📢 Join Telegram Channel</button></div></div>
 
 <div class="nav"><button onclick="showPage('homePage')" class="active">🏠<span>Home</span></button><button onclick="showPage('investPage')">💰<span>Invest</span></button><button onclick="showPage('withdrawPage')">💳<span>Withdraw</span></button><button onclick="showPage('referralPage')">👥<span>Referral</span></button><button onclick="showPage('profilePage')">👤<span>Profile</span></button></div>
 
 <script>
 const BASE_URL="https://oduvictor001gmailcom-cpu.github.io/Victor-/";
 const OPAY_NUM="6587483968";
-const TELEGRAM_GROUP="https://t.me/KingCoinsInvestment"; // CHANGE TO YOUR CHANNEL LINK
-const TELEGRAM_ADMIN="https://t.me/KingCoinsAdmin"; // FOR PROOF
+const TELEGRAM_GROUP="https://t.me/kingcoi"; // YOUR CHANNEL
+const TELEGRAM_ADMIN="https://t.me/kingcoi"; // SAME CHANNEL FOR PROOF
 const REF_BONUS = 500;
 const TG_BONUS = 200;
 
 let currentUser = JSON.parse(localStorage.getItem('kingUser')) || null;
 let balance = parseFloat(localStorage.getItem('kingBalance')) || 1000;
 let allUsers = JSON.parse(localStorage.getItem('allKingUsers')) || [];
+
+function showPopup(title, message, icon='👑'){
+document.getElementById('popupIcon').innerText = icon;
+document.getElementById('popupTitle').innerText = title;
+document.getElementById('popupMessage').innerText = message;
+document.getElementById('customPopup').style.display = 'flex';
+}
+function closePopup(){
+document.getElementById('customPopup').style.display = 'none';
+}
 
 function generateRefCode(name){
 return "KING-" + name.toUpperCase().replace(/\s/g,'').substring(0,8) + Math.floor(Math.random()*100);
@@ -88,8 +107,8 @@ function signup(){
 const name=document.getElementById('signupName').value;
 const email=document.getElementById('signupEmail').value;
 const pass=document.getElementById('signupPass').value;
-if(!name||!email||!pass){alert('Fill all fields');return;}
-if(allUsers.find(u => u.email == email)){alert('Email already exists. Please login');return;}
+if(!name||!email||!pass){showPopup('Incomplete Form', 'Please fill all fields', '⚠️');return;}
+if(allUsers.find(u => u.email == email)){showPopup('Account Exists', 'This email already exists. Please login instead', 'ℹ️');return;}
 
 const refCode = generateRefCode(name);
 const newUser = {name,email,pass,refCode,balance:1000,tgBonusClaimed:false};
@@ -107,26 +126,19 @@ let bonusMessage = '';
 if(referrerCode){
     let referrer = allUsers.find(u => u.refCode == referrerCode);
     if(referrer && referrer.email!= email){
-        // Give bonus to NEW user
         currentUser.balance += REF_BONUS;
         balance = currentUser.balance;
-
-        // Give bonus to REFERRER
         referrer.balance += REF_BONUS;
         let refIndex = allUsers.findIndex(u => u.refCode == referrerCode);
         allUsers[refIndex] = referrer;
-
-        // Update referrer stats
         let referrerData = JSON.parse(localStorage.getItem('kingRefData_' + referrerCode)) || {count:0, earned:0};
         referrerData.count += 1;
         referrerData.earned += REF_BONUS;
         localStorage.setItem('kingRefData_' + referrerCode, JSON.stringify(referrerData));
-
         localStorage.setItem('allKingUsers', JSON.stringify(allUsers));
         localStorage.setItem('kingUser',JSON.stringify(currentUser));
         localStorage.setItem('kingBalance', balance);
-
-        bonusMessage = `<div class="success">🎉 Congratulations!<br>You got ₦500 referral bonus!<br>New Balance: ₦${balance.toFixed(2)}</div>`;
+        bonusMessage = `<div class="success">🎉 Congratulations!<br>You received ₦500 referral bonus!<br>New Balance: ₦${balance.toFixed(2)}</div>`;
     }
 }
 
@@ -146,9 +158,10 @@ balance = user.balance;
 localStorage.setItem('kingUser',JSON.stringify(currentUser));
 localStorage.setItem('kingBalance', balance);
 document.getElementById('authPopup').style.display='none';
+showPopup('Welcome Back!', `Hello ${user.name}`, '👋');
 updateUI();
 }
-else{alert('Wrong email or password')}
+else{showPopup('Login Failed', 'Wrong email or password. Please try again', '❌')}
 }
 
 function logout(){localStorage.removeItem('kingUser');localStorage.removeItem('kingBalance');currentUser=null;location.reload();}
@@ -165,24 +178,27 @@ document.getElementById('refCodeBox').innerText=currentUser.refCode;
 document.getElementById('refLinkBox').innerText=REF_LINK;
 
 let userRefData = JSON.parse(localStorage.getItem('kingRefData_' + currentUser.refCode)) || {count:0, earned:0};
-document.getElementById('refCount').innerText=userRefData.count; // SHOWS NUMBER OF PEOPLE
-document.getElementById('refEarned').innerText=userRefData.earned; // SHOWS AMOUNT
+document.getElementById('refCount').innerText=userRefData.count;
+document.getElementById('refEarned').innerText=userRefData.earned;
+
+if(currentUser.tgBonusClaimed){
+    document.getElementById('tgBtn').innerText = '✓ Telegram Bonus Claimed';
+    document.getElementById('tgBtn').disabled = true;
 }
 document.getElementById('balance').innerText=balance.toFixed(2);
 document.getElementById('withdrawBalance').innerText=balance.toFixed(2);
 }
+}
 
 function joinTelegram(){
-if(!currentUser){alert('Please login first');return;}
-if(currentUser.tgBonusClaimed){alert('You already claimed ₦200 Telegram bonus');return;}
+if(!currentUser){showPopup('Login Required', 'Please login to claim your bonus', '🔒');return;}
+if(currentUser.tgBonusClaimed){showPopup('Already Claimed', 'You have already claimed your ₦200 Telegram bonus', '✅');return;}
 
-window.open(TELEGRAM_GROUP, '_blank'); // Opens telegram channel
+window.open(TELEGRAM_GROUP, '_blank');
 
-// Add bonus
 currentUser.balance += TG_BONUS;
 currentUser.tgBonusClaimed = true;
 balance = currentUser.balance;
-
 let userIndex = allUsers.findIndex(u => u.email == currentUser.email);
 allUsers[userIndex] = currentUser;
 
@@ -190,16 +206,16 @@ localStorage.setItem('allKingUsers', JSON.stringify(allUsers));
 localStorage.setItem('kingUser',JSON.stringify(currentUser));
 localStorage.setItem('kingBalance', balance);
 
-alert(`🎉 Congratulations! ₦200 added to your wallet\nNew Balance: ₦${balance.toFixed(2)}`);
+showPopup('Bonus Received!', `₦200 has been added to your wallet\nNew Balance: ₦${balance.toFixed(2)}`, '🎉');
 updateUI();
 }
 
-function invest(amount,plan){document.getElementById('paymentSection').style.display='block';document.getElementById('investAmount').innerText=amount;document.getElementById('paymentSection').scrollIntoView();localStorage.setItem('pendingInvest',JSON.stringify({amount,plan}));}
-function copyOPay(){navigator.clipboard.writeText(OPAY_NUM);alert('OPay Copied!')}
-function sendProof(){const pending=JSON.parse(localStorage.getItem('pendingInvest'));const msg=`New Payment Proof\nPlan: ${pending.plan}\nAmount: ₦${pending.amount}\nFrom: ${currentUser.name}`;window.open(`${TELEGRAM_ADMIN}?text=${encodeURIComponent(msg)}`,'_blank')}
-function withdraw(){const amount=parseFloat(document.getElementById('withdrawAmount').value);const acc=document.getElementById('withdrawAccount').value;const name=document.getElementById('withdrawName').value;if(amount<7000){alert('Minimum ₦7000');return;}if(amount>balance){alert('Insufficient balance');return;}if(!acc||!name){alert('Fill all fields');return;}alert(`Withdrawal ₦${amount} to ${acc} sent!`);}
-function copyCode(){navigator.clipboard.writeText(currentUser.refCode);alert("Code copied!")}
-document.getElementById('copyLinkBtn').onclick=()=>{const link=document.getElementById('refLinkBox').innerText;navigator.clipboard.writeText(link);alert("Link copied!")};
+function invest(amount,plan){document.getElementById('paymentSection').style.display='block';document.getElementById('investAmount').innerText=amount;document.getElementById('paymentSection').scrollIntoView();localStorage.setItem('pendingInvest',JSON.stringify({amount,plan}));showPopup('Payment Instructions', `Please send ₦${amount} to OPay and click "Send Proof"`, '💳');}
+function copyOPay(){navigator.clipboard.writeText(OPAY_NUM);showPopup('Copied!', 'OPay number copied to clipboard', '📋')}
+function sendProof(){const pending=JSON.parse(localStorage.getItem('pendingInvest'));const msg=`New Payment Proof\nPlan: ${pending.plan}\nAmount: ₦${pending.amount}\nFrom: ${currentUser.name}`;window.open(`${TELEGRAM_ADMIN}?text=${encodeURIComponent(msg)}`,'_blank');showPopup('Proof Sent', 'Your payment proof has been sent to @kingcoi channel', '📤')}
+function withdraw(){const amount=parseFloat(document.getElementById('withdrawAmount').value);const acc=document.getElementById('withdrawAccount').value;const name=document.getElementById('withdrawName').value;if(amount<7000){showPopup('Minimum Not Met', 'Minimum withdrawal amount is ₦7000', '⚠️');return;}if(amount>balance){showPopup('Insufficient Funds', 'You do not have enough balance for this withdrawal', '❌');return;}if(!acc||!name){showPopup('Incomplete Form', 'Please fill all withdrawal details', '⚠️');return;}showPopup('Withdrawal Requested', `Your withdrawal request for ₦${amount} has been submitted successfully`, '✅');}
+function copyCode(){navigator.clipboard.writeText(currentUser.refCode);showPopup('Copied!', 'Referral code copied to clipboard', '📋')}
+document.getElementById('copyLinkBtn').onclick=()=>{const link=document.getElementById('refLinkBox').innerText;navigator.clipboard.writeText(link);showPopup('Copied!', 'Referral link copied to clipboard', '📋')};
 document.getElementById('waBtn').onclick=()=>{const link=document.getElementById('refLinkBox').innerText;const message=`Join King Coins and earn ₦500 bonus! 🔥\n\n${link}`;window.open(`https://wa.me/?text=${encodeURIComponent(message)}`,'_blank')};
 
 window.onload=()=>{const urlParams=new URLSearchParams(window.location.search);const ref=urlParams.get('ref');if(ref &&!currentUser){document.getElementById('welcomeText').innerText=`You were invited by: ${ref}`;}if(!currentUser){document.getElementById('authPopup').style.display='flex';}updateUI();};

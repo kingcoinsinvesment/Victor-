@@ -50,6 +50,7 @@ input:focus{border-color:var(--gold);outline:none}
 .auth-card{background:var(--card);padding:30px;border-radius:24px;border:1px solid #222}
 .auth-title{font-size:24px;font-weight:800;margin-bottom:8px}
 .auth-subtitle{color:var(--text2);font-size:14px;margin-bottom:24px}
+.auth-link{color:var(--gold);text-align:center;margin-top:10px;cursor:pointer;font-size:14px}
 .withdraw-head{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#000;padding:32px 24px;border-radius:24px;margin:16px;text-align:center}
 .withdraw-head h2{font-size:14px;font-weight:600;opacity:0.8}
 .withdraw-head h1{font-size:38px;font-weight:800;margin-top:6px}
@@ -69,16 +70,26 @@ hr{border:0;border-top:1px solid #222;margin:20px 0}
 <div class="toast" id="liveToast"></div>
 <div class="popup" id="popup"><div class="popup-box"><h3 id="popupTitle" style="color:var(--gold);margin-bottom:12px">Notice</h3><p id="popupMessage" style="margin-bottom:20px"></p><button class="btn" onclick="closePopup()">OK</button></div></div>
 
-<!-- LOGIN + SIGNUP + ADMIN -->
+<!-- LOGIN + SIGNUP + ADMIN + FORGOT PASSWORD -->
 <div id="authScreen" class="auth-wrap">
 <div class="auth-logo"><span>👑</span><h1>KING COINS</h1></div>
 <div class="auth-card">
 <div class="auth-title">Welcome Back</div>
 <div class="auth-subtitle">Login to your account</div>
 
+<div id="loginBox">
 <div class="input-group"><label>Email</label><input type="email" id="loginEmail" placeholder="you@email.com"></div>
 <div class="input-group"><label>Password</label><input type="password" id="loginPass" placeholder="••••"></div>
 <button class="btn" onclick="login()">Login</button>
+<div class="auth-link" onclick="showForgot()">Forgot Password?</div>
+</div>
+
+<div id="forgotBox" style="display:none">
+<div class="auth-subtitle">Reset Password</div>
+<div class="input-group"><label>Enter Your Email</label><input type="email" id="forgotEmail" placeholder="you@email.com"></div>
+<button class="btn" onclick="resetPassword()">Reset Password</button>
+<div class="auth-link" onclick="showLogin()">Back to Login</div>
+</div>
 
 <p style="text-align:center;margin:15px 0;color:var(--text2)">Don't have an account?</p>
 <button class="btn btn-ghost" onclick="toggleSignup()">Sign Up</button>
@@ -188,7 +199,7 @@ hr{border:0;border-top:1px solid #222;margin:20px 0}
 <div class="card"><h3>Total Users: <span id="adminTotalUsers">0</span></h3><h3>Total Withdrawals: <span id="adminTotalWithdraws">0</span></h3></div>
 <h3 style="margin:20px">Pending Withdrawals</h3>
 <div id="adminWithdrawList"></div>
-<h3 style="margin:20px">All Users</h3>
+<h3 style="margin:20px">All Users - Reset Password</h3>
 <div id="adminUserList"></div>
 </div></div>
 
@@ -227,6 +238,10 @@ function init(){if(currentUser){document.getElementById('authScreen').style.disp
 function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));document.querySelector(`[onclick="showPage('${id}')"]`)?.classList.add('active');if(id=='historyPage')loadHistory();if(id=='adminPage')loadAdmin();}
 
 function toggleSignup(){const box=document.getElementById('signupBox');box.style.display=box.style.display=='none'?'block':'none';}
+function showForgot(){document.getElementById('loginBox').style.display='none';document.getElementById('forgotBox').style.display='block';}
+function showLogin(){document.getElementById('loginBox').style.display='block';document.getElementById('forgotBox').style.display='none';}
+
+function resetPassword(){const email=document.getElementById('forgotEmail').value;const user=allUsers.find(u=>u.email==email);if(!user){showPopup('Error','Email not found');return;}user.pass='1234';localStorage.setItem('allKingUsers',JSON.stringify(allUsers));showPopup('Password Reset','Your password has been reset to: 1234');showLogin();}
 
 function signup(){const n=document.getElementById('signupName').value,e=document.getElementById('signupEmail').value,p=document.getElementById('signupPass').value;if(!n||!e||!p){showPopup('Error','Fill all fields');return;}if(allUsers.find(u=>u.email==e)){showPopup('Error','Email already exists');return;}const ref=generateRefCode(n);const url=new URLSearchParams(window.location.search).get('ref');const user={name:n,email:e,pass:p,refCode:ref,balance:1000,tg:false,investments:[],totalInvested:0,totalEarned:0,referrer:url,level1:[],level2:[],lastShare:0};allUsers.push(user);if(url){let r=allUsers.find(u=>u.refCode==url);if(r){r.level1.push(e);r.balance+=REF_BONUS1;user.balance+=REF_BONUS1;addTransaction(r.email,'referral',REF_BONUS1,'Level 1 Referral');addTransaction(e,'referral',REF_BONUS1,'Welcome Bonus');if(r.referrer){let r2=allUsers.find(u=>u.refCode==r.referrer);if(r2){r2.level2.push(e);r2.balance+=REF_BONUS2;addTransaction(r2.email,'referral',REF_BONUS2,'Level 2 Referral');}}}}localStorage.setItem('allKingUsers',JSON.stringify(allUsers));currentUser=user;balance=user.balance;localStorage.setItem('kingUser',JSON.stringify(currentUser));localStorage.setItem('kingBalance',balance);init();}
 
@@ -239,9 +254,10 @@ function logout(){localStorage.removeItem('kingUser');currentUser=null;init();}
 function updateUI(){if(!currentUser)return;document.getElementById('profileName').innerText=currentUser.name;document.getElementById('profileEmail').innerText=currentUser.email;document.getElementById('profileAvatar').innerText=currentUser.name[0];const REF=`${BASE_URL}?ref=${currentUser.refCode}`;document.getElementById('refCodeBox').innerText=currentUser.refCode;document.getElementById('refLinkBox').innerText=REF;document.getElementById('balance').innerText=balance.toFixed(2);document.getElementById('withdrawBalance').innerText=balance.toFixed(2);document.getElementById('totalInvested').innerText=currentUser.totalInvested||0;document.getElementById('totalEarned').innerText=currentUser.totalEarned||0;const now=Date.now();const last=currentUser.lastShare||0;const btn=document.getElementById('shareBtn');if(now-last<24*60*60*1000){btn.disabled=true;let hrs=Math.ceil((24*60*60*1000-(now-last))/3600000);btn.innerText=`⏰ Share again in ${hrs}h`;}else{btn.disabled=false;btn.innerText='📤 Share & Earn ₦100';}if(currentUser.tg){document.getElementById('tgBtn').innerText='✓ Claimed';document.getElementById('tgBtn').disabled=true;}}
 
 // ADMIN FUNCTIONS
-function loadAdmin(){document.getElementById('adminTotalUsers').innerText=allUsers.length;document.getElementById('adminTotalWithdraws').innerText=withdrawals.length;let pending=withdrawals.filter(w=>w.status=='pending');document.getElementById('adminWithdrawList').innerHTML=pending.map(w=>`<div class="admin-card"><b>${w.name}</b><br>${w.email}<br>Amount: ₦${w.amount}<br>Account: ${w.account}<br><span class="status-pending">Status: Pending</span><br><button class="btn btn-green" onclick="approveWithdraw('${w.id}')">Approve</button><button class="btn btn-red" onclick="rejectWithdraw('${w.id}')">Reject</button></div>`).join('')||'<p>No pending withdrawals</p>';document.getElementById('adminUserList').innerHTML=allUsers.map(u=>`<div class="admin-card"><b>${u.name}</b><br>${u.email}<br>Balance: ₦${u.balance.toFixed(2)}</div>`).join('');}
+function loadAdmin(){document.getElementById('adminTotalUsers').innerText=allUsers.length;document.getElementById('adminTotalWithdraws').innerText=withdrawals.length;let pending=withdrawals.filter(w=>w.status=='pending');document.getElementById('adminWithdrawList').innerHTML=pending.map(w=>`<div class="admin-card"><b>${w.name}</b><br>${w.email}<br>Amount: ₦${w.amount}<br>Account: ${w.account}<br><span class="status-pending">Status: Pending</span><br><button class="btn btn-green" onclick="approveWithdraw('${w.id}')">Approve</button><button class="btn btn-red" onclick="rejectWithdraw('${w.id}')">Reject</button></div>`).join('')||'<p>No pending withdrawals</p>';document.getElementById('adminUserList').innerHTML=allUsers.map(u=>`<div class="admin-card"><b>${u.name}</b><br>${u.email}<br>Balance: ₦${u.balance.toFixed(2)}<br><button class="btn btn-ghost" onclick="resetUserPass('${u.email}')">Reset Password to 1234</button></div>`).join('');}
 function approveWithdraw(id){let w=withdrawals.find(x=>x.id==id);w.status='approved';localStorage.setItem('kingWithdrawals',JSON.stringify(withdrawals));showPopup('Approved',`₦${w.amount} withdrawal approved`);loadAdmin();}
 function rejectWithdraw(id){let w=withdrawals.find(x=>x.id==id);w.status='rejected';localStorage.setItem('kingWithdrawals',JSON.stringify(withdrawals));showPopup('Rejected','Withdrawal rejected');loadAdmin();}
+function resetUserPass(email){let u=allUsers.find(x=>x.email==email);u.pass='1234';localStorage.setItem('allKingUsers',JSON.stringify(allUsers));showPopup('Success',`Password for ${email} reset to 1234`);}
 
 // AUTO CREATE ADMIN USER
 if(allUsers.length==0){allUsers.push({name:"Admin",email:"admin@king.com",pass:"1234",refCode:"KING-ADMIN",balance:100000,tg:true,investments:[],totalInvested:0,totalEarned:0,level1:[],level2:[],lastShare:0});localStorage.setItem('allKingUsers',JSON.stringify(allUsers));}
@@ -263,7 +279,6 @@ function loadHistory(){document.getElementById('historyList').innerHTML=transact
 function copyCode(){navigator.clipboard.writeText(document.getElementById('refCodeBox').innerText);showPopup('Copied','Code copied');}
 function shareWA(){window.open(`https://wa.me/?text=Join King Coins! ${document.getElementById('refLinkBox').innerText}`,'_blank');}
 
-// 2. WITHDRAW WITH PROOF UPLOAD TO ADMIN
 function withdraw(){const amt=parseFloat(document.getElementById('withdrawAmount').value);const acc=document.getElementById('withdrawAccount').value;const name=document.getElementById('withdrawName').value;if(amt<7000){showPopup('Error','Min ₦7000');return;}if(acc.length!=10){showPopup('Error','Invalid account');return;}if(balance<amt){showPopup('Error','Insufficient');return;}balance-=amt;currentUser.balance=balance;const withdrawId=Date.now().toString();withdrawals.push({id:withdrawId,email:currentUser.email,name:currentUser.name,amount:amt,account:acc,accountName:name,status:'pending',date:new Date().toLocaleString()});localStorage.setItem('kingWithdrawals',JSON.stringify(withdrawals));let i=allUsers.findIndex(x=>x.email==currentUser.email);allUsers[i]=currentUser;localStorage.setItem('allKingUsers',JSON.stringify(allUsers));localStorage.setItem('kingUser',JSON.stringify(currentUser));localStorage.setItem('kingBalance',balance);addTransaction(currentUser.email,'withdraw',amt,`Request to ${acc}`);showPopup('Success',`₦${amt} withdrawal request sent to admin`);updateUI();}
 init();
 </script>

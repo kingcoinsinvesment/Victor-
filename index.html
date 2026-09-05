@@ -2,380 +2,209 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>King Coins Investment</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>King Coins 👑</title>
 <style>
-* {margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, Helvetica, sans-serif;}
-body {background: #050505; color: white; padding-bottom: 85px;}
-button { cursor: pointer; }
-.gold { color: #ffd21c; }
-
-/* ================= AUTH MODAL ================= */
-.auth-modal { position: fixed; inset: 0; background: rgba(0,0,0,.95); display: flex; align-items: center; justify-content: center; z-index: 999; padding: 20px; }
-.auth-box { background: #111; border: 2px solid #ffd21c; border-radius: 20px; padding: 30px; width: 100%; max-width: 400px; }
-.auth-box h2 { color: #ffd21c; text-align: center; margin-bottom: 20px; font-size: 26px; }
-.auth-tabs { display: flex; margin-bottom: 20px; border-bottom: 1px solid #333; }
-.auth-tab { flex: 1; padding: 12px; background: none; border: none; color: #888; font-weight: bold; font-size: 16px; }
-.auth-tab.active { color: #ffd21c; border-bottom: 2px solid #ffd21c; }
-.auth-form { display: none; }
-.auth-form.active { display: block; }
-.auth-form input { width: 100%; padding: 14px; margin-bottom: 15px; background: #1a1a1a; border: 1px solid #333; border-radius: 10px; color: white; font-size: 15px; }
-.auth-form input:focus { border-color: #ffd21c; outline: none; }
-.auth-btn { width: 100%; padding: 14px; background: #ffd21c; color: #000; border: none; border-radius: 10px; font-weight: bold; font-size: 16px; margin-top: 10px; }
-.auth-note { text-align: center; color: #777; font-size: 12px; margin-top: 15px; }
-
-/* ================= LOGO ================= */
-.logo-box { text-align: center; padding: 25px 0 10px; }
-.coin {
-    width: 105px; height: 105px; margin: auto; border-radius: 50%;
-    background: radial-gradient(circle, #fff09a 0%, #ffd21c 35%, #b87900 75%, #6b4200 100%);
-    border: 5px solid #ffe36b; box-shadow: 0 0 30px rgba(255, 200, 0,.35);
-    display: flex; align-items: center; justify-content: center; position: relative;
-}
-.coin::before { content: "♛"; position: absolute; top: 7px; font-size: 24px; color: #5a3600; }
-.coin span { font-size: 42px; font-weight: 900; color: #5a3600; }
-.logo-box h1 { margin-top: 12px; color: #ffd21c; font-size: 27px; letter-spacing: 2px; }
-.logo-box p { color: #aaa; margin-top: 5px; }
-
-/* ================= HEADER ================= */
-header { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #242424; }
-.brand { font-size: 20px; font-weight: bold; color: #ffd21c; }
-.profile-circle { width: 42px; height: 42px; border-radius: 50%; background: #ffd21c; color: #000; display: flex; align-items: center; justify-content: center; font-weight: bold; cursor: pointer; }
-
-/* ================= PAGES ================= */
-.page { display: none; padding: 20px; }
-.page.active { display: block; }
-.page-title { font-size: 28px; margin-bottom: 6px; }
-.subtitle { color: #888; margin-bottom: 20px; }
-
-/* ================= HERO ================= */
-.hero { text-align: center; padding: 25px 10px; }
-.hero h2 { font-size: 34px; color: #ffd21c; margin-bottom: 10px; }
-.hero p { color: #aaa; line-height: 1.6; }
-.main-button { border: none; background: #ffd21c; color: #000; padding: 14px 25px; border-radius: 12px; font-weight: bold; margin-top: 20px; }
-
-/* ================= BALANCE ================= */
-.balance-card { background: linear-gradient(135deg, #211900, #101010); border: 1px solid #765900; border-radius: 22px; padding: 25px; margin-bottom: 20px; }
-.balance-card small { color: #999; }
-.balance { font-size: 34px; font-weight: bold; margin: 12px 0; }
-.balance-card p { color: #aaa; }
-
-/* ================= PAYMENT SECTION ================= */
-.payment-section { background: linear-gradient(135deg, #1a1a1a, #0a0a0a); border: 1px solid #ffd21c; border-radius: 20px; padding: 25px; margin-top: 20px; }
-.payment-section h2 { color: #ffd21c; margin-bottom: 20px; font-size: 22px; }
-.payment-steps p { margin-bottom: 15px; line-height: 1.7; }
-.bank-details { background: #111; padding: 20px; border-radius: 12px; margin: 20px 0; border: 1px dashed #ffd21c; }
-.bank-details p { margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; gap:10px; flex-wrap: wrap;}
-.copy-btn { background: #ffd21c; color: #000; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: bold; }
-.telegram-link { display: inline-block; margin-top: 10px; width: 100%; text-align: center; padding: 14px 20px; background: #ffd21c; color: #000; text-decoration: none; border-radius: 10px; font-weight: bold; font-size: 16px; }
-
-/* ================= REFERRAL ================= */
-.referral-box { background: linear-gradient(135deg, #261d00, #111); border: 1px solid #735800; border-radius: 20px; padding: 25px; text-align: center; }
-.referral-box h2 { color: #ffd21c; margin-bottom: 10px; }
-.referral-box p { color: #aaa; line-height: 1.5; margin-bottom: 20px; }
-.referral-code { padding: 14px; background: #050505; border: 1px dashed #ffd21c; border-radius: 10px; color: #ffd21c; margin-bottom: 15px; font-weight: bold; font-size: 16px; }
-.share-btn { width: 100%; padding: 14px; background: #25D366; color: white; border: none; border-radius: 10px; font-weight: bold; font-size: 16px; margin-bottom: 10px; }
-.invite-link { background: #111; padding: 12px; border-radius: 10px; border: 1px solid #333; color: #aaa; word-break: break-all; font-size: 13px; }
-
-/* ================= CARDS ================= */
-.section-title { font-size: 20px; margin: 25px 0 15px; }
-.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-.card { background: #111; border: 1px solid #292929; border-radius: 17px; padding: 18px; }
-.card:hover { border-color: #ffd21c; }
-.card-icon { font-size: 27px; margin-bottom: 10px; }
-.card h3 { font-size: 16px; margin-bottom: 6px; }
-.card p { color: #888; font-size: 13px; }
-
-/* ================= PLANS ================= */
-.plan { background: #111; border: 1px solid #383838; border-radius: 18px; padding: 20px; margin-bottom: 14px; }
-.plan.featured { border: 1px solid #ffd21c; }
-.plan h3 { color: #ffd21c; font-size: 21px; }
-.plan.amount { font-size: 25px; margin: 12px 0; font-weight: bold; }
-.plan p { color: #999; margin-bottom: 15px; }
-.plan button { width: 100%; padding: 13px; background: #ffd21c; color: #000; border: none; border-radius: 10px; font-weight: bold; }
-
-/* ================= BOTTOM NAV ================= */
-.bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; background: #0d0d0d; border-top: 1px solid #292929; display: flex; justify-content: space-around; align-items: center; z-index: 100; }
-.nav-item { text-align: center; color: #777; font-size: 11px; cursor: pointer; }
-.nav-item span { display: block; font-size: 22px; margin-bottom: 4px; }
-.nav-item.active { color: #ffd21c; }
-
-/* ================= POPUP ================= */
-.popup { position: fixed; inset: 0; background: rgba(0,0,0,.8); display: none; align-items: center; justify-content: center; z-index: 200; padding: 20px; }
-.popup-box { background: #111; border: 1px solid #ffd21c; border-radius: 20px; padding: 25px; width: 100%; max-width: 380px; text-align: center; }
-.popup-box h2 { color: #ffd21c; margin-bottom: 10px; }
-.popup-box p { color: #aaa; line-height: 1.5; }
-.close { margin-top: 20px; width: 100%; padding: 12px; background: #ffd21c; border: none; border-radius: 10px; font-weight: bold; }
-
-/* ================= DESKTOP ================= */
-@media (min-width: 700px) {
-    body { max-width: 1100px; margin: auto; padding-bottom: 30px; }
-.bottom-nav { position: relative; max-width: 1100px; margin: 30px auto 0; border: 1px solid #292929; border-radius: 15px; }
-.grid { grid-template-columns: repeat(4, 1fr); }
-.plans-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
-.plan { margin-bottom: 0; }
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#0a0a0a;color:white;padding-bottom:80px}
+.page{display:none;padding:20px}
+.page.active{display:block}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#111;display:flex;justify-content:space-around;padding:10px 0;border-top:2px solid #FFD700}
+.nav button{background:none;border:none;color:#aaa;font-size:11px;cursor:pointer;padding:8px;display:flex;flex-direction:column;align-items:center;gap:4px}
+.nav button.active{color:#FFD700}
+.card{background:#1a1a1a;padding:20px;border-radius:15px;margin:15px 0;border:1px solid #333}
+.btn{background:#FFD700;color:black;border:none;padding:12px;width:100%;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:10px}
+.btn-red{background:#ff4444;color:white}
+.btn-wa{background:#25D366;color:white}
+.btn-outline{background:transparent;border:2px solid #FFD700;color:#FFD700}
+.plan{margin-bottom:15px}
+.plan h3{color:#FFD700;margin-bottom:5px}
+input{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #333;background:#222;color:white}
+#welcomePopup{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.9);justify-content:center;align-items:center;z-index:999}
+#welcomePopup div{background:#1a1a1a;padding:30px;border-radius:15px;text-align:center;border:2px solid #FFD700}
+#welcomePopup h2{color:#FFD700}
+#authPopup{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.9);justify-content:center;align-items:center;z-index:998}
+#authPopup div{background:#1a1a1a;padding:30px;border-radius:15px;width:90%;max-width:400px;border:2px solid #FFD700}
+.tabs{display:flex;gap:10px;margin-bottom:15px}
+.tab{flex:1;padding:10px;background:#222;border:none;color:#aaa;border-radius:8px;cursor:pointer}
+.tab.active{background:#FFD700;color:black;font-weight:bold}
 </style>
 </head>
 <body>
 
-<!-- ================= AUTH MODAL ================= -->
-<div class="auth-modal" id="authModal">
-    <div class="auth-box">
-        <h2>👑 KING COINS</h2>
-        <div class="auth-tabs">
-            <button class="auth-tab active" onclick="switchAuth('login')">Login</button>
-            <button class="auth-tab" onclick="switchAuth('signup')">Sign Up</button>
-        </div>
+<!-- WELCOME POPUP -->
+<div id="welcomePopup"><div><h2>Welcome! 👑</h2><p id="welcomeText">You were invited by: GUEST</p><button class="btn" onclick="document.getElementById('welcomePopup').style.display='none'">Continue</button></div></div>
 
-        <form class="auth-form active" id="loginForm" onsubmit="handleLogin(event)">
-            <input type="email" id="loginEmail" placeholder="Email Address" required>
-            <input type="password" id="loginPassword" placeholder="Password" required>
-            <button type="submit" class="auth-btn">Login</button>
-        </form>
+<!-- AUTH POPUP -->
+<div id="authPopup"><div>
+<h2 style="color:#FFD700;text-align:center">KING COINS</h2>
+<div class="tabs"><button class="tab active" onclick="switchTab('login')">Login</button><button class="tab" onclick="switchTab('signup')">Sign Up</button></div>
+<div id="loginForm"><input type="email" id="loginEmail" placeholder="Email Address"><input type="password" id="loginPass" placeholder="Password"><button class="btn" onclick="login()">Login</button></div>
+<div id="signupForm" style="display:none"><input type="text" id="signupName" placeholder="Full Name"><input type="email" id="signupEmail" placeholder="Email Address"><input type="password" id="signupPass" placeholder="Password"><button class="btn" onclick="signup()">Sign Up</button></div>
+<p style="font-size:12px;color:#aaa;text-align:center;margin-top:10px">Your data is saved locally on this device</p>
+</div></div>
 
-        <form class="auth-form" id="signupForm" onsubmit="handleSignup(event)">
-            <input type="text" id="signupName" placeholder="Full Name" required>
-            <input type="email" id="signupEmail" placeholder="Email Address" required>
-            <input type="tel" id="signupPhone" placeholder="Phone Number" required>
-            <input type="password" id="signupPassword" placeholder="Create Password" required>
-            <button type="submit" class="auth-btn">Create Account</button>
-        </form>
-        <p class="auth-note">Your data is saved locally on this device</p>
-    </div>
+<!-- HOME PAGE -->
+<div id="homePage" class="page active">
+<h1>👑 KING COINS</h1>
+<div class="card" style="text-align:center"><div style="font-size:40px">KC</div><h2>Welcome, <span id="userName">Guest</span></h2><p>Investment Platform</p></div>
+<div class="card"><h2>Portfolio Balance</h2><h1 style="color:#FFD700;font-size:32px">$<span id="balance">0.00</span></h1><p>Your active investment capital</p></div>
+<div class="card"><h3>How to Invest in 3 Easy Steps</h3><p>1. Choose a plan<br>2. Pay with USDT<br>3. Auto-activated instantly</p></div>
 </div>
 
-<header>
-    <div class="brand">👑 KING COINS</div>
-    <div class="profile-circle" id="userInitial" onclick="logout()">KC</div>
-</header>
+<!-- INVEST PAGE -->
+<div id="investPage" class="page">
+<h1>Investment Plans</h1><p>Choose a plan works for you</p>
+<div class="plan card"><h3>Starter</h3><h2>$50</h2><p>Beginner portfolio allocation</p><button class="btn" onclick="invest(50,'Starter')">Invest Now</button></div>
+<div class="plan card"><h3>Gold</h3><h2>$200</h2><p>Diversified portfolio concept</p><button class="btn" onclick="invest(200,'Gold')">Invest Now</button></div>
+<div class="plan card"><h3>Royal</h3><h2>$500</h2><p>Advanced portfolio concept</p><button class="btn" onclick="invest(500,'Royal')">Invest Now</button></div>
+<div class="plan card"><h3>Diamond</h3><h2>$1000</h2><p>VIP portfolio + Daily bonus</p><button class="btn" onclick="invest(1000,'Diamond')">Invest Now</button></div>
+<div id="paymentSection" class="card" style="display:none">
+<h3>Pay with USDT TRC20</h3><p>Send exact amount to:</p>
+<div style="background:#222;padding:10px;border-radius:8px;word-break:break-all">TXu8mYq9Wz7Kc4L2pR6sN1vE3tB5aH7jD</div>
+<button class="btn" onclick="copyAddress()">Copy Address</button>
+<button class="btn btn-wa" onclick="confirmPayment()">I Have Paid - Activate Now</button>
+</div>
+</div>
 
-<!-- ================= HOME ================= -->
-<section id="home" class="page active">
-    <div class="logo-box">
-        <div class="coin"><span>KC</span></div>
-        <h1>KING COINS</h1>
-        <p>Investment Platform</p>
-    </div>
-    <div class="hero">
-        <h2>Welcome, <span id="userName">Investor</span></h2>
-        <p>Grow your wealth with our trusted investment plans.</p>
-    </div>
+<!-- WITHDRAW PAGE -->
+<div id="withdrawPage" class="page">
+<h1>Withdraw</h1>
+<div class="card"><h3>Available Balance</h3><h2 style="color:#FFD700">$<span id="withdrawBalance">0.00</span></h2></div>
+<div class="card">
+<input type="number" id="withdrawAmount" placeholder="Amount to withdraw">
+<input type="text" id="withdrawAddress" placeholder="Your USDT TRC20 Address">
+<button class="btn btn-red" onclick="withdraw()">Withdraw Now</button>
+<p style="font-size:12px;color:#aaa;margin-top:10px">Minimum $20. Withdrawals processed in 24hrs</p>
+</div>
+</div>
 
-    <div class="balance-card">
-        <small>Portfolio Balance</small>
-        <div class="balance">$2,450.00</div>
-        <p>Your active investment capital</p>
+<!-- REFERRAL PAGE -->
+<div id="referralPage" class="page">
+<h1>👑 Referral</h1><p>Invite people to join King Coins and earn rewards.</p>
+<div class="card" style="background:linear-gradient(135deg,#FFD700,#FFA500)">
+<h2 style="color:black;text-align:center">Invite & Earn</h2>
+<p style="color:black;font-weight:bold">Your Code:</p>
+<div id="refCodeBox" style="background:black;color:#FFD700;padding:12px;border-radius:8px;font-size:18px;font-weight:bold;text-align:center;margin:10px 0">KING-GLOVIC</div>
+<button class="btn" onclick="copyCode()">Copy Code</button>
+<p style="color:black;font-weight:bold;margin-top:15px">Your Link:</p>
+<div id="refLinkBox" style="background:#222;color:white;padding:12px;border-radius:8px;font-size:12px;word-break:break-all;margin:10px 0">loading...</div>
+<button class="btn" id="copyLinkBtn">Copy Link</button>
+<button class="btn btn-wa" id="waBtn">📱 Share on WhatsApp</button>
+</div>
+</div>
 
-        <div class="payment-section">
-            <h2>How to Invest in 3 Easy Steps</h2>
-            <div class="payment-steps">
-                <p><b>Step 1: Make Payment</b><br>Send your investment amount to our official OPay account below.</p>
-                <p><b>Step 2: Send Payment Proof</b><br>After payment, click the Telegram button below and send your payment screenshot + Full Name.</p>
-                <p><b>Step 3: Get Confirmation</b><br>We will confirm your payment and activate your investment within 30 minutes.</p>
-            </div>
+<!-- PROFILE PAGE -->
+<div id="profilePage" class="page">
+<h1>Profile</h1>
+<div class="card" style="text-align:center">
+<div style="font-size:50px;background:#FFD700;color:black;width:70px;height:70px;border-radius:50%;margin:0 auto;line-height:70px">G</div>
+<h2 id="profileName">Glovic</h2>
+<p id="profileEmail">user@email.com</p>
+<button class="btn btn-red" onclick="logout()">Logout</button>
+</div>
+</div>
 
-            <h2 style="margin-top:25px;">Payment Instructions</h2>
-            <div class="bank-details">
-                <p><b>Bank Name:</b> <span>OPay</span></p>
-                <p><b>Account Number:</b> <span>6587483968 <button class="copy-btn" onclick="copyAccount()">Copy</button></span></p>
-                <p><b>Account Name:</b> <span>VICTOR OTUOSIRISOCHUKWU ODU</span></p>
-                <p><b>For:</b> <span>KING COINS INVESTMENT</span></p>
-            </div>
-
-            <p style="font-size:13px; color:#aaa; margin-bottom:15px;">
-                <b>Note:</b> The account name will display as VICTOR OTUOSIRISOCHUKWU ODU. This is the official account for KING COINS INVESTMENT.
-            </p>
-
-            <a href="https://t.me/Kingcoinsinvestment" target="_blank" class="telegram-link">Send Payment Proof on Telegram</a>
-        </div>
-    </div>
-
-    <h2 class="section-title">Quick Access</h2>
-    <div class="grid">
-        <div class="card" onclick="showPage('invest')"><div class="card-icon">💰</div><h3>Invest</h3><p>Explore plans</p></div>
-        <div class="card" onclick="showPage('market')"><div class="card-icon">📈</div><h3>Market</h3><p>Market information</p></div>
-        <div class="card" onclick="showPage('referral')"><div class="card-icon">👥</div><h3>Referral</h3><p>Invite friends</p></div>
-        <div class="card" onclick="showPage('profile')"><div class="card-icon">👤</div><h3>Profile</h3><p>Account settings</p></div>
-    </div>
-</section>
-
-<!-- ================= INVESTMENT ================= -->
-<section id="invest" class="page">
-    <h1 class="page-title">Investment Plans</h1>
-    <p class="subtitle">Choose a plan that works for you.</p>
-    <div class="plans-grid">
-        <div class="plan"><h3>Starter</h3><div class="amount">$100</div><p>Beginner portfolio allocation.</p><button onclick="openPopup('Starter plan: Contact admin to activate')">Invest Now</button></div>
-        <div class="plan featured"><h3>Gold</h3><div class="amount">$500</div><p>Diversified portfolio concept.</p><button onclick="openPopup('Gold plan: Contact admin to activate')">Invest Now</button></div>
-        <div class="plan"><h3>Royal</h3><div class="amount">$1,000</div><p>Advanced portfolio concept.</p><button onclick="openPopup('Royal plan: Contact admin to activate')">Invest Now</button></div>
-    </div>
-</section>
-
-<!-- ================= MARKET ================= -->
-<section id="market" class="page">
-    <h1 class="page-title">Market</h1>
-    <p class="subtitle">Live market information.</p>
-    <div class="card"><div class="card-icon">₿</div><h3>Bitcoin</h3><p>$67,250 <span style="color:#35d07f">+2.4%</span></p></div>
-</section>
-
-<!-- ================= REFERRAL ================= -->
-<section id="referral" class="page">
-    <h1 class="page-title">Referral</h1>
-    <p class="subtitle">Invite people to join King Coins.</p>
-    <div class="referral-box">
-        <div style="font-size:50px">👑</div>
-        <h2>Invite & Earn</h2>
-        <p>Share your referral code and link. Earn rewards when friends join and invest.</p>
-        
-        <div class="referral-code" id="refCode">KING-VICTOR</div>
-        <button class="copy-btn" style="width:100%; padding:12px; margin-bottom:15px;" onclick="copyReferral()">Copy Code</button>
-
-        <div class="invite-link" id="inviteLink">https://oduvictor00.github.io?ref=KING-VICTOR</div>
-        <button class="copy-btn" style="width:100%; padding:12px; margin:10px 0;" onclick="copyInviteLink()">Copy Link</button>
-        
-        <button class="share-btn" onclick="shareInvite()">📲 Share on WhatsApp</button>
-    </div>
-</section>
-
-<!-- ================= PROFILE ================= -->
-<section id="profile" class="page">
-    <h1 class="page-title">Profile</h1>
-    <p class="subtitle">Manage your account.</p>
-    <div class="card" style="text-align:center">
-        <div class="coin" style="width:80px; height:80px;"><span id="profileInitial">KC</span></div>
-        <h2 id="profileName">King Coins User</h2>
-        <p style="color:#777;margin-top:5px" id="profileEmail">user@kingcoins.com</p>
-        <button class="main-button" onclick="logout()" style="background:#ff3b30; color:white;">Logout</button>
-    </div>
-</section>
-
-<!-- ================= BOTTOM NAV ================= -->
-<nav class="bottom-nav">
-    <div class="nav-item active" onclick="showPage('home')"><span>🏠</span>Home</div>
-    <div class="nav-item" onclick="showPage('invest')"><span>💰</span>Invest</div>
-    <div class="nav-item" onclick="showPage('market')"><span>📈</span>Market</div>
-    <div class="nav-item" onclick="showPage('referral')"><span>👥</span>Referral</div>
-    <div class="nav-item" onclick="showPage('profile')"><span>👤</span>Profile</div>
-</nav>
-
-<!-- ================= POPUP ================= -->
-<div class="popup" id="popup">
-    <div class="popup-box"><h2>King Coins</h2><p id="popupText">Welcome!</p><button class="close" onclick="closePopup()">Close</button></div>
+<!-- BOTTOM NAV -->
+<div class="nav">
+<button onclick="showPage('homePage')" class="active">🏠<span>Home</span></button>
+<button onclick="showPage('investPage')">💰<span>Invest</span></button>
+<button onclick="showPage('withdrawPage')">💳<span>Withdraw</span></button>
+<button onclick="showPage('referralPage')">👥<span>Referral</span></button>
+<button onclick="showPage('profilePage')">👤<span>Profile</span></button>
 </div>
 
 <script>
-let currentUser = null;
-const SITE_URL = "https://oduvictor00.github.io"; // YOUR GITHUB URL
+const USER_REF_CODE="KING-GLOVIC";
+const BASE_URL="https://gmailcom-cpu.github.io";
+const REF_LINK=`${BASE_URL}?ref=${USER_REF_CODE}`;
+const USDT_ADDRESS="TXu8mYq9Wz7Kc4L2pR6sN1vE3tB5aH7jD";
+let currentUser = JSON.parse(localStorage.getItem('kingUser')) || null;
+let balance = parseFloat(localStorage.getItem('kingBalance')) || 0;
 
-/* AUTH FUNCTIONS */
-function switchAuth(tab) {
-    document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
-    event.target.classList.add('active');
-    document.getElementById(tab + 'Form').classList.add('active');
-}
-
-function handleSignup(e) {
-    e.preventDefault();
-    const urlParams = new URLSearchParams(window.location.search);
-    const referredBy = urlParams.get('ref') || 'DIRECT';
-    
-    const user = {
-        name: document.getElementById('signupName').value,
-        email: document.getElementById('signupEmail').value,
-        phone: document.getElementById('signupPhone').value,
-        password: document.getElementById('signupPassword').value,
-        referredBy: referredBy,
-        balance: 0
-    };
-    localStorage.setItem('kingcoins_user', JSON.stringify(user));
-    loginUser(user);
-    openPopup('Account created successfully! Referred by: ' + referredBy);
+function showPage(id){
+if(!currentUser && id!='referralPage'){document.getElementById('authPopup').style.display='flex';return;}
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+document.querySelector(`[onclick="showPage('${id}')"]`).classList.add('active');
+updateUI();
 }
 
-function handleLogin(e) {
-    e.preventDefault();
-    const email = document.getElementById('loginEmail').value;
-    const password = document.getElementById('loginPassword').value;
-    const savedUser = JSON.parse(localStorage.getItem('kingcoins_user'));
-
-    if(savedUser && savedUser.email === email && savedUser.password === password) {
-        loginUser(savedUser);
-        openPopup('Login successful!');
-    } else {
-        openPopup('Invalid email or password');
-    }
+function switchTab(tab){
+document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+if(tab=='login'){document.getElementById('loginForm').style.display='block';document.getElementById('signupForm').style.display='none';document.querySelectorAll('.tab')[0].classList.add('active');}
+else{document.getElementById('loginForm').style.display='none';document.getElementById('signupForm').style.display='block';document.querySelectorAll('.tab')[1].classList.add('active');}
 }
 
-function loginUser(user) {
-    currentUser = user;
-    document.getElementById('authModal').style.display = 'none';
-    const firstName = user.name.split(' ')[0];
-    document.getElementById('userName').innerText = firstName;
-    document.getElementById('userInitial').innerText = user.name.charAt(0).toUpperCase();
-    document.getElementById('profileName').innerText = user.name;
-    document.getElementById('profileEmail').innerText = user.email;
-    document.getElementById('profileInitial').innerText = user.name.charAt(0).toUpperCase();
-    
-    const refCode = 'KING-' + firstName.toUpperCase();
-    document.getElementById('refCode').innerText = refCode;
-    document.getElementById('inviteLink').innerText = SITE_URL + '?ref=' + refCode;
+function signup(){
+const name=document.getElementById('signupName').value;
+const email=document.getElementById('signupEmail').value;
+const pass=document.getElementById('signupPass').value;
+if(!name||!email||!pass){alert('Fill all fields');return;}
+currentUser={name,email,pass};
+localStorage.setItem('kingUser',JSON.stringify(currentUser));
+document.getElementById('authPopup').style.display='none';
+updateUI();
 }
 
-function logout() {
-    localStorage.removeItem('kingcoins_user');
-    location.reload();
+function login(){
+const email=document.getElementById('loginEmail').value;
+const pass=document.getElementById('loginPass').value;
+const user=JSON.parse(localStorage.getItem('kingUser'));
+if(user && user.email==email && user.pass==pass){currentUser=user;document.getElementById('authPopup').style.display='none';updateUI();}
+else{alert('Wrong email or password')}
 }
 
-/* Check if user is already logged in */
-window.onload = function() {
-    const savedUser = JSON.parse(localStorage.getItem('kingcoins_user'));
-    if(savedUser) {
-        loginUser(savedUser);
-    }
+function logout(){localStorage.removeItem('kingUser');currentUser=null;location.reload();}
+
+function updateUI(){
+if(currentUser){
+document.getElementById('userName').innerText=currentUser.name;
+document.getElementById('profileName').innerText=currentUser.name;
+document.getElementById('profileEmail').innerText=currentUser.email;
+}
+document.getElementById('balance').innerText=balance.toFixed(2);
+document.getElementById('withdrawBalance').innerText=balance.toFixed(2);
 }
 
-/* PAGE NAVIGATION */
-function showPage(pageName) {
-    const pages = document.querySelectorAll(".page");
-    pages.forEach(page => { page.classList.remove("active"); });
-    document.getElementById(pageName).classList.add("active");
-    const navItems = document.querySelectorAll(".nav-item");
-    navItems.forEach(item => { item.classList.remove("active"); });
-    const names = ["home", "invest", "market", "referral", "profile"];
-    const index = names.indexOf(pageName);
-    if (index >= 0) { navItems[index].classList.add("active"); }
-    window.scrollTo({ top: 0, behavior: "smooth" });
+function invest(amount,plan){
+document.getElementById('paymentSection').style.display='block';
+document.getElementById('paymentSection').scrollIntoView();
+localStorage.setItem('pendingInvest',{amount,plan});
 }
 
-/* POPUP */
-function openPopup(message) {
-    document.getElementById("popupText").innerText = message;
-    document.getElementById("popup").style.display = "flex";
-}
-function closePopup() {
-    document.getElementById("popup").style.display = "none";
+function copyAddress(){navigator.clipboard.writeText(USDT_ADDRESS);alert('USDT Address Copied!')}
+
+function confirmPayment(){
+const pending=JSON.parse(localStorage.getItem('pendingInvest'));
+if(pending){balance+=pending.amount;localStorage.setItem('kingBalance',balance);alert(`${pending.plan} Plan Activated! $${pending.amount} added to balance`);document.getElementById('paymentSection').style.display='none';updateUI();}
 }
 
-/* COPY FUNCTIONS */
-function copyAccount() {
-    navigator.clipboard.writeText("6587483968");
-    openPopup("Account number copied!");
+function withdraw(){
+const amount=parseFloat(document.getElementById('withdrawAmount').value);
+const addr=document.getElementById('withdrawAddress').value;
+if(amount<20){alert('Minimum withdrawal is $20');return;}
+if(amount>balance){alert('Insufficient balance');return;}
+if(!addr){alert('Enter USDT address');return;}
+balance-=amount;localStorage.setItem('kingBalance',balance);
+alert(`Withdrawal request of $${amount} sent! You will receive it in 24hrs`);
+updateUI();
 }
-function copyReferral() {
-    navigator.clipboard.writeText(document.getElementById('refCode').innerText);
-    openPopup("Referral code copied!");
-}
-function copyInviteLink() {
-    navigator.clipboard.writeText(document.getElementById('inviteLink').innerText);
-    openPopup("Invite link copied!");
-}
-function shareInvite() {
-    const link = document.getElementById('inviteLink').innerText;
-    const text = `Join me on KING COINS Investment Platform! 👑\nUse my invite link to get started:\n${link}`;
-    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
-}
+
+document.getElementById('refLinkBox').innerText=REF_LINK;
+document.getElementById('refCodeBox').innerText=USER_REF_CODE;
+function copyCode(){navigator.clipboard.writeText(USER_REF_CODE);alert("Referral code copied!")}
+document.getElementById('copyLinkBtn').onclick=()=>{navigator.clipboard.writeText(REF_LINK);alert("Invite link copied!")};
+document.getElementById('waBtn').onclick=()=>{const message=`Join King Coins and earn rewards! 🔥\n\nUse my referral link to get started:\n${REF_LINK}`;window.open(`https://wa.me/?text=${encodeURIComponent(message)}`,'_blank')};
+
+window.onload=()=>{
+const urlParams=new URLSearchParams(window.location.search);
+const ref=urlParams.get('ref');
+if(ref){document.getElementById('welcomeText').innerText=`You were invited by: ${ref}`;document.getElementById('welcomePopup').style.display='flex';}
+if(!currentUser){document.getElementById('authPopup').style.display='flex';}
+updateUI();
+};
 </script>
-
 </body>
 </html>

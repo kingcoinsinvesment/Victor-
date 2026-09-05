@@ -1,4 +1,4 @@
-     <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -30,4 +30,97 @@ button { cursor: pointer; }
     width: 105px; height: 105px; margin: auto; border-radius: 50%;
     background: radial-gradient(circle, #fff09a 0%, #ffd21c 35%, #b87900 75%, #6b4200 100%);
     border: 5px solid #ffe36b; box-shadow: 0 0 30px rgba(255, 200, 0,.35);
-    display: flex; align-items:   
+    display: flex; align-items: center; justify-content: center; position: relative;
+}
+.coin::before { content: "♛"; position: absolute; top: 7px; font-size: 24px; color: #5a3600; }
+.coin span { font-size: 42px; font-weight: 900; color: #5a3600; }
+.logo-box h1 { margin-top: 12px; color: #ffd21c; font-size: 27px; letter-spacing: 2px; }
+.logo-box p { color: #aaa; margin-top: 5px; }
+
+/* ================= HEADER ================= */
+header { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #242424; }
+.brand { font-size: 20px; font-weight: bold; color: #ffd21c; }
+.profile-circle { width: 42px; height: 42px; border-radius: 50%; background: #ffd21c; color: #000; display: flex; align-items: center; justify-content: center; font-weight: bold; cursor: pointer; }
+
+/* ================= PAGES ================= */
+.page { display: none; padding: 20px; }
+.page.active { display: block; }
+.page-title { font-size: 28px; margin-bottom: 6px; }
+.subtitle { color: #888; margin-bottom: 20px; }
+
+/* ================= HERO ================= */
+.hero { text-align: center; padding: 25px 10px; }
+.hero h2 { font-size: 34px; color: #ffd21c; margin-bottom: 10px; }
+.hero p { color: #aaa; line-height: 1.6; }
+.main-button { border: none; background: #ffd21c; color: #000; padding: 14px 25px; border-radius: 12px; font-weight: bold; margin-top: 20px; }
+
+/* ================= BALANCE ================= */
+.balance-card { background: linear-gradient(135deg, #211900, #101010); border: 1px solid #765900; border-radius: 22px; padding: 25px; margin-bottom: 20px; }
+.balance-card small { color: #999; }
+.balance { font-size: 34px; font-weight: bold; margin: 12px 0; }
+.balance-card p { color: #aaa; }
+
+/* ================= PAYMENT SECTION ================= */
+.payment-section { background: linear-gradient(135deg, #1a1a1a, #0a0a0a); border: 1px solid #ffd21c; border-radius: 20px; padding: 25px; margin-top: 20px; }
+.payment-section h2 { color: #ffd21c; margin-bottom: 20px; font-size: 22px; }
+.payment-steps p { margin-bottom: 15px; line-height: 1.7; }
+.bank-details { background: #111; padding: 20px; border-radius: 12px; margin: 20px 0; border: 1px dashed #ffd21c; }
+.bank-details p { margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; gap:10px; flex-wrap: wrap;}
+.copy-btn { background: #ffd21c; color: #000; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: bold; }
+.telegram-link { display: inline-block; margin-top: 10px; width: 100%; text-align: center; padding: 14px 20px; background: #ffd21c; color: #000; text-decoration: none; border-radius: 10px; font-weight: bold; font-size: 16px; }
+
+/* ================= REFERRAL ================= */
+.referral-box { background: linear-gradient(135deg, #261d00, #111); border: 1px solid #735800; border-radius: 20px; padding: 25px; text-align: center; }
+.referral-box h2 { color: #ffd21c; margin-bottom: 10px; }
+.referral-box p { color: #aaa; line-height: 1.5; margin-bottom: 20px; }
+.referral-code { padding: 14px; background: #050505; border: 1px dashed #ffd21c; border-radius: 10px; color: #ffd21c; margin-bottom: 15px; font-weight: bold; font-size: 16px; }
+.share-btn { width: 100%; padding: 14px; background: #25D366; color: white; border: none; border-radius: 10px; font-weight: bold; font-size: 16px; margin-bottom: 10px; }
+.invite-link { background: #111; padding: 12px; border-radius: 10px; border: 1px solid #333; color: #aaa; word-break: break-all; font-size: 13px; }
+
+/* ================= CARDS ================= */
+.section-title { font-size: 20px; margin: 25px 0 15px; }
+.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.card { background: #111; border: 1px solid #292929; border-radius: 17px; padding: 18px; }
+.card:hover { border-color: #ffd21c; }
+.card-icon { font-size: 27px; margin-bottom: 10px; }
+.card h3 { font-size: 16px; margin-bottom: 6px; }
+.card p { color: #888; font-size: 13px; }
+
+/* ================= PLANS ================= */
+.plan { background: #111; border: 1px solid #383838; border-radius: 18px; padding: 20px; margin-bottom: 14px; }
+.plan.featured { border: 1px solid #ffd21c; }
+.plan h3 { color: #ffd21c; font-size: 21px; }
+.plan.amount { font-size: 25px; margin: 12px 0; font-weight: bold; }
+.plan p { color: #999; margin-bottom: 15px; }
+.plan button { width: 100%; padding: 13px; background: #ffd21c; color: #000; border: none; border-radius: 10px; font-weight: bold; }
+
+/* ================= BOTTOM NAV ================= */
+.bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; background: #0d0d0d; border-top: 1px solid #292929; display: flex; justify-content: space-around; align-items: center; z-index: 100; }
+.nav-item { text-align: center; color: #777; font-size: 11px; cursor: pointer; }
+.nav-item span { display: block; font-size: 22px; margin-bottom: 4px; }
+.nav-item.active { color: #ffd21c; }
+
+/* ================= POPUP ================= */
+.popup { position: fixed; inset: 0; background: rgba(0,0,0,.8); display: none; align-items: center; justify-content: center; z-index: 200; padding: 20px; }
+.popup-box { background: #111; border: 1px solid #ffd21c; border-radius: 20px; padding: 25px; width: 100%; max-width: 380px; text-align: center; }
+.popup-box h2 { color: #ffd21c; margin-bottom: 10px; }
+.popup-box p { color: #aaa; line-height: 1.5; }
+.close { margin-top: 20px; width: 100%; padding: 12px; background: #ffd21c; border: none; border-radius: 10px; font-weight: bold; }
+
+/* ================= DESKTOP ================= */
+@media (min-width: 700px) {
+    body { max-width: 1100px; margin: auto; padding-bottom: 30px; }
+.bottom-nav { position: relative; max-width: 1100px; margin: 30px auto 0; border: 1px solid #292929; border-radius: 15px; }
+.grid { grid-template-columns: repeat(4, 1fr); }
+.plans-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+.plan { margin-bottom: 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- ================= AUTH MODAL ================= -->
+<div class="auth-modal" id="authModal">
+    <div class="auth-box">
+        <h2>👑 KING COINS</h2>
+        <div

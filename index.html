@@ -21,13 +21,14 @@ body{background:#0a0a0a;color:white;padding-bottom:80px}
 .plan{margin-bottom:15px}
 .plan h3{color:#FFD700;margin-bottom:5px}
 input{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #333;background:#222;color:white}
+label{font-size:12px;color:#aaa;display:block;margin-top:8px}
 .warning{background:#ff000033;border:1px solid #ff4444;padding:12px;border-radius:8px;margin:15px 0;color:#ff9999;font-size:13px}
 .success{background:#00ff0033;border:1px solid #00ff44;padding:12px;border-radius:8px;margin:15px 0;color:#99ff99;font-size:14px;text-align:center}
 #customPopup{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.9);justify-content:center;align-items:center;z-index:1000;animation:fadeIn 0.3s}
 #customPopup div{background:linear-gradient(135deg,#1a1a1a,#222);padding:30px;border-radius:20px;text-align:center;border:2px solid #FFD700;max-width:380px;width:90%;box-shadow:0 0 30px rgba(255,215,0,0.4)}
 #customPopup .icon{font-size:40px;margin-bottom:10px}
 #customPopup h3{color:#FFD700;margin-bottom:10px;font-size:22px}
-#customPopup p{color:#ddd;margin-bottom:20px;font-size:15px;line-height:1.5}
+#customPopup p{color:#ddd;margin-bottom:20px;font-size:15px;line-height:1.5;white-space:pre-line}
 #welcomePopup{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.9);justify-content:center;align-items:center;z-index:999}
 #welcomePopup div{background:#1a1a1a;padding:30px;border-radius:15px;text-align:center;border:2px solid #FFD700}
 #welcomePopup h2{color:#FFD700}
@@ -53,7 +54,24 @@ input{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #3
 
 <div id="investPage" class="page"><h1>Investment Plans</h1><div class="plan card"><h3>Starter</h3><h2>₦500</h2><button class="btn" onclick="invest(500,'Starter')">Invest Now</button></div><div class="plan card"><h3>Gold</h3><h2>₦800</h2><button class="btn" onclick="invest(800,'Gold')">Invest Now</button></div><div class="plan card"><h3>Royal</h3><h2>₦1000</h2><button class="btn" onclick="invest(1000,'Royal')">Invest Now</button></div><div class="plan card"><h3>Diamond</h3><h2>₦2000</h2><button class="btn" onclick="invest(2000,'Diamond')">Invest Now</button></div><div id="paymentSection" class="card" style="display:none"><h3>Payment - OPay</h3><p><b>Account:</b> <span id="opayNum">6587483968</span> <button onclick="copyOPay()">Copy</button></p><p><b>Name:</b> VICTOR OTUOSIRISOCHUKWU ODU</p><p style="color:#FFD700">Amount: ₦<span id="investAmount">0</span></p><button class="btn btn-wa" onclick="sendProof()">Send Proof to Admin</button></div></div>
 
-<div id="withdrawPage" class="page"><h1>Withdraw</h1><div class="card"><h3>Available Balance</h3><h2 style="color:#FFD700">₦<span id="withdrawBalance">1000.00</span></h2></div><div class="card"><input type="number" id="withdrawAmount" placeholder="Amount"><input type="text" id="withdrawAccount" placeholder="OPay Number"><input type="text" id="withdrawName" placeholder="Account Name"><button class="btn btn-red" onclick="withdraw()">Withdraw</button><p style="font-size:12px;color:#aaa">Minimum ₦7000</p></div></div>
+<div id="withdrawPage" class="page"><h1>Withdraw</h1><div class="card"><h3>Available Balance</h3><h2 style="color:#FFD700">₦<span id="withdrawBalance">1000.00</span></h2></div>
+<div class="card">
+<input type="number" id="withdrawAmount" placeholder="Amount - Min ₦7000">
+<label>OPay Account Number</label>
+<input type="text" id="withdrawAccount" placeholder="Enter 10 digits" maxlength="10">
+<label>Account Name</label>
+<input type="text" id="withdrawName" placeholder="Enter Account Name exactly as on OPay">
+
+<div id="confirmBox" style="display:none;background:#00ff0033;border:1px solid #00ff44;padding:15px;border-radius:10px;margin:15px 0">
+<b style="color:#00ff44">Please Confirm Your Details:</b><br><br>
+<b>Account:</b> <span id="confirmAcc"></span><br>
+<b>Name:</b> <span id="confirmName"></span><br>
+<b>Amount:</b> ₦<span id="confirmAmount"></span>
+</div>
+
+<button class="btn btn-red" id="withdrawBtn" onclick="confirmWithdraw()">Proceed to Withdraw</button>
+<p style="font-size:12px;color:#aaa;margin-top:8px">Withdrawal takes 5-30 minutes to process</p>
+</div></div>
 
 <div id="referralPage" class="page"><h1>👑 Referral</h1><div class="card" style="background:linear-gradient(135deg,#FFD700,#FFA500)"><h2 style="color:black">Invite & Earn ₦500</h2><p style="color:black">You earn ₦500 for each person who joins!</p><p style="color:black">Your Code:</p><div id="refCodeBox" style="background:black;color:#FFD700;padding:12px;border-radius:8px;text-align:center;margin:10px 0">LOADING...</div><button class="btn" onclick="copyCode()">Copy Code</button><p style="color:black">Your Link:</p><div id="refLinkBox" style="background:#222;color:white;padding:12px;border-radius:8px;font-size:12px;word-break:break-all;margin:10px 0">loading...</div><button class="btn" id="copyLinkBtn">Copy Link</button><button class="btn btn-wa" id="waBtn">📱 Share on WhatsApp</button></div>
 <div class="card"><h3>📊 Your Referral Stats</h3><p>People Referred: <b><span id="refCount">0</span></b></p><p>Total Earned: <b>₦<span id="refEarned">0</span></b></p></div></div>
@@ -65,14 +83,15 @@ input{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #3
 <script>
 const BASE_URL="https://oduvictor001gmailcom-cpu.github.io/Victor-/";
 const OPAY_NUM="6587483968";
-const TELEGRAM_GROUP="https://t.me/kingcoi"; // YOUR CHANNEL
-const TELEGRAM_ADMIN="https://t.me/kingcoi"; // SAME CHANNEL FOR PROOF
+const TELEGRAM_GROUP="https://t.me/kingcoi";
+const TELEGRAM_ADMIN="https://t.me/kingcoi";
 const REF_BONUS = 500;
 const TG_BONUS = 200;
 
 let currentUser = JSON.parse(localStorage.getItem('kingUser')) || null;
 let balance = parseFloat(localStorage.getItem('kingBalance')) || 1000;
 let allUsers = JSON.parse(localStorage.getItem('allKingUsers')) || [];
+let withdrawData = {};
 
 function showPopup(title, message, icon='👑'){
 document.getElementById('popupIcon').innerText = icon;
@@ -213,7 +232,42 @@ updateUI();
 function invest(amount,plan){document.getElementById('paymentSection').style.display='block';document.getElementById('investAmount').innerText=amount;document.getElementById('paymentSection').scrollIntoView();localStorage.setItem('pendingInvest',JSON.stringify({amount,plan}));showPopup('Payment Instructions', `Please send ₦${amount} to OPay and click "Send Proof"`, '💳');}
 function copyOPay(){navigator.clipboard.writeText(OPAY_NUM);showPopup('Copied!', 'OPay number copied to clipboard', '📋')}
 function sendProof(){const pending=JSON.parse(localStorage.getItem('pendingInvest'));const msg=`New Payment Proof\nPlan: ${pending.plan}\nAmount: ₦${pending.amount}\nFrom: ${currentUser.name}`;window.open(`${TELEGRAM_ADMIN}?text=${encodeURIComponent(msg)}`,'_blank');showPopup('Proof Sent', 'Your payment proof has been sent to @kingcoi channel', '📤')}
-function withdraw(){const amount=parseFloat(document.getElementById('withdrawAmount').value);const acc=document.getElementById('withdrawAccount').value;const name=document.getElementById('withdrawName').value;if(amount<7000){showPopup('Minimum Not Met', 'Minimum withdrawal amount is ₦7000', '⚠️');return;}if(amount>balance){showPopup('Insufficient Funds', 'You do not have enough balance for this withdrawal', '❌');return;}if(!acc||!name){showPopup('Incomplete Form', 'Please fill all withdrawal details', '⚠️');return;}showPopup('Withdrawal Requested', `Your withdrawal request for ₦${amount} has been submitted successfully`, '✅');}
+
+// NEW WITHDRAW FUNCTIONS WITH CONFIRMATION
+function confirmWithdraw(){
+const amount=parseFloat(document.getElementById('withdrawAmount').value);
+const acc=document.getElementById('withdrawAccount').value;
+const name=document.getElementById('withdrawName').value;
+
+if(!amount || amount<7000){showPopup('Minimum Not Met', 'Minimum withdrawal amount is ₦7000', '⚠️');return;}
+if(amount>balance){showPopup('Insufficient Funds', 'You do not have enough balance', '❌');return;}
+if(acc.length != 10 || isNaN(acc)){showPopup('Invalid Account', 'OPay account number must be 10 digits', '⚠️');return;}
+if(name.length < 3){showPopup('Invalid Name', 'Please enter full account name', '⚠️');return;}
+
+withdrawData = {amount, acc, name};
+document.getElementById('confirmAcc').innerText = acc;
+document.getElementById('confirmName').innerText = name.toUpperCase();
+document.getElementById('confirmAmount').innerText = amount.toFixed(2);
+document.getElementById('confirmBox').style.display = 'block';
+
+document.getElementById('withdrawBtn').innerText = 'Confirm & Submit Withdrawal';
+document.getElementById('withdrawBtn').onclick = finalWithdraw;
+}
+
+function finalWithdraw(){
+showPopup('Withdrawal Requested', 
+`Request Submitted Successfully\n\nAmount: ₦${withdrawData.amount.toFixed(2)}\nTo: ${withdrawData.acc}\nName: ${withdrawData.name.toUpperCase()}\n\nYour withdrawal will be processed within 30 minutes`, 
+'✅');
+
+// Reset form
+document.getElementById('withdrawAmount').value = '';
+document.getElementById('withdrawAccount').value = '';
+document.getElementById('withdrawName').value = '';
+document.getElementById('confirmBox').style.display = 'none';
+document.getElementById('withdrawBtn').innerText = 'Proceed to Withdraw';
+document.getElementById('withdrawBtn').onclick = confirmWithdraw;
+}
+
 function copyCode(){navigator.clipboard.writeText(currentUser.refCode);showPopup('Copied!', 'Referral code copied to clipboard', '📋')}
 document.getElementById('copyLinkBtn').onclick=()=>{const link=document.getElementById('refLinkBox').innerText;navigator.clipboard.writeText(link);showPopup('Copied!', 'Referral link copied to clipboard', '📋')};
 document.getElementById('waBtn').onclick=()=>{const link=document.getElementById('refLinkBox').innerText;const message=`Join King Coins and earn ₦500 bonus! 🔥\n\n${link}`;window.open(`https://wa.me/?text=${encodeURIComponent(message)}`,'_blank')};

@@ -205,9 +205,9 @@ header { padding: 15px 20px; display: flex; justify-content: space-between; alig
     <h1 class="page-title">Investment Plans</h1>
     <p class="subtitle">Choose a plan that works for you.</p>
     <div class="plans-grid">
-        <div class="plan"><h3>Starter</h3><div class="amount">$100</div><p>Beginner portfolio allocation.</p><button onclick="openPopup('Starter plan: Contact admin to activate')">Invest Now</button></div>
-        <div class="plan featured"><h3>Gold</h3><div class="amount">$500</div><p>Diversified portfolio concept.</p><button onclick="openPopup('Gold plan: Contact admin to activate')">Invest Now</button></div>
-        <div class="plan"><h3>Royal</h3><div class="amount">$1,000</div><p>Advanced portfolio concept.</p><button onclick="openPopup('Royal plan: Contact admin to activate')">Invest Now</button></div>
+        <div class="plan"><h3>Starter</h3><div class="amount">$100</div><p>Beginner portfolio allocation.</p><button onclick="sendToTelegram('Starter', '$100')">Invest Now</button></div>
+        <div class="plan featured"><h3>Gold</h3><div class="amount">$500</div><p>Diversified portfolio concept.</p><button onclick="sendToTelegram('Gold', '$500')">Invest Now</button></div>
+        <div class="plan"><h3>Royal</h3><div class="amount">$1,000</div><p>Advanced portfolio concept.</p><button onclick="sendToTelegram('Royal', '$1000')">Invest Now</button></div>
     </div>
 </section>
 
@@ -290,7 +290,11 @@ function handleSignup(e) {
     };
     localStorage.setItem('kingcoins_user', JSON.stringify(user));
     loginUser(user);
-    openPopup('Account created successfully! Referred by: ' + referredBy);
+    openPopup('Account created! Referred by: ' + referredBy);
+
+    // SEND SIGNUP TO TELEGRAM FOR ADMIN TRACKING
+    const adminMsg = `👑 NEW SIGNUP 👑\n\nName: ${user.name}\nEmail: ${user.email}\nPhone: ${user.phone}\nReferred By: ${referredBy}`;
+    window.open(`https://t.me/Kingcoinsinvestment?text=${encodeURIComponent(adminMsg)}`, '_blank');
 }
 
 function handleLogin(e) {
@@ -327,11 +331,18 @@ function logout() {
     location.reload();
 }
 
-/* Check if user is already logged in */
+/* Check if user is already logged in + Check for referral in URL */
 window.onload = function() {
     const savedUser = JSON.parse(localStorage.getItem('kingcoins_user'));
     if(savedUser) {
         loginUser(savedUser);
+    }
+    
+    // IF SOMEONE CLICKED A REFERRAL LINK, SHOW IT
+    const urlParams = new URLSearchParams(window.location.search);
+    const ref = urlParams.get('ref');
+    if(ref && !savedUser) {
+        openPopup('You were invited by: ' + ref + '\nSign up to get started!');
     }
 }
 
@@ -374,6 +385,18 @@ function shareInvite() {
     const link = document.getElementById('inviteLink').innerText;
     const text = `Join me on KING COINS Investment Platform! 👑\nUse my invite link to get started:\n${link}`;
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+}
+
+/* INVEST BUTTON TO TELEGRAM */
+function sendToTelegram(plan, amount) {
+    const user = JSON.parse(localStorage.getItem('kingcoins_user'));
+    const name = user ? user.name : 'Guest';
+    const email = user ? user.email : 'No email';
+    const phone = user ? user.phone : 'No phone';
+    
+    const message = `🔥 NEW INVESTMENT REQUEST 🔥\n\nPlan: ${plan}\nAmount: ${amount}\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\n\nPlease contact them to confirm payment.`;
+    
+    window.open(`https://t.me/Kingcoinsinvestment?text=${encodeURIComponent(message)}`, '_blank');
 }
 </script>
 

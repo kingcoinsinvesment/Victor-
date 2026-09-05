@@ -48,17 +48,17 @@ input{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #3
 <div id="homePage" class="page active">
 <h1>👑 KING COINS</h1>
 <div class="card" style="text-align:center"><div style="font-size:40px">KC</div><h2>Welcome, <span id="userName">Guest</span></h2><p>Investment Platform</p></div>
-<div class="card"><h2>Portfolio Balance</h2><h1 style="color:#FFD700;font-size:32px">$<span id="balance">0.00</span></h1><p>Your active investment capital</p></div>
+<div class="card"><h2>Portfolio Balance</h2><h1 style="color:#FFD700;font-size:32px">₦<span id="balance">1000.00</span></h1><p>Your active investment capital</p></div>
 <div class="card"><h3>How to Invest in 3 Easy Steps</h3><p>1. Choose a plan<br>2. Pay to OPay<br>3. Send Proof on Telegram</p></div>
 </div>
 
 <!-- INVEST PAGE -->
 <div id="investPage" class="page">
 <h1>Investment Plans</h1><p>Choose a plan works for you</p>
-<div class="plan card"><h3>Starter</h3><h2>$50</h2><p>Beginner portfolio allocation</p><button class="btn" onclick="invest(50,'Starter')">Invest Now</button></div>
-<div class="plan card"><h3>Gold</h3><h2>$200</h2><p>Diversified portfolio concept</p><button class="btn" onclick="invest(200,'Gold')">Invest Now</button></div>
-<div class="plan card"><h3>Royal</h3><h2>$500</h2><p>Advanced portfolio concept</p><button class="btn" onclick="invest(500,'Royal')">Invest Now</button></div>
-<div class="plan card"><h3>Diamond</h3><h2>$1000</h2><p>VIP portfolio + Daily bonus</p><button class="btn" onclick="invest(1000,'Diamond')">Invest Now</button></div>
+<div class="plan card"><h3>Starter</h3><h2>₦500</h2><p>Beginner portfolio allocation</p><button class="btn" onclick="invest(500,'Starter')">Invest Now</button></div>
+<div class="plan card"><h3>Gold</h3><h2>₦800</h2><p>Diversified portfolio concept</p><button class="btn" onclick="invest(800,'Gold')">Invest Now</button></div>
+<div class="plan card"><h3>Royal</h3><h2>₦1000</h2><p>Advanced portfolio concept</p><button class="btn" onclick="invest(1000,'Royal')">Invest Now</button></div>
+<div class="plan card"><h3>Diamond</h3><h2>₦2000</h2><p>VIP portfolio + Daily bonus</p><button class="btn" onclick="invest(2000,'Diamond')">Invest Now</button></div>
 
 <div id="paymentSection" class="card" style="display:none">
 <h3>Payment Instructions - OPay</h3>
@@ -66,7 +66,7 @@ input{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #3
 <p><b>Account Number:</b> <span id="opayNum">6587483968</span> <button onclick="copyOPay()">Copy</button></p>
 <p><b>Account Name:</b> VICTOR OTUOSIRISOCHUKWU ODU</p>
 <p><b>For:</b> KING COINS INVESTMENT</p>
-<p style="color:#FFD700">Amount: $<span id="investAmount">0</span></p>
+<p style="color:#FFD700">Amount: ₦<span id="investAmount">0</span></p>
 <button class="btn btn-wa" onclick="sendProof()">Send Payment Proof on Telegram</button>
 <p style="font-size:12px;color:#aaa">After payment, admin will activate within 30mins</p>
 </div>
@@ -75,13 +75,13 @@ input{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #3
 <!-- WITHDRAW PAGE -->
 <div id="withdrawPage" class="page">
 <h1>Withdraw</h1>
-<div class="card"><h3>Available Balance</h3><h2 style="color:#FFD700">$<span id="withdrawBalance">0.00</span></h2></div>
+<div class="card"><h3>Available Balance</h3><h2 style="color:#FFD700">₦<span id="withdrawBalance">1000.00</span></h2></div>
 <div class="card">
 <input type="number" id="withdrawAmount" placeholder="Amount to withdraw">
 <input type="text" id="withdrawAccount" placeholder="Your OPay Account Number">
 <input type="text" id="withdrawName" placeholder="Account Name">
 <button class="btn btn-red" onclick="withdraw()">Withdraw Now</button>
-<p style="font-size:12px;color:#aaa;margin-top:10px">Minimum $20. Withdrawals processed in 24hrs</p>
+<p style="font-size:12px;color:#aaa;margin-top:10px">Minimum ₦7000. Withdrawals processed in 24hrs</p>
 </div>
 </div>
 
@@ -127,7 +127,7 @@ const REF_LINK=`${BASE_URL}?ref=${USER_REF_CODE}`;
 const OPAY_NUM="6587483968";
 const TELEGRAM_LINK="https://t.me/KingCoinsAdmin"; // CHANGE THIS TO YOUR TELEGRAM
 let currentUser = JSON.parse(localStorage.getItem('kingUser')) || null;
-let balance = parseFloat(localStorage.getItem('kingBalance')) || 2450;
+let balance = parseFloat(localStorage.getItem('kingBalance')) || 1000;
 
 function showPage(id){
 if(!currentUser && id!='referralPage'){document.getElementById('authPopup').style.display='flex';return;}
@@ -186,7 +186,7 @@ function copyOPay(){navigator.clipboard.writeText(OPAY_NUM);alert('OPay Number C
 
 function sendProof(){
 const pending=JSON.parse(localStorage.getItem('pendingInvest'));
-const msg=`New Payment Proof\nPlan: ${pending.plan}\nAmount: $${pending.amount}\nFrom: ${currentUser.name}`;
+const msg=`New Payment Proof\nPlan: ${pending.plan}\nAmount: ₦${pending.amount}\nFrom: ${currentUser.name}`;
 window.open(`${TELEGRAM_LINK}?text=${encodeURIComponent(msg)}`,'_blank')
 }
 
@@ -194,10 +194,10 @@ function withdraw(){
 const amount=parseFloat(document.getElementById('withdrawAmount').value);
 const acc=document.getElementById('withdrawAccount').value;
 const name=document.getElementById('withdrawName').value;
-if(amount<20){alert('Minimum withdrawal is $20');return;}
+if(amount<7000){alert('Minimum withdrawal is ₦7000');return;}
 if(amount>balance){alert('Insufficient balance');return;}
 if(!acc||!name){alert('Fill all fields');return;}
-alert(`Withdrawal request of $${amount} to ${acc} sent! Admin will process in 24hrs`);
+alert(`Withdrawal request of ₦${amount} to ${acc} sent! Admin will process in 24hrs`);
 }
 
 document.getElementById('refLinkBox').innerText=REF_LINK;

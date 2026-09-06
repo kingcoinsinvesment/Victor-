@@ -28,46 +28,25 @@ input{width:100%;padding:16px;background:var(--card2);border:1px solid #2A2A35;b
 .popup{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);display:none;justify-content:center;align-items:center;z-index:1000}
 .popup-box{background:var(--card);padding:30px;border-radius:24px;text-align:center;max-width:360px;width:90%}
 .admin-card{background:var(--card2);padding:16px;border-radius:14px;margin:12px 0;border:1px solid #2A2A35}
-.otp-box{display:flex;gap:8px;justify-content:center;margin:20px 0}
-.otp-box input{width:50px;text-align:center;font-size:20px;font-weight:800}
+.status-pending{color:#FFA000}
 </style>
 </head>
 <body>
 
 <div class="popup" id="popup"><div class="popup-box"><h3 id="popupTitle" style="color:var(--gold);margin-bottom:12px">Notice</h3><p id="popupMessage" style="margin-bottom:20px"></p><button class="btn" onclick="closePopup()">OK</button></div></div>
 
-<!-- AUTH SCREEN -->
+<!-- AUTH -->
 <div id="authScreen" style="min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:30px">
 <div style="text-align:center;margin-bottom:30px"><span style="font-size:50px">👑</span><h1 style="color:var(--gold)">KING COINS</h1></div>
 <div class="card">
-<div id="registerBox" style="display:none">
-<div class="input-group"><label>Full Name</label><input type="text" id="regName"></div>
-<div class="input-group"><label>Email</label><input type="email" id="regEmail"></div>
-<div class="input-group"><label>Password</label><input type="password" id="regPass"></div>
-<div class="input-group"><label>Referral Code (Optional)</label><input type="text" id="regRef"></div>
-<button class="btn" onclick="sendOTP()">Send OTP to Email</button>
-<p style="text-align:center;margin-top:12px"><a onclick="toggleAuth()" style="color:var(--gold)">Already have account? Login</a></p>
-</div>
-
-<!-- OTP VERIFICATION BOX -->
-<div id="otpBox" style="display:none">
-<h3 style="text-align:center">Verify Your Email</h3>
-<p style="text-align:center;color:var(--text2);font-size:13px">We sent a 6-digit code to <span id="otpEmailShow"></span></p>
-<div class="otp-box">
-<input type="text" maxlength="1" oninput="moveOTP(0)"><input type="text" maxlength="1" oninput="moveOTP(1)">
-<input type="text" maxlength="1" oninput="moveOTP(2)"><input type="text" maxlength="1" oninput="moveOTP(3)">
-<input type="text" maxlength="1" oninput="moveOTP(4)"><input type="text" maxlength="1" oninput="moveOTP(5)">
-</div>
-<button class="btn" onclick="verifyOTP()">Verify & Create Account</button>
-<button class="btn" style="background:transparent;border:1px solid var(--text2);color:var(--text2)" onclick="backToReg()">Back</button>
-</div>
-
 <div id="loginBox">
 <div class="input-group"><label>Email</label><input type="email" id="loginEmail"></div>
 <div class="input-group"><label>Password</label><input type="password" id="loginPass"></div>
 <button class="btn" onclick="login()">Login</button>
-<p style="text-align:center;margin-top:12px"><a onclick="toggleAuth()" style="color:var(--gold)">Don't have account? Register</a></p>
 </div>
+<hr style="margin:20px 0">
+<div class="input-group"><label>Admin Code</label><input type="password" id="adminPass"></div>
+<button class="btn" style="background:transparent;border:2px solid var(--gold);color:var(--gold)" onclick="adminLogin()">Admin Login</button>
 </div>
 </div>
 
@@ -75,10 +54,41 @@ input{width:100%;padding:16px;background:var(--card2);border:1px solid #2A2A35;b
 <div id="app" style="display:none">
 <div class="topbar"><div class="logo"><span>👑</span> KING COINS</div></div>
 
+<!-- HOME -->
 <div id="homePage" class="page active"><div class="container">
 <div class="balance-card"><h3>PORTFOLIO BALANCE</h3><h1>₦<span id="balance">1000.00</span></h1></div>
 </div></div>
 
+<!-- REFERRAL - 1. VISIBLE LINK FIXED -->
+<div id="referralPage" class="page"><div class="container"><h2 class="section-title">Referral Program</h2>
+<div class="card" style="background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#000">
+<h3>Earn ₦500 + ₦200</h3>
+<p>Level 1: ₦500 per direct<br>Level 2: ₦200 when they refer</p>
+<div id="refCodeBox" style="background:#000;color:var(--gold);padding:16px;border-radius:10px;text-align:center;margin:12px 0;font-weight:800;font-size:18px"></div>
+<button class="btn" onclick="copyCode()">Copy Code</button>
+<p style="font-weight:700;margin-top:16px">Your Referral Link:</p>
+<div id="refLinkBox" style="background:var(--card2);padding:16px;border-radius:10px;font-size:13px;word-break:break-all;margin:10px 0;border:1px dashed #000;color:#000;font-weight:600"></div>
+<button class="btn" onclick="copyLink()">Copy Link</button>
+</div></div></div>
+
+<!-- WITHDRAW -->
+<div id="withdrawPage" class="page"><div class="container">
+<div class="card">
+<div class="input-group"><label>Amount to Withdraw</label><input type="number" id="withdrawAmount" placeholder="Minimum ₦7000"></div>
+<div class="input-group"><label>OPay Account Number</label><input type="text" id="withdrawAccount" maxlength="10"></div>
+<div class="input-group"><label>Account Name</label><input type="text" id="withdrawName"></div>
+<button class="btn btn-red" onclick="withdraw()">Withdraw Funds</button>
+</div></div></div>
+
+<!-- ADMIN - 2. APPROVE WITHDRAWALS FIXED -->
+<div id="adminPage" class="page"><div class="container">
+<h2 class="section-title">🛡️ Admin Dashboard</h2>
+<div class="card"><h3>Total Users: <span id="adminTotalUsers">0</span></h3><h3>Total Withdrawals: <span id="adminTotalWithdraws">0</span></h3></div>
+<h3 style="margin:20px">Pending Withdrawals</h3>
+<div id="adminWithdrawList"></div>
+</div></div>
+
+<!-- PROFILE -->
 <div id="profilePage" class="page"><div class="container"><h2 class="section-title">Profile</h2>
 <div class="card" style="text-align:center">
 <div style="font-size:50px;background:var(--gold);color:#000;width:70px;height:70px;border-radius:50%;margin:0 auto;line-height:70px;font-weight:800" id="profileAvatar">G</div>
@@ -88,24 +98,25 @@ input{width:100%;padding:16px;background:var(--card2);border:1px solid #2A2A35;b
 
 <div class="nav">
 <button onclick="showPage('homePage')" class="active"><div>🏠</div><span>Home</span></button>
+<button onclick="showPage('referralPage')"><div>👥</div><span>Referral</span></button>
+<button onclick="showPage('withdrawPage')"><div>💳</div><span>Withdraw</span></button>
+<button onclick="showPage('adminPage')"><div>🛡️</div><span>Admin</span></button>
 <button onclick="showPage('profilePage')"><div>👤</div><span>Profile</span></button>
 </div>
 </div>
 
 <script>
+const BASE_URL="https://kingcoinsinvesment.github.io/Victor-/";
 const ADMIN_CODE="KING123";
+const REF_BONUS1=500;
+
 let currentUser=JSON.parse(localStorage.getItem('kingUser'))||null;
 let balance=parseFloat(localStorage.getItem('kingBalance'))||1000;
 let allUsers=JSON.parse(localStorage.getItem('allKingUsers'))||[];
-let deviceID=localStorage.getItem('kingDeviceID')||crypto.randomUUID();
-localStorage.setItem('kingDeviceID',deviceID);
-
-let tempUser={}; // stores user data before OTP verify
-let generatedOTP="";
+let withdrawals=JSON.parse(localStorage.getItem('kingWithdrawals'))||[];
 
 function showPopup(t,m){document.getElementById('popupTitle').innerText=t;document.getElementById('popupMessage').innerText=m;document.getElementById('popup').style.display='flex';}
 function closePopup(){document.getElementById('popup').style.display='none';}
-function toggleAuth(){document.getElementById('loginBox').style.display=document.getElementById('loginBox').style.display=='none'?'block':'none';document.getElementById('registerBox').style.display=document.getElementById('registerBox').style.display=='none'?'block':'none';}
 function generateRefCode(n){return "KING-"+n.toUpperCase().replace(/\s/g,'').substring(0,8)+Math.floor(Math.random()*100);}
 
 function init(){
@@ -122,53 +133,9 @@ function init(){
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-}
-
-// STEP 1: SEND OTP
-function sendOTP(){
-  const name=document.getElementById('regName').value;
-  const email=document.getElementById('regEmail').value;
-  const pass=document.getElementById('regPass').value;
-
-  // ANTI-FRAUD CHECK
-  const deviceUsed=allUsers.find(x=>x.deviceID==deviceID);
-  if(deviceUsed){showPopup('Blocked','This device already has an account');return;}
-  if(allUsers.find(x=>x.email==email)){showPopup('Error','Email already exists');return;}
-
-  tempUser={name,email,pass,refCode:generateRefCode(name),balance:1000,deviceID:deviceID};
-  generatedOTP=Math.floor(100000+Math.random()*900000).toString(); // 6 digit OTP
-
-  document.getElementById('otpEmailShow').innerText=email;
-  document.getElementById('registerBox').style.display='none';
-  document.getElementById('otpBox').style.display='block';
-
-  // NOTE: This is DEMO OTP. In real site you need to send via EmailJS/SMTP
-  showPopup('OTP Sent',`Demo OTP: ${generatedOTP} \n\nIn real site this will go to ${email}`);
-  console.log("OTP:",generatedOTP); // so you can see it
-}
-
-// STEP 2: VERIFY OTP
-function verifyOTP(){
-  const inputs=document.querySelectorAll('.otp-box input');
-  const enteredOTP=Array.from(inputs).map(i=>i.value).join('');
-
-  if(enteredOTP!=generatedOTP){showPopup('Error','Invalid OTP');return;}
-
-  allUsers.push(tempUser);
-  localStorage.setItem('allKingUsers',JSON.stringify(allUsers));
-  showPopup('Success','Account created & verified. Login now');
-  backToReg();toggleAuth();
-}
-
-function backToReg(){
-  document.getElementById('otpBox').style.display='none';
-  document.getElementById('registerBox').style.display='block';
-  document.querySelectorAll('.otp-box input').forEach(i=>i.value='');
-}
-
-function moveOTP(i){
-  const inputs=document.querySelectorAll('.otp-box input');
-  if(inputs[i].value.length==1 && i<5) inputs[i+1].focus();
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`[onclick="showPage('${id}')"]`).classList.add('active');
+  if(id=='adminPage')loadAdmin();
 }
 
 function login(){
@@ -177,19 +144,76 @@ function login(){
   if(u){currentUser=u;balance=u.balance;init();}else{showPopup('Error','Invalid login');}
 }
 
+function adminLogin(){
+  if(document.getElementById('adminPass').value==ADMIN_CODE){
+    showPage('adminPage');document.getElementById('authScreen').style.display='none';document.getElementById('app').style.display='block';
+  }else{showPopup('Error','Wrong Admin Code');}
+}
+
 function updateUI(){
   if(!currentUser)return;
   document.getElementById('profileName').innerText=currentUser.name;
   document.getElementById('profileEmail').innerText=currentUser.email;
   document.getElementById('profileAvatar').innerText=currentUser.name[0];
+  const REF=`${BASE_URL}?ref=${currentUser.refCode}`;
+  document.getElementById('refCodeBox').innerText=currentUser.refCode;
+  document.getElementById('refLinkBox').innerText=REF; // 1. VISIBLE LINK
   document.getElementById('balance').innerText=balance.toFixed(2);
+}
+
+function copyCode(){navigator.clipboard.writeText(document.getElementById('refCodeBox').innerText);showPopup('Copied','Code copied');}
+function copyLink(){navigator.clipboard.writeText(document.getElementById('refLinkBox').innerText);showPopup('Copied','Link copied');}
+
+function withdraw(){
+  const amt=parseFloat(document.getElementById('withdrawAmount').value);
+  const acc=document.getElementById('withdrawAccount').value;
+  const name=document.getElementById('withdrawName').value;
+  if(amt<7000){showPopup('Error','Min ₦7000');return;}
+  if(acc.length!=10){showPopup('Error','Invalid account');return;}
+  if(balance<amt){showPopup('Error','Insufficient');return;}
+  balance-=amt;currentUser.balance=balance;
+  const withdrawId=Date.now().toString();
+  withdrawals.push({id:withdrawId,email:currentUser.email,name:currentUser.name,amount:amt,account:acc,accountName:name,status:'pending',date:new Date().toLocaleString()});
+  localStorage.setItem('kingWithdrawals',JSON.stringify(withdrawals));
+  let i=allUsers.findIndex(x=>x.email==currentUser.email);allUsers[i]=currentUser;
+  localStorage.setItem('allKingUsers',JSON.stringify(allUsers));
+  localStorage.setItem('kingUser',JSON.stringify(currentUser));
+  localStorage.setItem('kingBalance',balance);
+  showPopup('Success',`₦${amt} withdrawal request sent to admin`);
+  updateUI();
+}
+
+// 2. ADMIN APPROVE/REJECT
+function loadAdmin(){
+  document.getElementById('adminTotalUsers').innerText=allUsers.length;
+  document.getElementById('adminTotalWithdraws').innerText=withdrawals.length;
+  let pending=withdrawals.filter(w=>w.status=='pending');
+  document.getElementById('adminWithdrawList').innerHTML=pending.map(w=>`
+    <div class="admin-card">
+      <b>${w.name}</b><br>${w.email}<br>Amount: ₦${w.amount}<br>Account: ${w.account}<br>
+      <span class="status-pending">Status: Pending</span><br>
+      <button class="btn btn-green" onclick="approveWithdraw('${w.id}')">Approve</button>
+      <button class="btn btn-red" onclick="rejectWithdraw('${w.id}')">Reject</button>
+    </div>`).join('')||'<p>No pending withdrawals</p>';
+}
+
+function approveWithdraw(id){
+  let w=withdrawals.find(x=>x.id==id);w.status='approved';
+  localStorage.setItem('kingWithdrawals',JSON.stringify(withdrawals));
+  showPopup('Approved',`₦${w.amount} withdrawal approved`);loadAdmin();
+}
+function rejectWithdraw(id){
+  let w=withdrawals.find(x=>x.id==id);w.status='rejected';
+  localStorage.setItem('kingWithdrawals',JSON.stringify(withdrawals));
+  showPopup('Rejected','Withdrawal rejected');loadAdmin();
 }
 
 function logout(){localStorage.removeItem('kingUser');currentUser=null;init();}
 
-// AUTO CREATE ADMIN
+// AUTO CREATE ADMIN + TEST USER
 if(allUsers.length==0){
-  allUsers.push({name:"Admin",email:"admin@king.com",pass:"1234",refCode:"KING-ADMIN",balance:100000,deviceID:"admin-device"});
+  allUsers.push({name:"Admin",email:"admin@king.com",pass:"1234",refCode:"KING-ADMIN",balance:100000});
+  allUsers.push({name:"Test User",email:"test@test.com",pass:"1234",refCode:generateRefCode("Test User"),balance:10000});
   localStorage.setItem('allKingUsers',JSON.stringify(allUsers));
 }
 init();

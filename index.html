@@ -55,7 +55,6 @@ input:focus{border-color:var(--gold);outline:none}
 .withdraw-head h1{font-size:38px;font-weight:800;margin-top:6px}
 .popup{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);display:none;justify-content:center;align-items:center;z-index:1000}
 .popup-box{background:var(--card);padding:30px;border-radius:24px;text-align:center;max-width:360px;width:90%;border:1px solid #222}
-.toast{position:fixed;bottom:100px;left:16px;right:16px;background:var(--card2);border-left:4px solid var(--green);padding:16px;border-radius:12px;display:none;z-index:998;font-weight:600}
 .admin-card{background:var(--card2);padding:16px;border-radius:14px;margin:12px 0;border:1px solid #2A2A35}
 .status-pending{color:#FFA000}
 .status-approved{color:var(--green)}
@@ -66,7 +65,6 @@ input:focus{border-color:var(--gold);outline:none}
 </head>
 <body>
 
-<div class="toast" id="liveToast"></div>
 <div class="popup" id="popup"><div class="popup-box"><h3 id="popupTitle" style="color:var(--gold);margin-bottom:12px">Notice</h3><p id="popupMessage" style="margin-bottom:20px"></p><button class="btn" onclick="closePopup()">OK</button></div></div>
 
 <!-- LOGIN -->
@@ -203,7 +201,43 @@ function signup(){const n=document.getElementById('signupName').value,e=document
 function login(){const e=document.getElementById('loginEmail').value,p=document.getElementById('loginPass').value;const u=allUsers.find(x=>x.email==e&&x.pass==p);if(u){currentUser=u;balance=u.balance;localStorage.setItem('kingUser',JSON.stringify(u));localStorage.setItem('kingBalance',balance);init();}else{showPopup('Error','Invalid login');}}
 function adminLogin(){if(document.getElementById('adminPass').value==ADMIN_CODE){showPage('adminPage');}else{showPopup('Error','Wrong Admin Code');}}
 function logout(){localStorage.removeItem('kingUser');currentUser=null;init();}
-function updateUI(){if(!currentUser)return;document.getElementById('profileName').innerText=currentUser.name;document.getElementById('profileEmail').innerText=currentUser.email;document.getElementById('profileAvatar').innerText=currentUser.name[0];const REF=`${BASE_URL}?ref=${currentUser.refCode}`;document.getElementById('refCodeBox').innerText=currentUser.refCode;document.getElementById('refLinkBox').innerText=REF;document.getElementById('balance').innerText=balance.toFixed(2);document.getElementById('withdrawBalance').innerText=balance.toFixed(2);document.getElementById('totalInvested').innerText=currentUser.totalInvested||0;document.getElementById('totalEarned').innerText=currentUser.totalEarned||0;document.getElementById('totalReferred').innerText=currentUser.level1?currentUser.level1.length:0;}
+
+function updateUI(){
+  if(!currentUser)return;
+  document.getElementById('profileName').innerText=currentUser.name;
+  document.getElementById('profileEmail').innerText=currentUser.email;
+  document.getElementById('profileAvatar').innerText=currentUser.name[0];
+  const REF=`${BASE_URL}?ref=${currentUser.refCode}`;
+  document.getElementById('refCodeBox').innerText=currentUser.refCode;
+  document.getElementById('refLinkBox').innerText=REF;
+  document.getElementById('balance').innerText=balance.toFixed(2);
+  document.getElementById('withdrawBalance').innerText=balance.toFixed(2);
+  document.getElementById('totalInvested').innerText=currentUser.totalInvested||0;
+  document.getElementById('totalEarned').innerText=currentUser.totalEarned||0;
+  document.getElementById('totalReferred').innerText=currentUser.level1?currentUser.level1.length:0;
+
+  const now=Date.now();
+  const lastShare=currentUser.lastShare||0;
+  const shareBtn=document.getElementById('shareBtn');
+  if(now-lastShare<24*60*60*1000){
+    shareBtn.disabled=true;
+    let hrs=Math.ceil((24*60*60*1000-(now-lastShare))/3600000);
+    shareBtn.innerText=`⏰ Share again in ${hrs}h`;
+  }else{
+    shareBtn.disabled=false;
+    shareBtn.innerText='📤 Share & Earn ₦100';
+  }
+
+  const tgBtn=document.getElementById('tgBtn');
+  if(currentUser.tg){
+    tgBtn.disabled=true;
+    tgBtn.innerText='✓ Telegram Claimed';
+  }else{
+    tgBtn.disabled=false;
+    tgBtn.innerText='Join Telegram +₦200';
+  }
+}
+
 function loadMarket(){const list=document.getElementById('marketList');list.innerHTML=marketCoins.map(coin=>{const changeClass=coin.change>=0?'status-approved':'status-rejected';return `<div class="coin"><div><b>${coin.name}</b><br><small>${coin.symbol}</small></div><div><b>₦${coin.price.toLocaleString()}</b><br><small class="${changeClass}">${coin.change}%</small></div></div>`}).join('');}
 
 function switchTab(tab){
@@ -260,7 +294,6 @@ function loadAdmin(){
 function approveWithdraw(id){
   let w=withdrawals.find(x=>x.id==id);w.status='approved';
   localStorage.setItem('kingWithdrawals',JSON.stringify(withdrawals));
-  // Update history to approved
   let tx=transactions.find(t=>t.desc.includes(w.account) && t.type=='withdraw');
   if(tx) tx.desc = tx.desc.replace('Pending','Approved');
   localStorage.setItem('kingTransactions',JSON.stringify(transactions));
@@ -286,8 +319,33 @@ function addTransaction(email,type,amount,desc){transactions.push({email,type,am
 function loadHistory(){document.getElementById('historyList').innerHTML=transactions.filter(t=>t.email==currentUser.email).map(t=>`<div class="history-item"><b>${t.type.toUpperCase()}</b> - ₦${t.amount}<br><small>${t.desc}<br>${t.date}</small></div>`).join('')||'<p>No transactions</p>';}
 function copyCode(){navigator.clipboard.writeText(document.getElementById('refCodeBox').innerText);showPopup('Copied','Code copied');}
 function copyLink(){navigator.clipboard.writeText(document.getElementById('refLinkBox').innerText);showPopup('Copied','Link copied');}
-function shareAndEarn(){navigator.clipboard.writeText(document.getElementById('refLinkBox').innerText);balance+=100;currentUser.balance=balance;let i=allUsers.findIndex(x=>x.email==currentUser.email);allUsers[i]=currentUser;localStorage.setItem('allKingUsers',JSON.stringify(allUsers));localStorage.setItem('kingUser',JSON.stringify(currentUser));localStorage.setItem('kingBalance',balance);addTransaction(currentUser.email,'referral',100,'Share Bonus');showPopup('₦100 Earned','Link copied!');updateUI();}
-function joinTelegram(){window.open(TELEGRAM_LINK,'_blank');if(!currentUser.tg){currentUser.balance+=TG_BONUS;balance=currentUser.balance;currentUser.tg=true;let i=allUsers.findIndex(x=>x.email==currentUser.email);allUsers[i]=currentUser;localStorage.setItem('allKingUsers',JSON.stringify(allUsers));localStorage.setItem('kingUser',JSON.stringify(currentUser));localStorage.setItem('kingBalance',balance);addTransaction(currentUser.email,'deposit',TG_BONUS,'Telegram Bonus');showPopup('Success',`₦200 added`);updateUI();}}
+
+function shareAndEarn(){
+  const now=Date.now();
+  if(currentUser.lastShare && now-currentUser.lastShare<24*60*60*1000){
+    showPopup('Limit','Come back in 24 hours');
+    return;
+  }
+  navigator.clipboard.writeText(document.getElementById('refLinkBox').innerText);
+  balance+=100;currentUser.balance=balance;currentUser.lastShare=now;
+  let i=allUsers.findIndex(x=>x.email==currentUser.email);allUsers[i]=currentUser;
+  localStorage.setItem('allKingUsers',JSON.stringify(allUsers));localStorage.setItem('kingUser',JSON.stringify(currentUser));localStorage.setItem('kingBalance',balance);
+  addTransaction(currentUser.email,'referral',100,'Share Bonus');
+  showPopup('₦100 Earned','Link copied! Return in 24hrs');updateUI();
+}
+
+function joinTelegram(){
+  window.open(TELEGRAM_LINK,'_blank');
+  if(currentUser.tg){
+    showPopup('Info','Already claimed Telegram bonus');
+    return;
+  }
+  currentUser.balance+=TG_BONUS;balance=currentUser.balance;currentUser.tg=true;
+  let i=allUsers.findIndex(x=>x.email==currentUser.email);allUsers[i]=currentUser;
+  localStorage.setItem('allKingUsers',JSON.stringify(allUsers));localStorage.setItem('kingUser',JSON.stringify(currentUser));localStorage.setItem('kingBalance',balance);
+  addTransaction(currentUser.email,'deposit',TG_BONUS,'Telegram Bonus');
+  showPopup('Success',`₦200 added`);updateUI();
+}
 
 if(allUsers.length==0){allUsers.push({name:"Admin",email:"admin@king.com",pass:"1234",refCode:"KING-ADMIN",balance:100000,tg:true,investments:[],totalInvested:0,totalEarned:0,level1:[],lastShare:0});localStorage.setItem('allKingUsers',JSON.stringify(allUsers));}
 init();

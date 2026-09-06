@@ -145,8 +145,9 @@ function init(){
   if(currentUser){
     document.getElementById('authScreen').style.display='none';
     document.getElementById('app').style.display='block';
-    document.getElementById('adminNavBtn').style.display = isAdmin? 'flex' : 'none';
+    document.getElementById('adminNavBtn').style.display = isAdmin? 'flex' : 'none'; // ONLY ADMIN SEES BUTTON
     updateUI();loadMarket();
+    showPage('homePage'); // ON REFRESH GO TO HOME NOT LOGIN
   }else{
     document.getElementById('authScreen').style.display='flex';
     document.getElementById('app').style.display='none';
@@ -194,9 +195,24 @@ function adminLogin(){
   if(document.getElementById('adminPass').value==ADMIN_CODE){
     isAdmin=true;
     localStorage.setItem('isAdmin','true');
+    
+    let admin = allUsers.find(u=>u.email=="admin@king.com");
+    if(!admin){
+      admin = {name:"Admin",email:"admin@king.com",pass:"1234",refCode:"KING-ADMIN",balance:100000,tg:true,investments:[],totalInvested:0,totalEarned:0,level1:[],lastShare:0};
+      allUsers.push(admin);
+      localStorage.setItem('allKingUsers',JSON.stringify(allUsers));
+    }
+    
+    currentUser = admin;
+    balance = admin.balance;
+    localStorage.setItem('kingUser',JSON.stringify(currentUser));
+    localStorage.setItem('kingBalance',balance);
+    
     document.getElementById('authScreen').style.display='none';
     document.getElementById('app').style.display='block';
-    showPage('adminPage');
+    document.getElementById('adminNavBtn').style.display = 'flex';
+    showPage('homePage'); // ADMIN STARTS ON HOME
+    
   }else{showPopup('Error','Wrong Admin Code');}
 }
 
@@ -239,9 +255,12 @@ function withdraw(){const amt=parseFloat(document.getElementById('withdrawAmount
 
 function loadAdmin(){document.getElementById('adminTotalUsers').innerText=allUsers.length;let pending=withdrawals.filter(w=>w.status=='pending');document.getElementById('adminWithdrawList').innerHTML=pending.map(w=>`<div class="admin-card"><b>${w.name}</b><br>₦${w.amount}<br>${w.account}<br><span class="status-pending">PENDING</span><br><button class="btn btn-green" onclick="approveWithdraw('${w.id}')">Approve Withdraw</button><button class="btn btn-red" onclick="rejectWithdraw('${w.id}')">Reject</button></div>`).join('')||'<p>No pending withdrawals</p>';let pendingDep=deposits.filter(d=>d.status=='pending');document.getElementById('adminDepositList').innerHTML=pendingDep.map(d=>`<div class="admin-card"><b>DEPOSIT: ${d.name}</b><br>₦${d.amount}<br>Ref: ${d.ref}<br><button class="btn btn-green" onclick="approveDeposit('${d.id}')">Approve Deposit</button><button class="btn btn-red" onclick="rejectDeposit('${d.id}')">Reject</button></div>`).join('')||'<p>No pending deposits</p>';document.getElementById('adminUserList').innerHTML=allUsers.map(u=>`<div class="admin-card"><b>${u.name}</b><br>${u.email}<br>₦${u.balance.toFixed(2)}</div>`).join('');}
 
-function approveWithdraw(id){let w=withdrawals.find(x=>x.id==id);w.status='approved';localStorage.setItem('kingWithdrawals',JSON.stringify(withdrawals));let tx=transactions.find(t=>t.desc.includes(w.account) && t.type=='withdraw');if(tx) tx.desc = tx.desc.replace('Pending','Approved');localStorage.setItem('kingTransactions',JSON.stringify(transactions));showPopup('Approved',`₦${w.amount} withdrawal approved`);loadAdmin();loadHistory();}
-function rejectWithdraw(id){let w=withdrawals.find(x=>x.id==id);w.status='rejected';let u=allUsers.find(x=>x.email==w.email);u.balance+=w.amount;localStorage.setItem('allKingUsers',JSON.stringify(allUsers));localStorage.setItem('kingWithdrawals',JSON.stringify(withdrawals));showPopup('Rejected','Withdrawal rejected and refunded');loadAdmin();loadHistory();}
-function approveDeposit(id){let d=deposits.find(x=>x.id==id);d.status='approved';let u=allUsers.find(x=>x.email==d.email);u.balance+=d.amount;localStorage.setItem('allKingUsers',JSON.stringify(allUsers));localStorage.setItem('kingDeposits',JSON.stringify(deposits));addTransaction(d.email,'deposit',d.amount,'Deposit Approved');showPopup('Approved',`₦${d.amount} credited`);loadAdmin();loadHistory();}
+function approveWithdraw(id){let w=withdrawals.find(x=>x.id==id);w.status='approved';localStorage.setItem('kingWithdrawals',JSON.stringify(withdrawals));let tx=transactions.find(t=>t.desc.includes(w.account) && t.type=='withdraw');if(tx) tx.desc = tx.desc.replace('Pending','Approved');localStorage.setItem('kingTransactions',JSON.stringify(transactions));showPopup('Approved',`₦${w.amount} withdrawal approved`);loadAdmin();}
+
+function rejectWithdraw(id){let w=withdrawals.find(x=>x.id==id);w.status='rejected';let u=allUsers.find(x=>x.email==w.email);u.balance+=w.amount;localStorage.setItem('allKingUsers',JSON.stringify(allUsers));localStorage.setItem('kingWithdrawals',JSON.stringify(withdrawals));showPopup('Rejected','Withdrawal rejected and refunded');loadAdmin();}
+
+function approveDeposit(id){let d=deposits.find(x=>x.id==id);d.status='approved';let u=allUsers.find(x=>x.email==d.email);u.balance+=d.amount;localStorage.setItem('allKingUsers',JSON.stringify(allUsers));localStorage.setItem('kingDeposits',JSON.stringify(deposits));addTransaction(d.email,'deposit',d.amount,'Deposit Approved');showPopup('Approved',`₦${d.amount} credited`);loadAdmin();}
+
 function rejectDeposit(id){let d=deposits.find(x=>x.id==id);d.status='rejected';localStorage.setItem('kingDeposits',JSON.stringify(deposits));showPopup('Rejected','Deposit rejected');loadAdmin();}
 
 function invest(amount,plan,days,profit){if(balance<amount){showPopup('Error','Low balance');return;}balance-=amount;currentUser.balance=balance;currentUser.totalInvested=(currentUser.totalInvested||0)+amount;currentUser.investments.push({plan,amount,days,profit});let i=allUsers.findIndex(x=>x.email==currentUser.email);allUsers[i]=currentUser;localStorage.setItem('allKingUsers',JSON.stringify(allUsers));localStorage.setItem('kingUser',JSON.stringify(currentUser));localStorage.setItem('kingBalance',balance);addTransaction(currentUser.email,'invest',amount,`${plan} Plan`);showPopup('Invested',`₦${amount} in ${plan}`);updateUI();}

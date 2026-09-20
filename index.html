@@ -1,111 +1,187 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>KING COINS</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;800&display=swap" rel="stylesheet">
 <script type="importmap">{"imports":{"@supabase/supabase-js":"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.44.4/+esm"}}</script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
 body{background:#0a0a0a;color:#fff;padding-bottom:90px}
-.top{padding:18px 20px;display:flex;justify-content:space-between}
-.container{padding:0 16px;max-width:500px;margin:auto}
-.portfolio{background:linear-gradient(135deg,#ffaa00,#ffcc00);color:#000;padding:22px;border-radius:22px;margin:10px 0}
+.top{padding:18px 20px;background:#0a0a0a;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1a1a1a}
+.top b{color:#ffcc00;font-size:18px}
+.container{padding:16px;max-width:500px;margin:auto}
+.portfolio{background:linear-gradient(135deg,#ffaa00,#ffcc00);color:#000;padding:22px;border-radius:22px;margin:12px 0}
 .icon-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin:18px 0}
-.icon-card{background:#1a1a1a;padding:14px 6px;border-radius:16px;text-align:center;border:1px solid #222}
+.icon-card{background:#1a1a1a;padding:16px 6px;border-radius:16px;text-align:center;border:1px solid #222;cursor:pointer}
 .overview{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
 .over-card{background:#1a1a1a;padding:18px;border-radius:18px;border:1px solid #222}
 .card{background:#1a1a1a;padding:18px;border-radius:18px;margin:12px 0;border:1px solid #222}
-.btn{width:100%;background:#ffcc00;color:#000;border:none;padding:15px;border-radius:12px;font-weight:800;margin-top:10px}
+.btn{width:100%;background:linear-gradient(135deg,#ffcc00,#ffaa00);color:#000;border:none;padding:15px;border-radius:12px;font-weight:800;margin-top:10px;cursor:pointer}
 input,select{width:100%;padding:14px;background:#0a0a0a;border:1px solid #222;border-radius:10px;color:#fff;margin:8px 0}
-.nav{position:fixed;bottom:0;left:0;right:0;background:#111;display:flex;padding:8px 0;border-top:1px solid #222}
-.nav button{background:none;border:none;color:#666;font-size:9px;flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#111;display:flex;padding:10px 0;border-top:1px solid #222;z-index:99}
+.nav button{background:none;border:none;color:#888;font-size:11px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:5px;flex:1;cursor:pointer}
 .nav button.active{color:#ffcc00}
+.nav button div{font-size:22px}
 .page{display:none}.page.active{display:block}
 .popup{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;justify-content:center;align-items:center;z-index:1000}
 .popup-box{background:#1a1a1a;padding:24px;border-radius:18px;width:90%;max-width:350px;border:1px solid #ffcc00;text-align:center}
-.pay-option{background:#0a0a0a;padding:14px;border-radius:12px;margin:10px 0;border:1px solid #222;display:flex;justify-content:space-between}
+.pay-option{background:#f5f5f5;color:#000;padding:14px;border-radius:12px;margin:10px 0;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+.plan{display:flex;justify-content:space-between;align-items:center;padding:14px;background:#111;border-radius:12px;margin:8px 0;border:1px solid #222}
 </style>
 </head>
 <body>
-<div class="popup" id="popup"><div class="popup-box"><p id="pMsg"></p><button class="btn" onclick="popup.style.display='none'">OK</button></div></div>
+<div class="popup" id="popup"><div class="popup-box"><h3 style="color:#ffcc00">Notice</h3><p id="pMsg" style="margin:12px 0"></p><button class="btn" onclick="popup.style.display='none'">OK</button></div></div>
 
-<!-- PAYSTACK LIKE PAY BUTTON - ONLY NEW THING 1 -->
-<div id="payModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:2000;justify-content:center;align-items:center;padding:15px">
-<div style="background:#fff;color:#000;width:100%;max-width:380px;border-radius:12px;padding:0;overflow:hidden">
-<div style="background:#0a0a0a;color:#fff;padding:16px;display:flex;justify-content:space-between"><b>Pay with Paystack</b><span onclick="payModal.style.display='none'" style="cursor:pointer">✕</span></div>
+<!-- PAY ME BUTTON - ONLY NEW -->
+<div id="payModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:2000;justify-content:center;align-items:center;padding:15px">
+<div style="background:#fff;color:#000;width:100%;max-width:380px;border-radius:16px;overflow:hidden">
+<div style="background:#111;color:#fff;padding:16px;display:flex;justify-content:space-between"><b>💳 Pay Me</b><span onclick="payModal.style.display='none'" style="cursor:pointer">✕</span></div>
 <div style="padding:18px">
-<p id="payPlanName" style="font-size:13px;color:#666;margin-bottom:12px"></p>
-<div onclick="selectPay('card')" class="pay-option" style="background:#f5f5f5;color:#000;border:2px solid #00a8ff"><div><b>💳 Pay with Bank Card</b><br><small>Mastercard, Visa, Verve</small></div><span>→</span></div>
-<div onclick="selectPay('bank')" class="pay-option" style="background:#f5f5f5;color:#000"><div><b>🏦 Bank Transfer</b><br><small>Pay with bank</small></div><span>→</span></div>
-<div id="payDetails" style="display:none;margin-top:15px;background:#f9f9f9;padding:15px;border-radius:10px;text-align:center">
-<div id="payAccountBox" style="font-weight:800;color:#000;margin:10px 0"></div>
-<button class="btn" onclick="confirmPay()">Pay Now</button>
+<p id="payPlanName" style="color:#666;font-size:13px;margin-bottom:10px"></p>
+<div onclick="selectPay('card')" class="pay-option" style="border:2px solid #00a8ff"><div><b>💳 Pay with Bank Card</b><br><small>Visa, Verve, Mastercard</small></div><span>→</span></div>
+<div onclick="selectPay('opay')" class="pay-option"><div><b>📱 OPay / PalmPay</b><br><small>Instant</small></div><span>→</span></div>
+<div onclick="selectPay('transfer')" class="pay-option"><div><b>🏦 Bank Transfer</b><br><small>Moniepoint</small></div><span>→</span></div>
+<div id="payDetails" style="display:none;background:#f9f9f9;padding:15px;border-radius:12px;margin-top:12px;text-align:center">
+<div id="payAccountBox" style="font-weight:800;margin:10px 0"></div>
+<button class="btn" onclick="confirmPay()">I Have Paid</button>
 </div>
 </div>
 </div>
 </div>
 
-<div id="authScreen" style="padding:20px;max-width:400px;margin:10vh auto">
-<h1 style="color:#ffcc00;text-align:center">👑 KING COINS</h1>
-<div class="card"><input id="sName" placeholder="Full Name"><input id="sEmail" placeholder="Email"><input id="sPass" type="password" placeholder="Password"><button class="btn" onclick="signup()">Create Account</button><p style="text-align:center;margin:10px;color:#666">or</p><input id="lEmail" placeholder="Email"><input id="lPass" type="password" placeholder="Password"><button class="btn" onclick="login()">Login</button></div>
+<div id="authScreen" style="padding:20px;max-width:400px;margin:8vh auto">
+<div style="text-align:center"><div style="font-size:45px">👑</div><h1 style="color:#ffcc00">KING COINS</h1></div>
+<div class="card"><input id="sName" placeholder="Full Name"><input id="sEmail" placeholder="Email"><input id="sPass" type="password" placeholder="Password"><button class="btn" onclick="signup()">Create Account - ₦200 Free</button><p style="text-align:center;margin:12px;color:#666">or</p><input id="lEmail" placeholder="Email"><input id="lPass" type="password" placeholder="Password"><button class="btn" style="background:transparent;border:1px solid #ffcc00;color:#ffcc00" onclick="login()">Login</button></div>
 </div>
 
 <div id="app" style="display:none">
-<div class="top"><b style="color:#ffcc00">👑 KING COINS</b><span>👑</span></div>
+<div class="top"><b>👑 KING COINS</b><div style="font-size:12px">Welcome <span id="userName">Admin</span> 👋</div></div>
 
 <div id="homePage" class="page active"><div class="container">
-<p style="color:#888;font-size:13px">Welcome back 👋</p><h2>Admin</h2>
-<div class="portfolio"><small>TOTAL PORTFOLIO</small><h1>₦<span id="balance">49300.00</span></h1><div style="display:flex;justify-content:space-between;margin-top:10px;font-size:11px"><span>Available balance</span><span>King Coins</span></div></div>
+<div class="portfolio"><small>TOTAL PORTFOLIO</small><h1>₦<span id="balance">49300.00</span></h1><div style="display:flex;justify-content:space-between;margin-top:15px;font-size:11px;opacity:.7"><span>Available balance</span><span>King Coins</span></div></div>
 <div class="icon-row">
-<div class="icon-card" onclick="showPage('investPage')"><div>📈</div><b style="font-size:11px">Invest</b></div>
-<div class="icon-card" onclick="openDeposit()"><div>💳</div><b style="font-size:11px">Deposit</b></div>
-<div class="icon-card" onclick="showPage('withdrawPage')"><div>💸</div><b style="font-size:11px">Withdraw</b></div>
-<div class="icon-card" onclick="showPage('historyPage')"><div>📋</div><b style="font-size:11px">History</b></div>
+<div class="icon-card" onclick="showPage('investPage')"><div>📈</div><b>Invest</b><br><small>10 plans</small></div>
+<div class="icon-card" onclick="openDeposit()"><div>💳</div><b>Deposit</b></div>
+<div class="icon-card" onclick="showPage('withdrawPage')"><div>💸</div><b>Withdraw</b></div>
+<div class="icon-card" onclick="showPage('historyPage')"><div>📋</div><b>History</b></div>
 </div>
-<h3 style="margin:15px 0">Portfolio Overview</h3>
-<div class="overview"><div class="over-card"><small>Total Invested</small><b style="color:#ffcc00">₦ 1000</b></div><div class="over-card"><small>Total Earned</small><b style="color:#ffcc00">₦ 0</b></div></div>
-<div class="card"><b>Explore Investment Plans</b><p style="color:#666;font-size:12px;margin:8px 0">Review the available plans before making a decision.</p><button class="btn" onclick="showPage('investPage')">View Plans</button></div>
+<h3 style="margin:18px 0 10px 0">Portfolio Overview</h3>
+<div class="overview"><div class="over-card"><small>Total Invested</small><b style="color:#ffcc00">₦ <span id="totalInv">1000</span></b></div><div class="over-card"><small>Total Earned</small><b style="color:#ffcc00">₦ 0</b></div></div>
+<div class="card"><small style="color:#ffcc00;font-weight:800">💎 KING COINS</small><h3 style="margin:8px 0">Explore Investment Plans</h3><p style="color:#666;font-size:12px">10 plans available now</p><button class="btn" onclick="showPage('investPage')">View 10 Plans</button></div>
+<div class="card" style="border:1px dashed #ffcc00"><b>💳 Saved Account</b><p id="savedMini" style="font-size:12px;color:#888;margin:6px 0">No account saved yet</p><button class="btn" style="background:transparent;border:1px solid #ffcc00;color:#ffcc00;padding:10px" onclick="showPage('accountPage')">Save Account</button></div>
 
-<!-- SAVE ACCOUNT CARD - ONLY NEW THING 2 -->
-<div class="card" style="border:1px dashed #ffcc00"><b>💳 Save Account</b><p style="font-size:11px;color:#888">Save your account for fast withdrawal</p><div id="savedMini" style="font-size:12px;margin:8px 0;color:#888">No account saved</div><button class="btn" style="background:transparent;border:1px solid #ffcc00;color:#ffcc00" onclick="showPage('accountPage')">Save Account Now</button></div>
+<!-- ADMIN DASHBOARD - ONLY YOU GO SEE AM -->
+<div id="adminBox" class="card" style="display:none;border:2px solid #ffcc00;background:#221a00">
+<h3 style="color:#ffcc00">👑 ADMIN DASHBOARD - Only You</h3>
+<p style="font-size:11px;color:#aaa;margin:8px 0">This box dey hidden for other users</p>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0">
+<div style="background:#000;padding:12px;border-radius:10px"><small>All Users</small><b id="adminUserCount" style="display:block;color:#ffcc00">0</b></div>
+<div style="background:#000;padding:12px;border-radius:10px"><small>Total Deposits</small><b id="adminTotal" style="display:block;color:#00ff88">₦0</b></div>
+</div>
+<div id="adminUsers" style="max-height:200px;overflow:auto;font-size:11px"></div>
+<button class="btn" onclick="loadAllUsers()" style="padding:10px">Refresh Users</button>
+</div>
 
 </div></div>
 
-<div id="investPage" class="page"><div class="container"><h2 style="margin:15px 0">Investment Plans</h2><div class="card"><b>$5 → $25</b><button class="btn" onclick="invest(5,'Starter')">Invest</button></div><div class="card"><b>$20 → $100</b><button class="btn" onclick="invest(20,'Gold')">Invest</button></div><div class="card"><b>$100 → $800</b><button class="btn" onclick="invest(100,'Whale')">Invest</button></div></div></div>
+<!-- 10 INVESTMENT PLANS -->
+<div id="investPage" class="page"><div class="container"><h2 style="margin:15px 0">10 Investment Plans</h2>
+<div class="plan"><div><b>1. Starter</b><br><small style="color:#888">₦1,000 → ₦2,500 | 5 Days</small></div><button class="btn" style="width:auto;padding:10px 18px" onclick="invest(1000,'Starter 1')">₦1k</button></div>
+<div class="plan"><div><b>2. Bronze</b><br><small style="color:#888">₦2,000 → ₦6,000 | 7 Days</small></div><button class="btn" style="width:auto;padding:10px 18px" onclick="invest(2000,'Bronze 2')">₦2k</button></div>
+<div class="plan"><div><b>3. Silver</b><br><small style="color:#888">₦3,000 → ₦9,000 | 7 Days</small></div><button class="btn" style="width:auto;padding:10px 18px" onclick="invest(3000,'Silver 3')">₦3k</button></div>
+<div class="plan"><div><b>4. Gold</b><br><small style="color:#888">₦5,000 → ₦20,000 | 10 Days</small></div><button class="btn" style="width:auto;padding:10px 18px" onclick="invest(5000,'Gold 4')">₦5k</button></div>
+<div class="plan"><div><b>5. Platinum</b><br><small style="color:#888">₦10,000 → ₦45,000 | 12 Days</small></div><button class="btn" style="width:auto;padding:10px 18px" onclick="invest(10000,'Platinum 5')">₦10k</button></div>
+<div class="plan"><div><b>6. Diamond</b><br><small style="color:#888">₦20,000 → ₦100,000 | 14 Days</small></div><button class="btn" style="width:auto;padding:10px 18px" onclick="invest(20000,'Diamond 6')">₦20k</button></div>
+<div class="plan"><div><b>7. Ruby</b><br><small style="color:#888">₦30,000 → ₦180,000 | 15 Days</small></div><button class="btn" style="width:auto;padding:10px 18px" onclick="invest(30000,'Ruby 7')">₦30k</button></div>
+<div class="plan"><div><b>8. Emerald</b><br><small style="color:#888">₦50,000 → ₦350,000 | 20 Days</small></div><button class="btn" style="width:auto;padding:10px 18px" onclick="invest(50000,'Emerald 8')">₦50k</button></div>
+<div class="plan" style="border:2px solid #ff3b30"><div><b>9. Whale</b><br><small style="color:#888">₦100,000 → ₦800,000 | 25 Days</small></div><button class="btn" style="width:auto;padding:10px 18px;background:#ff3b30;color:#fff" onclick="invest(100000,'Whale 9')">₦100k</button></div>
+<div class="plan" style="border:2px solid #ffcc00;background:#221a00"><div><b>10. Titan 👑</b><br><small style="color:#888">₦200,000 → ₦2,000,000 | 30 Days</small></div><button class="btn" style="width:auto;padding:10px 18px" onclick="invest(200000,'Titan 10')">₦200k</button></div>
+</div></div>
 
-<div id="withdrawPage" class="page"><div class="container"><h2 style="margin:15px 0">Withdraw</h2><div class="card" id="savedCard" style="display:none;border:2px solid #00ff88"><div id="savedDisplay"></div></div><div class="card"><input id="wdAmt" placeholder="Amount"><input id="wdAddr" placeholder="Account number"><button class="btn" onclick="doWithdraw()">Withdraw</button></div></div></div>
-
-<div id="accountPage" class="page"><div class="container"><h2 style="margin:15px 0">💳 Save Account</h2><div class="card"><select id="bankName"><option>OPay</option><option>PalmPay</option><option>Moniepoint</option><option>GTBank</option><option>USDT TRC20</option></select><input id="acctNum" placeholder="Account Number"><input id="acctName" placeholder="Account Name"><button class="btn" onclick="saveAccount()">Save Account</button><div id="currentSaved" style="margin-top:10px"></div></div></div></div>
-
+<div id="withdrawPage" class="page"><div class="container"><h2 style="margin:15px 0">Withdraw</h2><div class="card" id="savedCard" style="display:none;border:2px solid #00ff88"><span style="background:#00ff88;color:#000;font-size:9px;padding:4px 8px;border-radius:8px;font-weight:800">SAVED</span><div id="savedDisplay" style="margin-top:10px"></div></div><div class="card"><input id="wdAmt" placeholder="Amount ₦"><input id="wdAddr" placeholder="Account auto-fill"><button class="btn" onclick="doWithdraw()">Request Withdraw</button></div></div></div>
+<div id="accountPage" class="page"><div class="container"><h2 style="margin:15px 0">💳 Save Account</h2><div class="card" style="border:2px dashed #ffcc00"><select id="bankName"><option>OPay</option><option>PalmPay</option><option>Moniepoint</option><option>GTBank</option><option>Access Bank</option></select><input id="acctNum" placeholder="Account Number"><input id="acctName" placeholder="Account Name"><button class="btn" onclick="saveAccount()">✅ Save Account</button><div id="currentSaved" style="margin-top:12px"></div></div></div></div>
 <div id="historyPage" class="page"><div class="container"><h2 style="margin:15px 0">History</h2><div id="txList"></div></div></div>
+<div id="marketPage" class="page"><div class="container"><h2 style="margin:15px 0">Market</h2><div class="card">Market coming soon</div></div></div>
+<div id="referralPage" class="page"><div class="container"><h2 style="margin:15px 0">Referral</h2><div class="card">Your link: <b id="refLink"></b></div></div></div>
 
 <div class="nav">
 <button onclick="showPage('homePage')" class="active"><div>🏠</div><span>Home</span></button>
-<button onclick="showPage('investPage')"><div>📊</div><span>Market</span></button>
+<button onclick="showPage('marketPage')"><div>📊</div><span>Market</span></button>
 <button onclick="showPage('investPage')"><div>💰</div><span>Invest</span></button>
 <button onclick="showPage('withdrawPage')"><div>💳</div><span>Withdraw</span></button>
 <button onclick="showPage('historyPage')"><div>📈</div><span>History</span></button>
-<button onclick="showPage('historyPage')"><div>👥</div><span>Referral</span></button>
+<button onclick="showPage('referralPage')"><div>👥</div><span>Referral</span></button>
 </div>
 </div>
 
 <script type="module">
 import {createClient} from '@supabase/supabase-js';
 const supabase=createClient('https://dpkaaesahmhyvbgkzxdl.supabase.co','sb_publishable_pEh1N-JAO4QTPzAd6Dp7GA_A7j0uIHf');
+// CHANGE THIS TO YOUR EMAIL ONLY - ONLY YOU GO SEE ADMIN
+const ADMIN_EMAIL = "coinsinvesment@gmail.com";
+
 let currentUser=JSON.parse(localStorage.getItem('kingUser'))||null;
-let bal=49300;let transactions=[];let savedAccount=JSON.parse(localStorage.getItem('kingSaved'))||null;
+let bal=parseFloat(localStorage.getItem('kingBal'))||200;
+let transactions=JSON.parse(localStorage.getItem('kingTx'))||[];
+let savedAccount=JSON.parse(localStorage.getItem('kingSaved'))||null;
 let curAmt=0,curPlan='';
+
 function showP(m){pMsg.innerText=m;popup.style.display='flex';}
-window.showPage=(id)=>{document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');}
-window.signup=async()=>{const name=sName.value,email=sEmail.value,pass=sPass.value;await supabase.from('king_users').insert({email,name,pass,balance:49300});currentUser={email,name};localStorage.setItem('kingUser',JSON.stringify(currentUser));init();showP('Created!');}
-window.login=async()=>{const email=lEmail.value,pass=lPass.value;const {data}=await supabase.from('king_users').select('*').eq('email',email).eq('pass',pass).single();if(!data){showP('Invalid');return;}currentUser=data;localStorage.setItem('kingUser',JSON.stringify(data));init();}
-function init(){if(currentUser){authScreen.style.display='none';app.style.display='block';if(savedAccount){savedMini.innerText=savedAccount.bank+' - '+savedAccount.number;savedCard.style.display='block';savedDisplay.innerHTML=savedAccount.bank+'<br>'+savedAccount.number+'<br>'+savedAccount.acctName;wdAddr.value=savedAccount.number;currentSaved.innerHTML=savedAccount.bank+'<br>'+savedAccount.number;}}else{authScreen.style.display='block';app.style.display='none';}}
-window.saveAccount=()=>{const bank=bankName.value,num=acctNum.value,name=acctName.value;if(!num||!name){showP('Fill all');return;}savedAccount={bank,number:num,acctName:name};localStorage.setItem('kingSaved',JSON.stringify(savedAccount));showP('Account saved!');init();};
-window.invest=(a,p)=>{curAmt=a;curPlan=p;payPlanName.innerText=p+' - ₦'+a;payModal.style.display='flex';payDetails.style.display='none';}
-window.selectPay=(m)=>{payDetails.style.display='block';if(m==='card'){payAccountBox.innerHTML='<input placeholder="Card Number" style="width:100%;padding:12px;margin:5px 0"><div style="display:flex;gap:8px"><input placeholder="MM/YY" style="flex:1;padding:12px"><input placeholder="CVV" style="flex:1;padding:12px"></div>';}else{payAccountBox.innerHTML='Bank: Moniepoint<br>Account: 8161234567<br>Amount: ₦'+curAmt;}}
-window.confirmPay=()=>{payModal.style.display='none';showP('Payment for '+curPlan+' via card submitted!');}
-window.openDeposit=()=>{invest(100,'Deposit');}
-window.doWithdraw=()=>{if(!savedAccount){showPage('accountPage');showP('Save account first');return;}showP('Withdraw to '+savedAccount.bank+' submitted!');}
+window.showPage=(id)=>{document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');if(id==='historyPage')renderTx();if(id==='withdrawPage')loadSaved();if(id==='accountPage')loadProfile();if(id==='homePage')updateUI();};
+
+function updateUI(){
+ const isYou = currentUser && currentUser.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+ if(isYou){
+   bal = 49300;
+   document.getElementById('adminBox').style.display='block';
+   loadAllUsers();
+ } else {
+   document.getElementById('adminBox').style.display='none';
+   if(bal===49300) bal=200;
+ }
+ balance.innerText=bal.toFixed(2);
+ userName.innerText=currentUser?currentUser.name:'Admin';
+ refLink.innerText=currentUser?`https://coinsinvesment.github.io?ref=${currentUser.email}`:'';
+ if(savedAccount){savedMini.innerText=savedAccount.bank+' - '+savedAccount.number; savedMini.style.color='#00ff88';}
+}
+
+function init(){if(currentUser){authScreen.style.display='none';app.style.display='block';updateUI();loadSaved();}else{authScreen.style.display='block';app.style.display='none';}}
+
+window.signup=async()=>{
+ const name=sName.value,email=sEmail.value,pass=sPass.value;
+ if(!name||!email||!pass){showP('Fill all');return;}
+ const isYou = email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+ const startBal = isYou?49300:200;
+ const {error}=await supabase.from('king_users').insert({email,name,pass,balance:startBal});
+ if(error){showP(error.message);return;}
+ currentUser={email,name}; bal=startBal; localStorage.setItem('kingUser',JSON.stringify(currentUser));localStorage.setItem('kingBal',bal);localStorage.setItem('kingTx',JSON.stringify([]));transactions=[];init();showP('Welcome! You get ₦'+startBal);
+};
+
+window.login=async()=>{
+ const email=lEmail.value,pass=lPass.value;
+ const {data}=await supabase.from('king_users').select('*').eq('email',email).eq('pass',pass).single();
+ if(!data){showP('Invalid login');return;}
+ currentUser=data; 
+ const isYou = data.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+ bal = isYou?49300:(data.balance||200);
+ localStorage.setItem('kingUser',JSON.stringify(data));localStorage.setItem('kingBal',bal);init();
+};
+
+window.logout=()=>{localStorage.removeItem('kingUser');currentUser=null;init();};
+window.saveAccount=()=>{const bank=bankName.value,num=acctNum.value,name=acctName.value;if(!num||!name){showP('Fill all');return;}savedAccount={bank,number:num,acctName:name};localStorage.setItem('kingSaved',JSON.stringify(savedAccount));loadProfile();loadSaved();updateUI();showP('Saved!');};
+function loadProfile(){if(!currentUser)return;if(savedAccount){currentSaved.innerHTML=`<div style="background:#0a1a0a;border:1px solid #00ff88;padding:12px;border-radius:10px"><b>${savedAccount.bank}</b><br>${savedAccount.number}<br>${savedAccount.acctName}</div>`;bankName.value=savedAccount.bank;acctNum.value=savedAccount.number;acctName.value=savedAccount.acctName;}}
+function loadSaved(){const card=savedCard;if(savedAccount){card.style.display='block';savedDisplay.innerHTML=`<b>${savedAccount.bank}</b><br>${savedAccount.number}<br>${savedAccount.acctName}`;wdAddr.value=savedAccount.number;}else{card.style.display='none';}}
+
+window.invest=(a,p)=>{curAmt=a;curPlan=p;payPlanName.innerText=p+' - ₦'+a;payModal.style.display='flex';payDetails.style.display='none';};
+window.selectPay=(m)=>{payDetails.style.display='block';const box=payAccountBox;if(m==='card'){box.innerHTML='<input placeholder="Card Number" style="width:100%;padding:12px;margin:5px 0"><div style="display:flex;gap:8px"><input placeholder="MM/YY" style="flex:1;padding:12px"><input placeholder="CVV" style="flex:1;padding:12px"></div><small style="color:green">Paystack Secured</small>';}else if(m==='opay'){box.innerHTML='OPay: 8161234567<br>Name: King Coins<br>Amount: ₦'+curAmt;}else{box.innerHTML='Moniepoint<br>Account: 8161234567<br>Amount: ₦'+curAmt;}};
+window.confirmPay=()=>{payModal.style.display='none';transactions.unshift({type:'deposit',amount:curAmt,desc:curPlan+' via '+curMethod,date:new Date().toLocaleString()});localStorage.setItem('kingTx',JSON.stringify(transactions));showP('Payment for '+curPlan+' submitted!');};
+window.openDeposit=()=>{invest(1000,'Deposit');};
+window.doWithdraw=()=>{const amt=parseFloat(wdAmt.value);if(!savedAccount){showPage('accountPage');showP('Save account first');return;}if(amt<1000){showP('Min ₦1,000');return;}if(bal<amt){showP('Low balance');return;}bal-=amt;localStorage.setItem('kingBal',bal);transactions.unshift({type:'withdraw',amount:amt,desc:'Withdraw to '+savedAccount.bank,date:new Date().toLocaleString()});localStorage.setItem('kingTx',JSON.stringify(transactions));updateUI();showP('Withdraw ₦'+amt+' to '+savedAccount.bank+' submitted!');};
+window.loadAllUsers=async()=>{const {data}=await supabase.from('king_users').select('*').limit(50);if(data){adminUserCount.innerText=data.length;adminUsers.innerHTML=data.map(u=>`<div style="padding:8px;border-bottom:1px solid #333;display:flex;justify-content:space-between"><span>${u.name}<br><small style="color:#888">${u.email}</small></span><span>₦${u.balance||0}</span></div>`).join('');}};
+function renderTx(){txList.innerHTML=transactions.length?transactions.map(t=>`<div class="card" style="padding:12px;display:flex;justify-content:space-between"><div><b>${t.type}</b><br><small>${t.desc}</small><br><small style="color:#666">${t.date}</small></div><div>₦${t.amount}</div></div>`).join(''):'<div style="text-align:center;color:#666;margin:30px">No transactions</div>';}
 init();
 </script>
 </body>

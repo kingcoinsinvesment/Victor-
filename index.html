@@ -18,7 +18,7 @@ body{background:var(--bg);color:var(--text);padding-bottom:100px;}
 .container{padding:20px;max-width:700px;margin:auto;}
 .card{background:var(--card);padding:24px;border-radius:20px;margin:16px 0;border:1px solid #252832;}
 .btn{width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#000;border:none;padding:17px;border-radius:14px;font-weight:800;font-size:15px;cursor:pointer;margin-top:10px;}
-.btn:disabled{background:#292c35;color:#656873;}.btn-red{background:var(--red);color:white;}.btn-ghost{background:transparent;border:2px solid var(--gold);color:var(--gold);}.btn-green{background:var(--green);color:#000;}
+.btn-red{background:var(--red);color:white;}.btn-ghost{background:transparent;border:2px solid var(--gold);color:var(--gold);}.btn-green{background:var(--green);color:#000;}
 .input-group{margin:16px 0;}.input-group label{font-size:12px;color:var(--text2);font-weight:600;margin-bottom:8px;display:block;}
 input,select{width:100%;padding:16px;background:var(--card2);border:1px solid #2a2d37;border-radius:12px;color:var(--text);font-size:15px;}
 .section-title{font-size:22px;font-weight:800;margin:24px 20px 12px;}
@@ -28,8 +28,9 @@ input,select{width:100%;padding:16px;background:var(--card2);border:1px solid #2
 .home-welcome{display:flex;justify-content:space-between;align-items:center;margin:5px 0 18px;}.home-welcome p{font-size:12px;color:var(--text2);}.home-welcome h2{font-size:22px;font-weight:800;}
 .professional-balance{background:linear-gradient(135deg,#ffc107,#ff9800);color:#000;}
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}.stat-card{background:var(--card);border:1px solid #292d37;border-radius:18px;padding:18px;}
-.plan-card{background:linear-gradient(145deg,#171922,#111219);padding:22px;border-radius:22px;margin:16px 0;border:1px solid #2a2d37;position:relative;}.plan-card.featured{border:1px solid var(--gold);}.plan-badge{position:absolute;top:15px;right:15px;background:var(--gold);color:#000;font-size:9px;font-weight:800;padding:6px 9px;border-radius:20px;}
-.plan-name{font-size:18px;font-weight:800;}.plan-amount{font-size:31px;font-weight:800;color:var(--gold);margin:13px 0;}.plan-info{color:var(--text2);font-size:12px;margin-bottom:10px;}.plan-profit{font-size:13px;font-weight:700;padding:12px;background:#1d2029;border-radius:10px;}
+.plan-card{background:linear-gradient(145deg,#171922,#111219);padding:22px;border-radius:22px;margin:16px 0;border:1px solid #2a2d37;position:relative;}.plan-card.featured{border:1px solid var(--gold);}
+.plan-badge{position:absolute;top:15px;right:15px;background:var(--gold);color:#000;font-size:9px;font-weight:800;padding:6px 9px;border-radius:20px;}
+.plan-name{font-size:18px;font-weight:800;}.plan-amount{font-size:31px;font-weight:800;color:var(--gold);margin:13px 0;}.plan-info{color:var(--text2);font-size:12px;margin-bottom:10px;}
 .withdraw-head{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#000;padding:32px 24px;border-radius:24px;margin:16px;text-align:center;}
 .popup{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.82);display:none;justify-content:center;align-items:center;z-index:1000;}.popup-box{background:var(--card);padding:30px;border-radius:24px;text-align:center;max-width:360px;width:90%;border:1px solid #292d37;}
 .admin-card{background:var(--card2);padding:16px;border-radius:14px;margin:12px 0;border:1px solid #2a2d37;}
@@ -41,105 +42,64 @@ input,select{width:100%;padding:16px;background:var(--card2);border:1px solid #2
 </style>
 </head>
 <body>
-
 <div id="liveAlert" class="live-alert"><span>🔥</span><span id="liveAlertText"></span></div>
-
 <div class="popup" id="payModal" style="display:none;z-index:2000">
-<div class="popup-box" style="background:#fff;color:#000;max-width:420px;padding:0;overflow:hidden;border:none;max-height:95vh;overflow-y:auto">
+<div class="popup-box" style="background:#fff;color:#000;max-width:420px;padding:0;overflow:hidden;border:none">
 <div style="background:#13151c;color:#fff;padding:16px;display:flex;justify-content:space-between;align-items:center"><b>💳 Pay Me</b><span onclick="document.getElementById('payModal').style.display='none'" style="cursor:pointer;font-size:18px">✕</span></div>
 <div style="padding:18px">
 <p id="payPlanName" style="color:#666;font-size:12px;margin-bottom:10px;text-align:center"></p>
-<div onclick="selectPay('card')" class="pay-option" style="border:2px solid #00a8ff;background:#f5f5f5"><div><b>💳 Bank Card</b><br><small>Visa/Mastercard</small></div><span>→</span></div>
 <div onclick="selectPay('momo')" class="pay-option" style="border:2px solid #ffcc00;background:#fffde6"><div><b>📱 MoMo PSB</b><br><small>0286297016 - Ekeigbo Ugwuoke</small></div><span>→</span></div>
-<div onclick="selectPay('usdt')" class="pay-option" style="background:#f0fff0;border:1px solid #00c896"><div><b>₿ Crypto USDT</b><br><small>TRC20</small></div><span>→</span></div>
 <div id="payDetails" style="display:none;background:#f9f9f9;padding:15px;border-radius:12px;margin-top:12px;text-align:center"><div id="payBox"></div></div>
 </div>
 </div>
 </div>
-
 <div class="popup" id="popup"><div class="popup-box"><h3 id="popupTitle" style="color:var(--gold);margin-bottom:12px">Notice</h3><p id="popupMessage" style="margin-bottom:20px"></p><button class="btn" onclick="closePopup()">OK</button></div></div>
 <div class="popup" id="adminPopup"><div class="popup-box"><h3 style="color:var(--gold);margin-bottom:12px">🛡️ Admin</h3><input type="password" id="adminPopupPass" placeholder="Admin code"><button class="btn" onclick="checkAdminAccess()">Enter</button><button class="btn btn-ghost" onclick="closeAdminPopup()" style="margin-top:10px">Cancel</button></div></div>
-
 <div id="authScreen" class="auth-wrap"><div class="auth-logo"><span>👑</span><h1>KING COINS</h1></div><div class="auth-card"><div class="input-group"><label>Email</label><input type="email" id="loginEmail"></div><div class="input-group"><label>Password</label><input type="password" id="loginPass"></div><button class="btn" onclick="login()">Login</button><p style="text-align:center;margin:15px 0;color:var(--text2)">No account?</p><button class="btn btn-ghost" onclick="toggleSignup()">Sign Up</button><div id="signupBox" style="display:none;margin-top:20px"><div class="input-group"><label>Full Name</label><input type="text" id="signupName"></div><div class="input-group"><label>Email</label><input type="email" id="signupEmail"></div><div class="input-group"><label>Password</label><input type="password" id="signupPass"></div><button class="btn" onclick="signup()">Create</button></div></div></div>
-
 <div id="app" style="display:none">
 <div class="topbar"><div class="logo"><span>👑</span>KING COINS</div></div>
 <div id="homePage" class="page active"><div class="container">
 <div class="home-welcome"><div><p>Welcome 👋</p><h2 id="homeUserName"></h2></div><div style="width:48px;height:48px;border-radius:15px;background:var(--card);border:1px solid #292d37;display:flex;align-items:center;justify-content:center;font-size:25px">👑</div></div>
 <div class="card professional-balance"><span style="font-size:10px;font-weight:800;opacity:.7">TOTAL PORTFOLIO</span><h1 style="font-size:38px;font-weight:800">₦<span id="balance">1000.00</span></h1></div>
 <div class="stats-grid"><div class="stat-card"><span>Total Invested</span><strong style="color:var(--gold)">₦<span id="totalInvested">0</span></strong></div><div class="stat-card"><span>Total Earned</span><strong style="color:var(--gold)">₦<span id="totalEarned">0</span></strong></div></div>
-<div style="margin-top:20px"><h3 style="font-size:16px;font-weight:800">📈 Active Investments - Timer</h3><div id="activeInvestments"></div></div>
-<button class="btn" id="shareBtn" onclick="shareAndEarn()">📤 Share & Earn ₦100</button>
+<div style="margin-top:20px"><h3 style="font-size:16px;font-weight:800">📈 Active Investments</h3><div id="activeInvestments"></div></div>
+<button class="btn" onclick="shareAndEarn()">📤 Share & Earn ₦100</button>
 </div></div>
 <div id="marketPage" class="page"><h2 class="section-title">📊 Market</h2><div class="container"><div id="marketList"></div></div></div>
 <div id="investPage" class="page"><h2 class="section-title">💎 Plans Start ₦3,000</h2><div class="container">
-<div class="plan-card"><div class="plan-name">Starter</div><div class="plan-amount">₦3,000</div><div class="plan-info">7 Days | Return ₦7,000 | Profit ₦4,000</div><button class="btn" style="background:linear-gradient(135deg,#00c896,#00a86b)" onclick="openPayModal(3000,'Starter',7,4000)">💳 Pay ₦3,000</button></div>
-<div class="plan-card featured"><div class="plan-badge">HOT 🔥</div><div class="plan-name">Gold</div><div class="plan-amount">₦8,000</div><div class="plan-info">10 Days | Return ₦20,000 | Profit ₦12,000</div><button class="btn" style="background:linear-gradient(135deg,#ffc107,#ff9800)" onclick="openPayModal(8000,'Gold',10,12000)">💎 Pay ₦8,000</button></div>
-<div class="plan-card"><div class="plan-name">Royal</div><div class="plan-amount">₦15,000</div><div class="plan-info">14 Days | Return ₦45,000 | Profit ₦30,000</div><button class="btn" style="background:linear-gradient(135deg,#a855f7,#7c3aed)" onclick="openPayModal(15000,'Royal',14,30000)">👑 Pay ₦15,000</button></div>
+<div class="plan-card"><div class="plan-name">Starter</div><div class="plan-amount">₦3,000</div><div class="plan-info">7 Days | Return ₦7,000 | Profit ₦4,000</div><button class="btn" onclick="openPayModal(3000,'Starter',7,4000)">💳 Pay ₦3,000</button></div>
+<div class="plan-card featured"><div class="plan-badge">HOT 🔥</div><div class="plan-name">Gold</div><div class="plan-amount">₦8,000</div><div class="plan-info">10 Days | Return ₦20,000 | Profit ₦12,000</div><button class="btn" onclick="openPayModal(8000,'Gold',10,12000)">💎 Pay ₦8,000</button></div>
+<div class="plan-card"><div class="plan-name">Royal</div><div class="plan-amount">₦15,000</div><div class="plan-info">14 Days | Return ₦45,000 | Profit ₦30,000</div><button class="btn" onclick="openPayModal(15000,'Royal',14,30000)">👑 Pay ₦15,000</button></div>
 </div></div>
-<div id="withdrawPage" class="page"><div class="withdraw-head"><h2>Balance</h2><h1>₦<span id="withdrawBalance">1000.00</span></h1></div><div class="container"><div style="display:flex;gap:10px"><button id="tabWithdraw" class="btn" onclick="switchTab('withdraw')" style="flex:1">Withdraw</button><button id="tabDeposit" class="btn btn-ghost" onclick="switchTab('deposit')" style="flex:1">Deposit</button></div><div id="withdrawTab"><div class="card" id="savedCard" style="display:none"><div id="savedDisplay"></div></div><div class="card"><div class="input-group"><label>Amount</label><input type="number" id="withdrawAmount" placeholder="Min 7000"></div><div class="input-group"><label>Account No</label><input type="text" id="withdrawAccount" maxlength="10"></div><div class="input-group"><label>Name</label><input type="text" id="withdrawName"></div><div class="input-group"><label>Bank</label><select id="withdrawBank"><option>MoMo</option><option>OPay</option></select></div><label><input type="checkbox" id="saveCheck" checked style="width:auto"> Save</label><button class="btn btn-red" onclick="withdraw()">Withdraw</button></div></div><div id="depositTab" style="display:none"><div class="card"><h3 style="text-align:center;color:var(--gold)">Deposit</h3><div class="account-box"><p>MoMo PSB - EKEIGBO UGWUOKE</p><button id="showAccBtn" onclick="showAcc()" style="background:var(--gold);color:#000;border:none;padding:10px 18px;border-radius:8px;font-weight:800;margin-top:10px">👁️ Show 0286297016</button><p id="hiddenAcc" style="display:none;margin-top:12px;font-size:18px">0286297016 <button onclick="copyAcc()" style="background:var(--green);border:none;padding:4px 8px;border-radius:6px">Copy</button></p></div></div></div></div></div>
-<div id="historyPage" class="page"><div class="container"><h2 class="section-title">History + Timers</h2><div id="historyList"></div></div></div>
-<div id="referralPage" class="page"><div class="container"><h2 class="section-title">Referral</h2><div class="card" style="background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#000"><div id="refCodeBox" style="background:#000;color:var(--gold);padding:16px;border-radius:10px;text-align:center;font-weight:800"></div><div id="refLinkBox" style="background:var(--card2);padding:12px;border-radius:10px;font-size:12px;word-break:break-all;color:#fff;margin-top:10px"></div></div><div class="card"><h3>🏆 Top Referrers Leaderboard</h3><div id="leaderboard"></div></div></div></div>
+<div id="withdrawPage" class="page"><div class="withdraw-head"><h2>Balance</h2><h1>₦<span id="withdrawBalance">1000.00</span></h1></div><div class="container"><div style="display:flex;gap:10px"><button class="btn" onclick="switchTab('withdraw')" style="flex:1">Withdraw</button><button class="btn btn-ghost" onclick="switchTab('deposit')" style="flex:1">Deposit</button></div><div id="withdrawTab"><div class="card" id="savedCard" style="display:none"><div id="savedDisplay"></div></div><div class="card"><div class="input-group"><label>Amount</label><input type="number" id="withdrawAmount" placeholder="Min 7000"></div><div class="input-group"><label>Account No</label><input type="text" id="withdrawAccount" maxlength="10"></div><div class="input-group"><label>Name</label><input type="text" id="withdrawName"></div><div class="input-group"><label>Bank</label><select id="withdrawBank"><option>MoMo</option><option>OPay</option></select></div><label><input type="checkbox" id="saveCheck" checked style="width:auto"> Save</label><button class="btn btn-red" onclick="withdraw()">Withdraw</button></div></div><div id="depositTab" style="display:none"><div class="card"><h3 style="text-align:center;color:var(--gold)">Deposit</h3><div class="account-box"><p>MoMo PSB - EKEIGBO UGWUOKE</p><button id="showAccBtn" onclick="showAcc()" style="background:var(--gold);color:#000;border:none;padding:10px 18px;border-radius:8px;font-weight:800;margin-top:10px">👁️ Show 0286297016</button><p id="hiddenAcc" style="display:none;margin-top:12px;font-size:18px">0286297016 <button onclick="copyAcc()" style="background:var(--green);border:none;padding:4px 8px;border-radius:6px">Copy</button></p></div></div></div></div></div>
+<div id="historyPage" class="page"><div class="container"><h2 class="section-title">History</h2><div id="historyList"></div></div></div>
+<div id="referralPage" class="page"><div class="container"><h2 class="section-title">Referral</h2><div class="card" style="background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#000"><div id="refCodeBox" style="background:#000;color:var(--gold);padding:16px;border-radius:10px;text-align:center;font-weight:800"></div><div id="refLinkBox" style="background:var(--card2);padding:12px;border-radius:10px;font-size:12px;word-break:break-all;color:#fff;margin-top:10px"></div></div><div class="card"><h3>🏆 Leaderboard</h3><div id="leaderboard"></div></div></div></div>
 
-<!-- ADMIN PAGE - UPDATED WITH ADD/REDUCE BALANCE -->
 <div id="adminPage" class="page"><div class="container">
-<h2 class="section-title">🛡️ Admin - 0286297016</h2>
-
-<!-- NEW BALANCE CONTROL - ANY AMOUNT WITH KEYBOARD -->
-<div class="card" style="border:2px solid var(--gold);background:linear-gradient(145deg,#171922,#1a1d28)">
-<h3 style="color:var(--gold)">💰 Balance Control - Add or Reduce Any Amount</h3>
-
-<div class="input-group">
-<label>👤 Enter User Email - Keyboard go show</label>
-<input type="text" id="addBalEmail" placeholder="Type email e.g stephen@gmail.com" onkeyup="findUserBalance()" inputmode="email">
+<h2 class="section-title">🛡️ Admin Panel</h2>
+<div class="card">
+<h3>💰 Add / Reduce Balance - Any Amount</h3>
+<div class="input-group"><label>User Email - Keyboard go show</label><input type="text" id="addBalEmail" placeholder="Type email - nnamdistephenchinedu@gmail.com" onkeyup="findUserBalance()" inputmode="email"></div>
+<div id="userFoundBox" style="display:none;background:var(--card2);padding:14px;border-radius:12px;margin:10px 0;border:1px solid var(--gold)">
+<b id="foundName"></b><br><small id="foundEmail"></small><br><b style="color:var(--gold)">Balance: ₦<span id="foundBalance">0</span></b>
 </div>
-
-<div id="userFoundBox" style="display:none;background:#08090d;padding:16px;border-radius:14px;margin:12px 0;border:2px solid var(--gold)">
-<div style="display:flex;justify-content:space-between;align-items:center">
-<div>
-<b id="foundName" style="font-size:16px"></b><br>
-<small id="foundEmail" style="color:var(--text2)"></small>
-</div>
-<div style="text-align:right">
-<span style="font-size:11px;color:var(--text2)">CURRENT BALANCE</span><br>
-<span style="color:var(--gold);font-weight:800;font-size:20px">₦<span id="foundBalance">0</span></span>
-</div>
-</div>
-</div>
-
-<div class="input-group">
-<label>💵 Amount - Type any amount you want (keyboard go show)</label>
-<input type="number" id="addBalAmount" placeholder="Type any amount - e.g 1000, 5000, 20000" inputmode="numeric" pattern="[0-9]*">
-</div>
-
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-<button class="btn btn-green" onclick="adminAddBalance()" style="margin-top:0">➕ ADD MONEY</button>
-<button class="btn btn-red" onclick="adminReduceBalance()" style="margin-top:0">➖ REDUCE MONEY</button>
-</div>
-
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin-top:12px">
-<button onclick="quickAdd(1000)" style="background:#1a1c25;border:1px solid var(--gold);color:var(--gold);padding:8px;border-radius:8px;font-weight:800;font-size:12px">+1k</button>
-<button onclick="quickAdd(5000)" style="background:#1a1c25;border:1px solid var(--gold);color:var(--gold);padding:8px;border-radius:8px;font-weight:800;font-size:12px">+5k</button>
-<button onclick="quickAdd(10000)" style="background:#1a1c25;border:1px solid var(--gold);color:var(--gold);padding:8px;border-radius:8px;font-weight:800;font-size:12px">+10k</button>
-<button onclick="quickAdd(50000)" style="background:#1a1c25;border:1px solid var(--gold);color:var(--gold);padding:8px;border-radius:8px;font-weight:800;font-size:12px">+50k</button>
-</div>
-
+<div class="input-group"><label>Amount - Type any amount, keyboard go show</label><input type="number" id="addBalAmount" placeholder="e.g 5000, 10000, 50000" inputmode="numeric"></div>
+<button class="btn btn-green" onclick="adminAddBalance()">➕ ADD MONEY</button>
+<button class="btn btn-red" onclick="adminReduceBalance()">➖ REDUCE MONEY</button>
 <div id="allUsersListAdmin" style="margin-top:15px"></div>
 </div>
-
-<div class="card"><h3>Users: <span id="adminTotalUsers">0</span></h3></div>
+<div class="card"><h3>Total Users: <span id="adminTotalUsers">0</span></h3></div>
 <h3 style="margin:20px">Pending Withdraw: <span id="pendingCount">0</span></h3><div id="adminWithdrawList"></div>
-<h3 style="margin:20px">Pending Deposits: <span id="pendingDepCount">0</span></h3><div id="adminDepositList"></div><div id="adminUserList"></div>
+<h3 style="margin:20px">Pending Deposits: <span id="pendingDepCount">0</span></h3><div id="adminDepositList"></div>
 </div></div>
 
 <div id="profilePage" class="page"><div class="container"><h2 class="section-title">Profile</h2><div class="card" style="text-align:center"><div style="font-size:50px;background:var(--gold);color:#000;width:70px;height:70px;border-radius:50%;margin:0 auto;line-height:70px;font-weight:800" id="profileAvatar">G</div><h3 id="profileName"></h3><p id="profileEmail"></p><button class="btn btn-red" onclick="logout()">Logout</button></div></div></div>
 <div class="nav"><button onclick="showPage('homePage')" class="active"><div>🏠</div><span>Home</span></button><button onclick="showPage('marketPage')"><div>📊</div><span>Market</span></button><button onclick="showPage('investPage')"><div>💰</div><span>Invest</span></button><button onclick="showPage('withdrawPage')"><div>💳</div><span>Withdraw</span></button><button onclick="showPage('historyPage')"><div>📈</div><span>History</span></button><button onclick="showPage('referralPage')"><div>👥</div><span>Referral</span></button><button id="adminNavBtn" onclick="openAdmin()" style="display:none"><div>🛡️</div><span>Admin</span><span class="badge" id="adminBadge" style="display:none">0</span></button><button onclick="showPage('profilePage')"><div>👤</div><span>Profile</span></button></div>
 </div>
-
 <script>
 const BASE_URL="https://kingcoinsinvesment.github.io/Victor-/";
 const OPAY_NUM="0286297016";const OPAY_BANK="MoMo PSB";const OPAY_NAME="EKEIGBO UGWUOKE";
-const USDT_ADDR="TQa2zYourUSDT";const ADMIN_EMAIL="admin@king.com";const ADMIN_CODE="KING123";
+const ADMIN_EMAIL="admin@king.com";const ADMIN_CODE="KING123";
 let currentUser=JSON.parse(localStorage.getItem('kingUser'))||null;let isAdmin=localStorage.getItem('isAdmin')==='true';
 let balance=parseFloat(localStorage.getItem('kingBalance'))||1000;let allUsers=JSON.parse(localStorage.getItem('allKingUsers'))||[];
 let transactions=JSON.parse(localStorage.getItem('kingTransactions'))||[];let withdrawals=JSON.parse(localStorage.getItem('kingWithdrawals'))||[];let deposits=JSON.parse(localStorage.getItem('kingDeposits'))||[];let savedAccount=JSON.parse(localStorage.getItem('kingSaved'))||null;
@@ -154,177 +114,107 @@ function copyAcc(){navigator.clipboard.writeText(OPAY_NUM);showPopup('Copied',OP
 function openPayModal(a,p,d,pr){curInvestAmount=a;curInvestPlan=p;curInvestDays=d;curInvestProfit=pr;proofBase64='';document.getElementById('payPlanName').innerText=p+' - ₦'+a.toLocaleString();document.getElementById('payModal').style.display='flex';document.getElementById('payDetails').style.display='none';}
 function selectPay(method){
  curPayMethod=method;document.getElementById('payDetails').style.display='block';const box=document.getElementById('payBox');
- if(method==='card'){
-  box.innerHTML=`<input id="cardNum" placeholder="Card Number 16 digits" maxlength="16" style="width:100%;padding:12px;margin:5px 0;background:#fff;border:1px solid #ccc;border-radius:8px;color:#000"><div style="display:flex;gap:8px"><input id="cardExp" placeholder="MM/YY" style="flex:1;padding:12px;border:1px solid #ccc;border-radius:8px"><input id="cardCvv" placeholder="CVV" style="flex:1;padding:12px;border:1px solid #ccc;border-radius:8px"></div><button class="btn" onclick="confirmPay()">Submit Card - Pending ⏳</button>`;
- }else if(method==='momo'){
-  box.innerHTML=`<div style="text-align:left;background:#fff;padding:10px;border-radius:10px"><p style="text-align:center;font-size:12px"><b>${OPAY_BANK} - ${OPAY_NUM}</b><br><b style="color:green">₦${curInvestAmount.toLocaleString()}</b><br><small>Recipient: ${OPAY_NAME}</small></p><hr style="margin:10px 0"><p style="font-size:11px;color:#000;text-align:center">Your details - STEPHEN CHINEDU NNAMDI example</p><input id="momoSenderAcc" value="7079931769" placeholder="Your Account Number" maxlength="10" style="width:100%;padding:12px;margin:4px 0;background:#fff;border:1px solid #ccc;border-radius:8px;color:#000"><input id="momoSenderName" value="STEPHEN CHINEDU NNAMDI" placeholder="Your Account Name" style="width:100%;padding:12px;margin:4px 0;background:#fff;border:1px solid #ccc;border-radius:8px;color:#000"><select id="momoSenderBank" style="width:100%;padding:12px;margin:4px 0;background:#fff;border:1px solid #ccc;border-radius:8px;color:#000"><option>Opay</option><option selected>Opay</option><option>MoMo PSB</option><option>PalmPay</option></select><input id="momoRef" placeholder="SessionID" style="width:100%;padding:12px;margin:4px 0;background:#fff;border:1px solid #ccc;border-radius:8px;color:#000"><label style="font-size:11px;color:#000;margin-top:8px;display:block">📸 Upload Proof</label><input type="file" id="proofFile" accept="image/*" onchange="handleProof(this)" style="width:100%;padding:8px;margin:4px 0;background:#fff;border:1px solid #ccc;border-radius:8px;color:#000"><img id="proofPreview" style="display:none;width:100%;max-height:150px;border-radius:8px;margin-top:8px"><button class="btn" onclick="confirmPay()">Submit MoMo + Proof ⏳</button></div>`;
- }else if(method==='usdt'){
-  box.innerHTML=`<div style="text-align:left"><b>₿ USDT</b><br><small style="word-break:break-all;background:#000;color:#00c896;padding:8px;border-radius:8px;display:block;margin:8px 0">${USDT_ADDR}</small><input id="usdtTx" placeholder="TXID" style="width:100%;padding:10px;margin-top:8px;border:1px solid #ccc;border-radius:8px"><input type="file" id="proofFile" accept="image/*" onchange="handleProof(this)" style="width:100%;padding:8px;margin:4px 0;background:#fff;border:1px solid #ccc;border-radius:8px"><img id="proofPreview" style="display:none;width:100%;max-height:150px;border-radius:8px;margin-top:8px"><button class="btn" onclick="confirmPay()">Submit USDT ⏳</button></div>`;
+ if(method==='momo'){
+  box.innerHTML=`<div style="text-align:left;background:#fff;padding:10px;border-radius:10px"><p style="text-align:center;font-size:12px"><b>${OPAY_BANK} - ${OPAY_NUM}</b><br><b style="color:green">₦${curInvestAmount.toLocaleString()}</b><br><small>${OPAY_NAME}</small></p><input id="momoSenderAcc" value="7079931769" placeholder="Your Account" style="width:100%;padding:12px;margin:4px 0;background:#fff;border:1px solid #ccc;border-radius:8px;color:#000"><input id="momoSenderName" value="STEPHEN CHINEDU NNAMDI" placeholder="Your Name" style="width:100%;padding:12px;margin:4px 0;background:#fff;border:1px solid #ccc;border-radius:8px;color:#000"><input id="momoRef" placeholder="SessionID" style="width:100%;padding:12px;margin:4px 0;background:#fff;border:1px solid #ccc;border-radius:8px;color:#000"><input type="file" id="proofFile" accept="image/*" onchange="handleProof(this)" style="width:100%;padding:8px;margin:4px 0;background:#fff;border:1px solid #ccc;border-radius:8px"><img id="proofPreview" style="display:none;width:100%;max-height:150px;border-radius:8px;margin-top:8px"><button class="btn" onclick="confirmPay()">Submit MoMo + Proof</button></div>`;
  }
 }
 function handleProof(input){const file=input.files[0];if(!file)return;const reader=new FileReader();reader.onload=function(e){proofBase64=e.target.result;document.getElementById('proofPreview').src=proofBase64;document.getElementById('proofPreview').style.display='block';};reader.readAsDataURL(file);}
-
-// NEW BALANCE FUNCTIONS - ANY AMOUNT WITH KEYBOARD
+function confirmPay(){
+ loadAllData();
+ const senderAcc=document.getElementById('momoSenderAcc')?.value||'';const senderName=document.getElementById('momoSenderName')?.value||'';const ref=document.getElementById('momoRef')?.value||'';
+ if(!proofBase64){showPopup('Error','Upload proof');return;}
+ deposits.push({id:Date.now().toString(),email:currentUser.email,name:currentUser.name,amount:curInvestAmount,senderName:senderName,senderAccount:senderAcc,ref:ref,method:`MoMo to ${OPAY_NUM}`,status:'pending',plan:curInvestPlan,planAmount:curInvestAmount,planDays:curInvestDays,planProfit:curInvestProfit,date:new Date().toLocaleString(),proof:proofBase64});localStorage.setItem('kingDeposits',JSON.stringify(deposits));document.getElementById('payModal').style.display='none';showPopup('Pending','MoMo pending admin');updateAdminButton();
+}
 function findUserBalance(){
  loadAllData();
- const email = document.getElementById('addBalEmail').value.trim().toLowerCase();
- const box = document.getElementById('userFoundBox');
- if(!email || email.length < 3){ box.style.display='none'; return; }
- let user = allUsers.find(u=>u.email.toLowerCase().includes(email));
+ const email=document.getElementById('addBalEmail').value.trim().toLowerCase();
+ const box=document.getElementById('userFoundBox');
+ if(!email||email.length<3){box.style.display='none';return;}
+ let user=allUsers.find(u=>u.email.toLowerCase().includes(email));
  if(user){
-   document.getElementById('foundName').innerText = user.name;
-   document.getElementById('foundEmail').innerText = user.email;
-   document.getElementById('foundBalance').innerText = Number(user.balance||0).toLocaleString();
+   document.getElementById('foundName').innerText=user.name;
+   document.getElementById('foundEmail').innerText=user.email;
+   document.getElementById('foundBalance').innerText=Number(user.balance||0).toLocaleString();
    box.style.display='block';
- } else {
-   box.style.display='none';
- }
+ }else{box.style.display='none';}
 }
-function quickAdd(amt){ document.getElementById('addBalAmount').value = amt; }
-
 function adminAddBalance(){
  loadAllData();
- const emailInput = document.getElementById('addBalEmail').value.trim();
- const amt = parseFloat(document.getElementById('addBalAmount').value);
- if(!emailInput ||!amt){ showPopup('Error','Enter email and amount - any amount you want!'); return; }
- let userIndex = allUsers.findIndex(u=>u.email.toLowerCase()===emailInput.toLowerCase());
- if(userIndex===-1){ userIndex = allUsers.findIndex(u=>u.email.toLowerCase().includes(emailInput.toLowerCase())); }
- if(userIndex===-1){ showPopup('Not Found','User no dey: '+emailInput); return; }
- let oldBal = allUsers[userIndex].balance||0;
- allUsers[userIndex].balance = oldBal + amt;
- allUsers[userIndex].totalEarned = (allUsers[userIndex].totalEarned||0)+amt;
+ const emailInput=document.getElementById('addBalEmail').value.trim();
+ const amt=parseFloat(document.getElementById('addBalAmount').value);
+ if(!emailInput||!amt){showPopup('Error','Enter email and amount');return;}
+ let idx=allUsers.findIndex(u=>u.email.toLowerCase()===emailInput.toLowerCase());
+ if(idx===-1) idx=allUsers.findIndex(u=>u.email.toLowerCase().includes(emailInput.toLowerCase()));
+ if(idx===-1){showPopup('Not Found','User no dey');return;}
+ allUsers[idx].balance=(allUsers[idx].balance||0)+amt;
  localStorage.setItem('allKingUsers',JSON.stringify(allUsers));
- if(currentUser && currentUser.email.toLowerCase()===allUsers[userIndex].email.toLowerCase()){
-   currentUser.balance = allUsers[userIndex].balance;
-   balance = currentUser.balance;
-   localStorage.setItem('kingUser',JSON.stringify(currentUser));
-   localStorage.setItem('kingBalance',balance);
- }
- addTransaction(allUsers[userIndex].email,'admin_credit',amt,`Admin ADD +₦${amt} - Old: ₦${oldBal} New: ₦${allUsers[userIndex].balance}`);
- document.getElementById('foundBalance').innerText = Number(allUsers[userIndex].balance).toLocaleString();
+ if(currentUser&&currentUser.email===allUsers[idx].email){currentUser.balance=allUsers[idx].balance;balance=currentUser.balance;localStorage.setItem('kingUser',JSON.stringify(currentUser));localStorage.setItem('kingBalance',balance);}
+ document.getElementById('foundBalance').innerText=Number(allUsers[idx].balance).toLocaleString();
  document.getElementById('addBalAmount').value='';
- showPopup('✅ Added!',`₦${amt.toLocaleString()} ADDED!\n${allUsers[userIndex].name}\nOld: ₦${oldBal.toLocaleString()} → New: ₦${allUsers[userIndex].balance.toLocaleString()}`);
- loadAdmin(); updateUI();
+ showPopup('✅ Added','₦'+amt.toLocaleString()+' added to '+allUsers[idx].name+' - New: ₦'+allUsers[idx].balance.toLocaleString());loadAdmin();updateUI();
 }
-
 function adminReduceBalance(){
  loadAllData();
- const emailInput = document.getElementById('addBalEmail').value.trim();
- const amt = parseFloat(document.getElementById('addBalAmount').value);
- if(!emailInput ||!amt){ showPopup('Error','Enter email and amount to reduce'); return; }
- let userIndex = allUsers.findIndex(u=>u.email.toLowerCase()===emailInput.toLowerCase());
- if(userIndex===-1){ userIndex = allUsers.findIndex(u=>u.email.toLowerCase().includes(emailInput.toLowerCase())); }
- if(userIndex===-1){ showPopup('Not Found','User no dey: '+emailInput); return; }
- let oldBal = allUsers[userIndex].balance||0;
- if(oldBal < amt){ showPopup('Error',`User get only ₦${oldBal} - You no fit reduce ₦${amt}`); return; }
- allUsers[userIndex].balance = oldBal - amt;
+ const emailInput=document.getElementById('addBalEmail').value.trim();
+ const amt=parseFloat(document.getElementById('addBalAmount').value);
+ if(!emailInput||!amt){showPopup('Error','Enter email and amount');return;}
+ let idx=allUsers.findIndex(u=>u.email.toLowerCase()===emailInput.toLowerCase());
+ if(idx===-1) idx=allUsers.findIndex(u=>u.email.toLowerCase().includes(emailInput.toLowerCase()));
+ if(idx===-1){showPopup('Not Found','User no dey');return;}
+ if((allUsers[idx].balance||0)<amt){showPopup('Error','Balance too small');return;}
+ allUsers[idx].balance=(allUsers[idx].balance||0)-amt;
  localStorage.setItem('allKingUsers',JSON.stringify(allUsers));
- if(currentUser && currentUser.email.toLowerCase()===allUsers[userIndex].email.toLowerCase()){
-   currentUser.balance = allUsers[userIndex].balance;
-   balance = currentUser.balance;
-   localStorage.setItem('kingUser',JSON.stringify(currentUser));
-   localStorage.setItem('kingBalance',balance);
- }
- addTransaction(allUsers[userIndex].email,'admin_debit',amt,`Admin REDUCE -₦${amt} - Old: ₦${oldBal} New: ₦${allUsers[userIndex].balance}`);
- document.getElementById('foundBalance').innerText = Number(allUsers[userIndex].balance).toLocaleString();
+ if(currentUser&&currentUser.email===allUsers[idx].email){currentUser.balance=allUsers[idx].balance;balance=currentUser.balance;localStorage.setItem('kingUser',JSON.stringify(currentUser));localStorage.setItem('kingBalance',balance);}
+ document.getElementById('foundBalance').innerText=Number(allUsers[idx].balance).toLocaleString();
  document.getElementById('addBalAmount').value='';
- showPopup('✅ Reduced!',`₦${amt.toLocaleString()} REDUCED!\n${allUsers[userIndex].name}\nOld: ₦${oldBal.toLocaleString()} → New: ₦${allUsers[userIndex].balance.toLocaleString()}`);
- loadAdmin(); updateUI();
+ showPopup('✅ Reduced','₦'+amt.toLocaleString()+' removed - New: ₦'+allUsers[idx].balance.toLocaleString());loadAdmin();updateUI();
 }
-
 function loadAllUsersForAdmin(){
  loadAllData();
  const div=document.getElementById('allUsersListAdmin');
  if(!div)return;
- div.innerHTML = `<h4 style="margin:10px 0;font-size:12px;color:var(--text2)">All Users - Click Select</h4>` + allUsers.map(u=>`
- <div style="display:flex;justify-content:space-between;align-items:center;background:var(--card2);padding:10px;border-radius:10px;margin:5px 0">
- <div><b>${u.name}</b><br><small>${u.email} - <b style="color:var(--gold)">₦${Number(u.balance||0).toLocaleString()}</b></small></div>
- <button onclick="document.getElementById('addBalEmail').value='${u.email}';findUserBalance()" style="background:var(--gold);border:none;padding:6px 10px;border-radius:6px;font-weight:800;font-size:11px">Select</button>
- </div>
- `).join('');
+ div.innerHTML=allUsers.map(u=>`<div style="display:flex;justify-content:space-between;align-items:center;background:var(--card2);padding:10px;border-radius:10px;margin:5px 0"><div><b>${u.name}</b><br><small>${u.email} - ₦${Number(u.balance||0).toLocaleString()}</small></div><button onclick="document.getElementById('addBalEmail').value='${u.email}';findUserBalance()" style="background:var(--gold);border:none;padding:5px 8px;border-radius:6px;font-weight:800;font-size:10px">Select</button></div>`).join('');
 }
-
 function loadSavedAccount(){if(savedAccount){document.getElementById('savedCard').style.display='block';document.getElementById('savedDisplay').innerHTML='<b>'+savedAccount.bank+'</b><br>'+savedAccount.number+'<br>'+savedAccount.acctName;document.getElementById('withdrawAccount').value=savedAccount.number;document.getElementById('withdrawName').value=savedAccount.acctName;document.getElementById('withdrawBank').value=savedAccount.bank;}}
 function openAdmin(){if(!currentUser||currentUser.email!==ADMIN_EMAIL){showPopup('Denied','Admin only');return;}if(!isAdmin){showAdminPopup();}else{showPage('adminPage');}}
 function checkAdminAccess(){if(document.getElementById('adminPopupPass').value===ADMIN_CODE){isAdmin=true;localStorage.setItem('isAdmin','true');closeAdminPopup();showPage('adminPage');loadAdmin();}else{showPopup('Error','Invalid');closeAdminPopup();}}
 function loadAllData(){allUsers=JSON.parse(localStorage.getItem('allKingUsers'))||[];transactions=JSON.parse(localStorage.getItem('kingTransactions'))||[];withdrawals=JSON.parse(localStorage.getItem('kingWithdrawals'))||[];deposits=JSON.parse(localStorage.getItem('kingDeposits'))||[];savedAccount=JSON.parse(localStorage.getItem('kingSaved'))||null;}
-function updateAdminButton(){const btn=document.getElementById('adminNavBtn');const badge=document.getElementById('adminBadge');loadAllData();if(currentUser && currentUser.email===ADMIN_EMAIL){btn.style.display='flex';const pendingCount=withdrawals.filter(w=>w.status==='pending').length+deposits.filter(d=>d.status==='pending').length;if(isAdmin && pendingCount>0){badge.style.display='flex';badge.innerText=pendingCount;}else{badge.style.display='none';}}else{btn.style.display='none';}}
-function checkInvestmentMaturity(){
- if(!currentUser)return;
- let updated=false;
- currentUser.investments=currentUser.investments||[];
- currentUser.investments.forEach(inv=>{
-  if(!inv.settled){
-   const endTime=inv.startTime + inv.days*24*60*60*1000;
-   if(Date.now()>=endTime){
-    inv.settled=true;
-    inv.settledDate=new Date().toLocaleString();
-    currentUser.balance+=inv.profit;
-    balance=currentUser.balance;
-    currentUser.totalEarned=(currentUser.totalEarned||0)+inv.profit;
-    updated=true;
-    addTransaction(currentUser.email,'profit',inv.profit,`Auto Profit: ${inv.plan} matured`);
-   }
-  }
- });
- if(updated){
-  let i=allUsers.findIndex(x=>x.email===currentUser.email);
-  if(i!==-1){allUsers[i]=currentUser;}
-  localStorage.setItem('allKingUsers',JSON.stringify(allUsers));
-  localStorage.setItem('kingUser',JSON.stringify(currentUser));
-  localStorage.setItem('kingBalance',balance);
-  showPopup('💰 Profit Credited!','Matured! Profit added');
- }
-}
-function getTimerText(inv){
- if(inv.settled)return '✅ Completed';
- const endTime=inv.startTime + inv.days*24*60*60*1000;
- const diff=endTime-Date.now();
- if(diff<=0)return '⏳ Ready';
- const days=Math.floor(diff/(1000*60*60*24));
- const hours=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
- return `⏱️ ${days}d ${hours}h`;
-}
-function loadActiveInvestments(){
- if(!currentUser)return;
- const list=document.getElementById('activeInvestments');
- const invs=currentUser.investments||[];
- if(invs.length===0){list.innerHTML='<p style="color:var(--text2);font-size:12px;margin-top:8px">No active - Start ₦3,000</p>';return;}
- list.innerHTML=invs.map(inv=>`<div class="card" style="padding:14px;margin:8px 0"><div style="display:flex;justify-content:space-between"><b>${inv.plan} - ₦${inv.amount}</b><span class="timer-badge">${getTimerText(inv)}</span></div><small style="color:var(--text2)">Profit: ₦${inv.profit}</small></div>`).join('');
-}
+function updateAdminButton(){const btn=document.getElementById('adminNavBtn');const badge=document.getElementById('adminBadge');loadAllData();if(currentUser&&currentUser.email===ADMIN_EMAIL){btn.style.display='flex';const pendingCount=withdrawals.filter(w=>w.status==='pending').length+deposits.filter(d=>d.status==='pending').length;if(isAdmin&&pendingCount>0){badge.style.display='flex';badge.innerText=pendingCount;}else{badge.style.display='none';}}else{btn.style.display='none';}}
+function checkInvestmentMaturity(){if(!currentUser)return;let updated=false;currentUser.investments=currentUser.investments||[];currentUser.investments.forEach(inv=>{if(!inv.settled){const endTime=inv.startTime+inv.days*24*60*60*1000;if(Date.now()>=endTime){inv.settled=true;currentUser.balance+=inv.profit;balance=currentUser.balance;currentUser.totalEarned=(currentUser.totalEarned||0)+inv.profit;updated=true;}}});if(updated){let i=allUsers.findIndex(x=>x.email===currentUser.email);if(i!==-1){allUsers[i]=currentUser;}localStorage.setItem('allKingUsers',JSON.stringify(allUsers));localStorage.setItem('kingUser',JSON.stringify(currentUser));localStorage.setItem('kingBalance',balance);}}
+function getTimerText(inv){if(inv.settled)return '✅ Completed';const endTime=inv.startTime+inv.days*24*60*60*1000;const diff=endTime-Date.now();if(diff<=0)return '⏳ Ready';const days=Math.floor(diff/(1000*60*60*24));const hours=Math.floor((diff%(1000*60*60*24))/(1000*60*60));return `⏱️ ${days}d ${hours}h`;}
+function loadActiveInvestments(){if(!currentUser)return;const list=document.getElementById('activeInvestments');const invs=currentUser.investments||[];if(invs.length===0){list.innerHTML='<p style="color:var(--text2);font-size:12px;margin-top:8px">No active</p>';return;}list.innerHTML=invs.map(inv=>`<div class="card" style="padding:14px;margin:8px 0"><div style="display:flex;justify-content:space-between"><b>${inv.plan} - ₦${inv.amount}</b><span class="timer-badge">${getTimerText(inv)}</span></div></div>`).join('');}
 function init(){loadAllData();if(currentUser){document.getElementById('authScreen').style.display='none';document.getElementById('app').style.display='block';checkInvestmentMaturity();updateUI();loadMarket();updateAdminButton();loadSavedAccount();loadActiveInvestments();showPage('homePage');startLiveAlerts();setInterval(()=>{checkInvestmentMaturity();loadActiveInvestments();updateUI();},60000);}else{document.getElementById('authScreen').style.display='flex';document.getElementById('app').style.display='none';}}
-function showPage(id){if(id==='adminPage' && (!isAdmin ||!currentUser || currentUser.email!==ADMIN_EMAIL)){showPopup('Denied','Admin only');return;}loadAllData();document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');if(id==='historyPage') loadHistory();if(id==='adminPage') loadAdmin();if(id==='marketPage') loadMarket();if(id==='withdrawPage') loadSavedAccount();if(id==='homePage') loadActiveInvestments();if(id==='referralPage') loadLeaderboard();}
+function showPage(id){if(id==='adminPage'&&(!isAdmin||!currentUser||currentUser.email!==ADMIN_EMAIL)){showPopup('Denied','Admin only');return;}loadAllData();document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');if(id==='historyPage') loadHistory();if(id==='adminPage') loadAdmin();if(id==='marketPage') loadMarket();if(id==='withdrawPage') loadSavedAccount();if(id==='homePage') loadActiveInvestments();if(id==='referralPage') loadLeaderboard();}
 function toggleSignup(){const box=document.getElementById('signupBox');box.style.display=box.style.display==='none'?'block':'none';}
 function generateRefCode(n){return "KING-"+n.toUpperCase().replace(/\s/g,'').substring(0,8)+Math.floor(Math.random()*100);}
 function signup(){const n=document.getElementById('signupName').value;const e=document.getElementById('signupEmail').value;const p=document.getElementById('signupPass').value;if(!n||!e||!p){showPopup('Error','Fill all');return;}loadAllData();if(allUsers.find(u=>u.email===e)){showPopup('Error','Exists');return;}const ref=generateRefCode(n);const user={name:n,email:e,pass:p,refCode:ref,balance:1000,tg:false,investments:[],totalInvested:0,totalEarned:0,level1:[],lastShare:0};allUsers.push(user);localStorage.setItem('allKingUsers',JSON.stringify(allUsers));currentUser=user;balance=user.balance;isAdmin=user.email===ADMIN_EMAIL;localStorage.setItem('kingUser',JSON.stringify(currentUser));localStorage.setItem('kingBalance',balance);localStorage.setItem('isAdmin',isAdmin);init();}
-function login(){const e=document.getElementById('loginEmail').value;const p=document.getElementById('loginPass').value;loadAllData();const u=allUsers.find(x=>x.email===e && x.pass===p);if(u){currentUser=u;balance=u.balance;isAdmin=u.email===ADMIN_EMAIL;localStorage.setItem('kingUser',JSON.stringify(u));localStorage.setItem('kingBalance',balance);localStorage.setItem('isAdmin',isAdmin);init();}else{showPopup('Error','Invalid');}}
+function login(){const e=document.getElementById('loginEmail').value;const p=document.getElementById('loginPass').value;loadAllData();const u=allUsers.find(x=>x.email===e&&x.pass===p);if(u){currentUser=u;balance=u.balance;isAdmin=u.email===ADMIN_EMAIL;localStorage.setItem('kingUser',JSON.stringify(u));localStorage.setItem('kingBalance',balance);localStorage.setItem('isAdmin',isAdmin);init();}else{showPopup('Error','Invalid');}}
 function logout(){localStorage.removeItem('kingUser');localStorage.setItem('isAdmin','false');currentUser=null;isAdmin=false;init();}
 function updateUI(){if(!currentUser)return;document.getElementById('homeUserName').innerText=currentUser.name;document.getElementById('profileName').innerText=currentUser.name;document.getElementById('profileEmail').innerText=currentUser.email;document.getElementById('profileAvatar').innerText=currentUser.name[0].toUpperCase();const REF=`${BASE_URL}?ref=${currentUser.refCode}`;document.getElementById('refCodeBox').innerText=currentUser.refCode;document.getElementById('refLinkBox').innerText=REF;document.getElementById('balance').innerText=balance.toFixed(2);document.getElementById('withdrawBalance').innerText=balance.toFixed(2);document.getElementById('totalInvested').innerText=currentUser.totalInvested||0;document.getElementById('totalEarned').innerText=currentUser.totalEarned||0;}
 function loadMarket(){document.getElementById('marketList').innerHTML=marketCoins.map(c=>`<div class="card"><b>${c.name}</b> - ₦${c.price.toLocaleString()}</div>`).join('');}
 function switchTab(tab){if(tab==='withdraw'){document.getElementById('withdrawTab').style.display='block';document.getElementById('depositTab').style.display='none';}else{document.getElementById('withdrawTab').style.display='none';document.getElementById('depositTab').style.display='block';}}
-function withdraw(){const amt=parseFloat(document.getElementById('withdrawAmount').value);const acc=document.getElementById('withdrawAccount').value;const name=document.getElementById('withdrawName').value;const bank=document.getElementById('withdrawBank').value;if(amt<7000){showPopup('Error','Min 7000');return;}if(acc.length!==10){showPopup('Error','Invalid');return;}if(balance<amt){showPopup('Error','Insufficient');return;}if(document.getElementById('saveCheck').checked){savedAccount={bank,number:acc,acctName:name};localStorage.setItem('kingSaved',JSON.stringify(savedAccount));}balance-=amt;currentUser.balance=balance;loadAllData();withdrawals.push({id:Date.now().toString(),email:currentUser.email,name:currentUser.name,amount:amt,account:acc,accountName:name,bank:bank,status:'pending',date:new Date().toLocaleString()});localStorage.setItem('kingWithdrawals',JSON.stringify(withdrawals));let i=allUsers.findIndex(x=>x.email===currentUser.email);if(i!==-1){allUsers[i]=currentUser;}localStorage.setItem('allKingUsers',JSON.stringify(allUsers));localStorage.setItem('kingUser',JSON.stringify(currentUser));localStorage.setItem('kingBalance',balance);addTransaction(currentUser.email,'withdraw',amt,`Pending to ${acc}`);showPopup('Submitted',`₦${amt} pending`);updateUI();updateAdminButton();}
-function loadAdmin(){if(!currentUser || currentUser.email!==ADMIN_EMAIL ||!isAdmin)return;loadAllData();document.getElementById('adminTotalUsers').innerText=allUsers.length;let pending=withdrawals.filter(w=>w.status==='pending');document.getElementById('pendingCount').innerText=pending.length;document.getElementById('adminWithdrawList').innerHTML=pending.map(w=>`<div class="admin-card"><b>${w.name}</b><br>₦${w.amount}<br>${w.account} (${w.bank})<br><button class="btn btn-green" onclick="approveWithdraw('${w.id}')">Approve</button><button class="btn btn-red" onclick="rejectWithdraw('${w.id}')">Reject</button></div>`).join('')||'<p>No pending</p>';let pendingDep=deposits.filter(d=>d.status==='pending');document.getElementById('pendingDepCount').innerText=pendingDep.length;document.getElementById('adminDepositList').innerHTML=pendingDep.map(d=>`<div class="admin-card" style="${d.method?.includes('WRONG')?'border:2px solid red;background:#2a0f0f':''}"><b>${d.name} - ${d.method}</b><br>₦${d.amount} - ${d.plan}<br>From: ${d.senderName||'N/A'} | ${d.senderAccount||''}<br>Ref: ${d.ref}<br>${d.proof?`<img src="${d.proof}" style="width:100%;max-height:200px;border-radius:10px;margin:8px 0"><br>`:''}<button class="btn btn-green" onclick="approveDeposit('${d.id}')">Approve & Start Timer</button><button class="btn btn-red" onclick="rejectDeposit('${d.id}')">Reject</button></div>`).join('')||'<p>No pending</p>';loadAllUsersForAdmin();}
+function withdraw(){const amt=parseFloat(document.getElementById('withdrawAmount').value);const acc=document.getElementById('withdrawAccount').value;if(amt<7000){showPopup('Error','Min 7000');return;}if(acc.length!==10){showPopup('Error','Invalid');return;}if(balance<amt){showPopup('Error','Insufficient');return;}balance-=amt;currentUser.balance=balance;loadAllData();withdrawals.push({id:Date.now().toString(),email:currentUser.email,name:currentUser.name,amount:amt,account:acc,status:'pending',date:new Date().toLocaleString()});localStorage.setItem('kingWithdrawals',JSON.stringify(withdrawals));let i=allUsers.findIndex(x=>x.email===currentUser.email);if(i!==-1){allUsers[i]=currentUser;}localStorage.setItem('allKingUsers',JSON.stringify(allUsers));localStorage.setItem('kingUser',JSON.stringify(currentUser));localStorage.setItem('kingBalance',balance);showPopup('Submitted',`₦${amt} pending`);updateUI();updateAdminButton();}
+function loadAdmin(){if(!currentUser||currentUser.email!==ADMIN_EMAIL||!isAdmin)return;loadAllData();document.getElementById('adminTotalUsers').innerText=allUsers.length;let pending=withdrawals.filter(w=>w.status==='pending');document.getElementById('pendingCount').innerText=pending.length;document.getElementById('adminWithdrawList').innerHTML=pending.map(w=>`<div class="admin-card"><b>${w.name}</b><br>₦${w.amount}<br>${w.account}<br><button class="btn btn-green" onclick="approveWithdraw('${w.id}')">Approve</button><button class="btn btn-red" onclick="rejectWithdraw('${w.id}')">Reject</button></div>`).join('')||'<p>No pending</p>';let pendingDep=deposits.filter(d=>d.status==='pending');document.getElementById('pendingDepCount').innerText=pendingDep.length;document.getElementById('adminDepositList').innerHTML=pendingDep.map(d=>`<div class="admin-card"><b>${d.name}</b><br>₦${d.amount} - ${d.plan}<br>${d.senderName||''}<br><button class="btn btn-green" onclick="approveDeposit('${d.id}')">Approve</button><button class="btn btn-red" onclick="rejectDeposit('${d.id}')">Reject</button></div>`).join('')||'<p>No pending</p>';loadAllUsersForAdmin();}
 function approveWithdraw(id){loadAllData();let w=withdrawals.find(x=>x.id===id);if(!w)return;w.status='approved';localStorage.setItem('kingWithdrawals',JSON.stringify(withdrawals));showPopup('Approved',`₦${w.amount}`);loadAdmin();updateAdminButton();}
 function rejectWithdraw(id){loadAllData();let w=withdrawals.find(x=>x.id===id);if(!w)return;w.status='rejected';let u=allUsers.find(x=>x.email===w.email);if(u){u.balance+=w.amount;}localStorage.setItem('allKingUsers',JSON.stringify(allUsers));localStorage.setItem('kingWithdrawals',JSON.stringify(withdrawals));showPopup('Rejected','Refunded');loadAdmin();updateAdminButton();}
-function approveDeposit(id){loadAllData();let d=deposits.find(x=>x.id===id);if(!d)return;d.status='approved';let u=allUsers.find(x=>x.email===d.email);if(u){if(d.plan){u.totalInvested=(u.totalInvested||0)+d.planAmount;u.investments=u.investments||[];u.investments.push({plan:d.plan,amount:d.planAmount,days:d.planDays,profit:d.planProfit,startTime:Date.now(),settled:false});addTransaction(d.email,'invest',d.planAmount,`APPROVED: ${d.plan}`);}else{u.balance+=d.amount;}}localStorage.setItem('allKingUsers',JSON.stringify(allUsers));localStorage.setItem('kingDeposits',JSON.stringify(deposits));showPopup('Approved',`₦${d.amount} approved!`);loadAdmin();updateAdminButton();}
+function approveDeposit(id){loadAllData();let d=deposits.find(x=>x.id===id);if(!d)return;d.status='approved';let u=allUsers.find(x=>x.email===d.email);if(u){u.totalInvested=(u.totalInvested||0)+d.planAmount;u.investments=u.investments||[];u.investments.push({plan:d.plan,amount:d.planAmount,days:d.planDays,profit:d.planProfit,startTime:Date.now(),settled:false});}localStorage.setItem('allKingUsers',JSON.stringify(allUsers));localStorage.setItem('kingDeposits',JSON.stringify(deposits));showPopup('Approved',`₦${d.amount}`);loadAdmin();updateAdminButton();}
 function rejectDeposit(id){loadAllData();let d=deposits.find(x=>x.id===id);if(!d)return;d.status='rejected';localStorage.setItem('kingDeposits',JSON.stringify(deposits));showPopup('Rejected','Wrong');loadAdmin();updateAdminButton();}
 function addTransaction(email,type,amount,desc){loadAllData();transactions.push({email:email,type:type,amount:amount,desc:desc,date:new Date().toLocaleString()});localStorage.setItem('kingTransactions',JSON.stringify(transactions));}
-function loadHistory(){loadAllData();const invs=currentUser.investments||[];let html=invs.map(inv=>`<div class="history-item" style="border-left:3px solid ${inv.settled?'#00c896':'#ffc107'}"><b>${inv.plan} - ₦${inv.amount}</b> <span class="timer-badge">${getTimerText(inv)}</span><br><small>Profit: ₦${inv.profit}</small></div>`).join('');html+=transactions.filter(t=>t.email===currentUser.email).reverse().map(t=>`<div class="history-item"><b>${t.type.toUpperCase()}</b> - ₦${t.amount}<br><small>${t.desc}<br>${t.date}</small></div>`).join('');document.getElementById('historyList').innerHTML=html||'<p>No transactions</p>';}
-function loadLeaderboard(){loadAllData();let sorted=[...allUsers].sort((a,b)=>(b.level1?.length||0)-(a.level1?.length||0)).slice(0,5);document.getElementById('leaderboard').innerHTML=sorted.map((u,i)=>`<div style="display:flex;justify-content:space-between;padding:10px;background:var(--card2);border-radius:10px;margin:6px 0"><span>${i===0?'👑':i+1}. ${u.name}</span><b style="color:var(--gold)">${u.level1?.length||0} invites</b></div>`).join('')||'<p>No referrals yet</p>';}
-function shareAndEarn(){const now=Date.now();if(currentUser.lastShare && now-currentUser.lastShare<86400000){showPopup('Limit','Come back later');return;}navigator.clipboard.writeText(document.getElementById('refLinkBox').innerText);balance+=100;currentUser.balance=balance;currentUser.lastShare=now;let i=allUsers.findIndex(x=>x.email===currentUser.email);if(i!==-1){allUsers[i]=currentUser;}localStorage.setItem('allKingUsers',JSON.stringify(allUsers));localStorage.setItem('kingUser',JSON.stringify(currentUser));localStorage.setItem('kingBalance',balance);addTransaction(currentUser.email,'referral',100,'Share Bonus');showPopup('Reward','₦100 added');updateUI();}
-function startLiveAlerts(){
- const names=['Chinedu','Emeka','Ada','Tolu','Blessing','John','Victor','Grace'];
- const amounts=['₦3,000','₦8,000','₦15,000'];
- setInterval(()=>{
-  const name=names[Math.floor(Math.random()*names.length)];
-  const amt=amounts[Math.floor(Math.random()*amounts.length)];
-  const el=document.getElementById('liveAlert');
-  document.getElementById('liveAlertText').innerText=`${name} just invested ${amt}`;
-  el.style.display='flex';
-  setTimeout(()=>{el.style.display='none';},4000);
- },8000);
-}
-if(allUsers.length===0){allUsers.push({name:"Admin",email:ADMIN_EMAIL,pass:"1234",refCode:"KING-ADMIN",balance:100000,tg:true,investments:[],totalInvested:0,totalEarned:0,level1:[],lastShare:0});localStorage.setItem('allKingUsers',JSON.stringify(allUsers));}
+function loadHistory(){loadAllData();const invs=currentUser.investments||[];let html=invs.map(inv=>`<div class="history-item"><b>${inv.plan} - ₦${inv.amount}</b> <span class="timer-badge">${getTimerText(inv)}</span></div>`).join('');document.getElementById('historyList').innerHTML=html||'<p>No transactions</p>';}
+function loadLeaderboard(){loadAllData();let sorted=[...allUsers].sort((a,b)=>(b.level1?.length||0)-(a.level1?.length||0)).slice(0,5);document.getElementById('leaderboard').innerHTML=sorted.map((u,i)=>`<div style="display:flex;justify-content:space-between;padding:10px;background:var(--card2);border-radius:10px;margin:6px 0"><span>${i===0?'👑':i+1}. ${u.name}</span><b style="color:var(--gold)">${u.level1?.length||0}</b></div>`).join('')||'<p>No referrals</p>';}
+function shareAndEarn(){const now=Date.now();if(currentUser.lastShare&&now-currentUser.lastShare<86400000){showPopup('Limit','Later');return;}navigator.clipboard.writeText(document.getElementById('refLinkBox').innerText);balance+=100;currentUser.balance=balance;currentUser.lastShare=now;let i=allUsers.findIndex(x=>x.email===currentUser.email);if(i!==-1){allUsers[i]=currentUser;}localStorage.setItem('allKingUsers',JSON.stringify(allUsers));localStorage.setItem('kingUser',JSON.stringify(currentUser));localStorage.setItem('kingBalance',balance);showPopup('Reward','₦100 added');updateUI();}
+function startLiveAlerts(){const names=['Chinedu','Emeka','Ada'];const amounts=['₦3,000','₦8,000'];setInterval(()=>{const name=names[Math.floor(Math.random()*names.length)];const amt=amounts[Math.floor(Math.random()*amounts.length)];const el=document.getElementById('liveAlert');document.getElementById('liveAlertText').innerText=`${name} just invested ${amt}`;el.style.display='flex';setTimeout(()=>{el.style.display='none';},4000);},8000);}
+
+// PRE-ADD STEVEN + OTHERS - FORMAL DESIGN STILL
+let extraUsers = [
+ {name:"Steven",email:"nnamdistephenchinedu@gmail.com",pass:"1234",refCode:"KING-STEVEN",balance:0,tg:false,investments:[],totalInvested:0,totalEarned:0,level1:[],lastShare:0},
+ {name:"CHUKWUOKPO ANN",email:"chukwuokpo.ann@gmail.com",pass:"1234",refCode:"KING-ANN",balance:3000,tg:false,investments:[],totalInvested:0,totalEarned:0,level1:[],lastShare:0},
+ {name:"STEPHEN CHINEDU NNAMDI",email:"stephen.nnamdi@gmail.com",pass:"1234",refCode:"KING-STEPHEN",balance:5000,tg:false,investments:[],totalInvested:0,totalEarned:0,level1:[],lastShare:0}
+];
+extraUsers.forEach(eu=>{ if(!allUsers.find(u=>u.email===eu.email)){ allUsers.push(eu); } });
+localStorage.setItem('allKingUsers',JSON.stringify(allUsers));
+
+if(!allUsers.find(u=>u.email===ADMIN_EMAIL)){allUsers.push({name:"Admin",email:ADMIN_EMAIL,pass:"1234",refCode:"KING-ADMIN",balance:100000,tg:true,investments:[],totalInvested:0,totalEarned:0,level1:[],lastShare:0});localStorage.setItem('allKingUsers',JSON.stringify(allUsers));}
 init();
 </script>
 </body>

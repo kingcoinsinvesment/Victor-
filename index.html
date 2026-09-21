@@ -1,160 +1,151 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>King Coins</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#08090d;--card:#13151c;--card2:#1a1c25;--gold:#ffc107;--gold-dark:#ff9800;--text:#f5f5f7;--text2:#9fa3ad;--green:#00c896;--red:#ff3b30;}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
 body{background:var(--bg);color:var(--text);padding-bottom:90px;}
 .page{display:none}.page.active{display:block}
-.topbar{padding:16px;background:#13151c;border-bottom:1px solid #252832;position:sticky;top:0;z-index:50}
-.logo{font-size:17px;font-weight:800;color:var(--gold)}
-.nav{position:fixed;bottom:0;left:0;right:0;background:#13151c;display:flex;padding:8px 2px;border-top:1px solid #252832;z-index:99;overflow-x:auto}
-.nav button{background:none;border:none;color:var(--text2);font-size:9px;font-weight:600;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:58px}
-.nav button.active{color:var(--gold)}.nav button div{font-size:18px}
-.container{padding:12px;max-width:700px;margin:auto}
-.card{background:var(--card);padding:16px;border-radius:16px;margin:8px 0;border:1px solid #252832}
-.btn{width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#000;border:none;padding:13px;border-radius:11px;font-weight:800;font-size:13px;cursor:pointer;margin-top:8px}
+.topbar{padding:20px;background:rgba(19,21,28,.98);border-bottom:1px solid #252832;position:sticky;top:0;z-index:50}
+.logo{font-size:20px;font-weight:800;color:var(--gold);letter-spacing:.5px}
+.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(19,21,28,.98);display:flex;justify-content:space-around;padding:12px 0;border-top:1px solid #252832;z-index:99}
+.nav button{background:none;border:none;color:var(--text2);font-size:10px;font-weight:600;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px}
+.nav button.active{color:var(--gold)}.nav button div{font-size:22px}
+.container{padding:20px;max-width:700px;margin:auto}
+.card{background:var(--card);padding:22px;border-radius:20px;margin:14px 0;border:1px solid #252832}
+.btn{width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#000;border:none;padding:16px;border-radius:14px;font-weight:800;font-size:15px;cursor:pointer;margin-top:10px}
 .btn-red{background:var(--red);color:#fff}.btn-ghost{background:transparent;border:2px solid var(--gold);color:var(--gold)}.btn-green{background:var(--green);color:#000}
-input{width:100%;padding:12px;background:var(--card2);border:1px solid #2a2d37;border-radius:9px;color:var(--text);font-size:13px;margin-bottom:8px}
-.professional-balance{background:linear-gradient(135deg,#ffc107,#ff9800);color:#000}
-.quick-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:10px 0}.quick-actions button{background:var(--card);border:1px solid #292d37;border-radius:12px;padding:9px 2px;color:var(--text);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9px;font-weight:700}
-.plan-card{background:#171922;padding:14px;border-radius:14px;margin:8px 0;border:1px solid #2a2d37;position:relative}.plan-card.featured{border:1px solid var(--gold)}.plan-badge{position:absolute;top:8px;right:8px;background:var(--gold);color:#000;font-size:7px;font-weight:800;padding:3px 6px;border-radius:20px}
-.plan-amount{font-size:20px;font-weight:800;color:var(--gold);margin:5px 0}.plan-info{color:var(--text2);font-size:10px}
-.withdraw-head{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#000;padding:18px;border-radius:16px;margin:8px;text-align:center}
-.popup{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.85);display:none;justify-content:center;align-items:center;z-index:1000;padding:10px}.popup-box{background:var(--card);padding:16px;border-radius:14px;max-width:360px;width:100%;border:1px solid #292d37;max-height:90vh;overflow-y:auto}
-.admin-card{background:var(--card2);padding:8px;border-radius:8px;margin:5px 0;border:1px solid #2a2d37}
-.live-alert{position:fixed;bottom:80px;left:8px;background:#13151c;border:1px solid #ffc107;color:#fff;padding:7px 10px;border-radius:30px;font-size:9px;font-weight:700;z-index:90;display:none;box-shadow:0 6px 16px rgba(0,0,0,.6)}
-.pay-tab{display:flex;gap:5px;margin-bottom:8px}.pay-tab button{flex:1;padding:8px;border-radius:7px;border:1px solid #2a2d37;background:var(--card2);color:var(--text2);font-weight:700;font-size:9px}.pay-tab button.active{background:var(--gold);color:#000}
-.daily-box{background:linear-gradient(135deg,#1a1c25,#13151c);border:1px dashed var(--gold);padding:12px;border-radius:12px;margin:8px 0}
-.referral-balance{background:linear-gradient(135deg,#00c896,#00a86b);color:#000;padding:14px;border-radius:14px;margin:8px 0;text-align:center}
-.timer-box{background:#2a1a00;border:1px solid var(--gold);padding:8px;border-radius:8px;text-align:center;margin:6px 0;font-size:10px;font-weight:700}
+input{width:100%;padding:15px;background:var(--card2);border:1px solid #2a2d37;border-radius:12px;color:var(--text);font-size:15px;margin-bottom:10px} input:focus{border-color:var(--gold);outline:none}
+.balance-card{background:linear-gradient(135deg,#ffc107,#ff9800);color:#000;padding:24px;border-radius:22px;margin:14px 0;box-shadow:0 12px 30px rgba(255,193,7,.15)}
+.balance-card h1{font-size:36px;font-weight:800;margin-top:6px}
+.ref-card{background:linear-gradient(135deg,#00c896,#00a86b);color:#000;padding:20px;border-radius:20px;margin:14px 0}
+.quick-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0}
+.quick-actions button{background:var(--card);border:1px solid #292d37;border-radius:16px;padding:14px 4px;color:var(--text);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;font-size:11px;font-weight:700}
+.quick-actions span{font-size:22px}
+.plan-card{background:linear-gradient(145deg,#171922,#111219);padding:20px;border-radius:20px;margin:14px 0;border:1px solid #2a2d37;position:relative}
+.plan-card.featured{border:1px solid var(--gold);box-shadow:0 8px 24px rgba(255,193,7,.1)}
+.plan-badge{position:absolute;top:14px;right:14px;background:var(--gold);color:#000;font-size:9px;font-weight:800;padding:5px 10px;border-radius:20px}
+.plan-name{font-size:17px;font-weight:800}.plan-amount{font-size:28px;font-weight:800;color:var(--gold);margin:10px 0}
+.withdraw-head{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#000;padding:28px;border-radius:22px;margin:14px;text-align:center}
+.withdraw-head h1{font-size:32px;font-weight:800}
+.popup{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.82);display:none;justify-content:center;align-items:center;z-index:1000;padding:16px;overflow-y:auto}
+.popup-box{background:var(--card);padding:22px;border-radius:20px;max-width:400px;width:100%;border:1px solid #292d37;max-height:90vh;overflow-y:auto}
+.admin-card{background:var(--card2);padding:14px;border-radius:12px;margin:8px 0;border:1px solid #2a2d37}
+.live-alert{position:fixed;bottom:92px;left:14px;background:#13151c;border:1px solid #ffc107;color:#fff;padding:10px 16px;border-radius:30px;font-size:12px;font-weight:700;z-index:90;display:none;align-items:center;gap:8px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.pay-tab{display:flex;gap:8px;margin-bottom:12px}.pay-tab button{flex:1;padding:11px;border-radius:10px;border:1px solid #2a2d37;background:var(--card2);color:var(--text2);font-weight:700;font-size:12px}.pay-tab button.active{background:var(--gold);color:#000;border-color:var(--gold)}
+.timer{background:#1f2110;border:1px solid var(--gold);padding:12px;border-radius:12px;text-align:center;margin:12px 0;font-size:13px;font-weight:700;color:var(--gold)}
 </style>
 </head>
 <body>
-<div id="liveAlert" class="live-alert">💰 <span id="liveAlertText">Chinedu just withdraw 7000</span></div>
+<div id="liveAlert" class="live-alert"><span>💰</span> <span id="liveAlertText">Chinedu just withdraw ₦7000</span></div>
 
 <div class="popup" id="investPayModal" style="z-index:2002;display:none">
-<div class="popup-box" style="background:#fff;color:#000;padding:0;text-align:left">
-<div style="background:#13151c;color:#fff;padding:10px;display:flex;justify-content:space-between"><b id="investModalPlan" style="font-size:12px">Plan</b><span onclick="document.getElementById('investPayModal').style.display='none'" style="cursor:pointer">✕</span></div>
-<div style="padding:12px">
-<div style="background:#fff8d6;border:2px solid #ffc107;padding:8px;border-radius:8px;margin-bottom:8px">
-<div style="display:flex;justify-content:space-between"><div><small style="font-size:9px">MoMo PSB</small><br><b style="font-size:16px">0286297016</b><br><small style="font-size:10px">Ekeigbo Ugwuoke</small></div><button onclick="navigator.clipboard.writeText('0286297016')" style="background:#ffc107;border:none;padding:4px 7px;border-radius:5px;font-weight:800;font-size:10px">Copy</button></div>
-<p style="font-size:9px;margin-top:3px">Transfer <b id="investModalAmount">₦2000</b></p>
+<div class="popup-box" style="background:#fff;color:#000;padding:0;text-align:left;max-width:420px">
+<div style="background:#13151c;color:#fff;padding:16px;display:flex;justify-content:space-between;align-items:center"><b id="investModalPlan">Investment</b><span onclick="document.getElementById('investPayModal').style.display='none'" style="cursor:pointer;font-size:22px">✕</span></div>
+<div style="padding:18px">
+<div style="background:#fff8d6;border:2px solid #ffc107;padding:14px;border-radius:14px;margin-bottom:14px">
+<div style="display:flex;justify-content:space-between;align-items:center"><div><small style="color:#666;font-weight:700;font-size:11px">MOMO PSB</small><br><b style="font-size:20px">0286297016</b><br><small>Ekeigbo Ugwuoke</small></div><button onclick="navigator.clipboard.writeText('0286297016')" style="background:#ffc107;border:none;padding:8px 14px;border-radius:10px;font-weight:800">Copy</button></div>
+<div style="margin-top:8px;font-size:13px">Amount: <b id="investModalAmount">₦2,000</b></div>
 </div>
-<div class="pay-tab"><button id="tabMomo" class="active" onclick="switchPay('momo')">MoMo</button><button id="tabCard" onclick="switchPay('card')">Card</button></div>
+<div class="pay-tab"><button id="tabMomo" class="active" onclick="switchPay('momo')">MoMo Transfer</button><button id="tabCard" onclick="switchPay('card')">Bank Card</button></div>
 <div id="payMomoTab">
-<input id="momoSenderName" placeholder="MoMo Name" style="background:#fff;color:#000;border:1px solid #ddd">
-<input id="momoRef" placeholder="Session ID" style="background:#fff;color:#000;border:1px solid #ddd">
-<input type="file" accept="image/*" onchange="handleProof(this,'invest')">
-<img id="investProofPreview" style="display:none;width:100%;border-radius:6px;margin-top:5px;max-height:100px;object-fit:cover">
-<button class="btn" onclick="submitMomo()" style="padding:10px;font-size:12px">Submit Proof</button>
+<input id="momoSenderName" placeholder="Your MoMo Name" style="background:#fff;color:#000;border:1px solid #ddd">
+<input id="momoRef" placeholder="Reference ID" style="background:#fff;color:#000;border:1px solid #ddd">
+<input type="file" accept="image/*" onchange="handleProof(this,'invest')" style="border:none;background:transparent;padding:8px 0">
+<img id="investProofPreview" style="display:none;width:100%;border-radius:12px;margin-top:8px;max-height:160px;object-fit:cover">
+<button class="btn" onclick="submitMomo()">Submit Proof</button>
 </div>
 <div id="payCardTab" style="display:none">
-<input id="cardNumber" placeholder="Card 16 digits" maxlength="19" oninput="formatCard(this)" style="background:#fff;color:#000;border:1px solid #ddd">
-<div style="display:flex;gap:5px"><input id="cardExpiry" placeholder="MM/YY" maxlength="5" oninput="formatExp(this)" style="background:#fff;color:#000;border:1px solid #ddd"><input id="cardCvv" placeholder="CVV" maxlength="3" style="background:#fff;color:#000;border:1px solid #ddd"></div>
-<input id="cardName" placeholder="Name on Card" oninput="this.value=this.value.toUpperCase()" style="background:#fff;color:#000;border:1px solid #ddd;margin-top:5px">
-<p id="cardError" style="color:red;font-size:9px;display:none"></p>
-<button class="btn btn-green" onclick="submitCard()" style="padding:10px;font-size:12px">Pay with Card</button>
+<input id="cardNumber" placeholder="Card Number - 16 digits" maxlength="19" oninput="formatCard(this)" style="background:#fff;color:#000;border:1px solid #ddd">
+<div style="display:flex;gap:8px"><input id="cardExpiry" placeholder="MM/YY" maxlength="5" oninput="formatExp(this)" style="background:#fff;color:#000;border:1px solid #ddd"><input id="cardCvv" placeholder="CVV" maxlength="3" style="background:#fff;color:#000;border:1px solid #ddd"></div>
+<input id="cardName" placeholder="Name on Card" oninput="this.value=this.value.toUpperCase()" style="background:#fff;color:#000;border:1px solid #ddd;margin-top:8px">
+<p id="cardError" style="color:#ff3b30;font-size:12px;display:none;margin-top:6px"></p>
+<button class="btn btn-green" onclick="submitCard()">Pay with Card</button>
 </div>
 </div>
 </div>
 </div>
 
-<div class="popup" id="payMeModal" style="z-index:2001;display:none"><div class="popup-box" style="background:#fff;color:#000;padding:0"><div style="background:#13151c;color:#fff;padding:10px;display:flex;justify-content:space-between"><b style="font-size:12px">Pay Me 0286297016</b><span onclick="document.getElementById('payMeModal').style.display='none'" style="cursor:pointer">✕</span></div><div style="padding:12px"><input type="number" id="payMeAmount" placeholder="Amount" style="background:#fff;color:#000;border:1px solid #ddd"><input id="payMeRef" placeholder="Session ID" style="background:#fff;color:#000;border:1px solid #ddd"><input type="file" accept="image/*" onchange="handleProof(this,'payme')"><img id="payMePreview" style="display:none;width:100%;border-radius:6px;margin-top:5px"><button class="btn" onclick="submitPayMe()" style="padding:10px">Submit</button></div></div></div>
-<div class="popup" id="popup"><div class="popup-box"><h3 id="popupTitle" style="color:var(--gold);margin-bottom:6px;font-size:14px">Notice</h3><p id="popupMessage" style="margin-bottom:10px;font-size:12px"></p><button class="btn" onclick="document.getElementById('popup').style.display='none'" style="padding:10px">OK</button></div></div>
-<div class="popup" id="adminPopup"><div class="popup-box"><h3 style="color:var(--gold);margin-bottom:6px;font-size:14px">Admin Access</h3><input type="password" id="adminPopupPass" placeholder="KING123"><button class="btn" onclick="checkAdmin()" style="padding:10px">Enter</button><button class="btn btn-ghost" onclick="document.getElementById('adminPopup').style.display='none'" style="margin-top:5px;padding:10px">Cancel</button></div></div>
+<div class="popup" id="payMeModal" style="z-index:2001;display:none"><div class="popup-box" style="background:#fff;color:#000;padding:0;max-width:400px"><div style="background:#13151c;color:#fff;padding:16px;display:flex;justify-content:space-between"><b>Pay Me</b><span onclick="document.getElementById('payMeModal').style.display='none'" style="cursor:pointer;font-size:20px">✕</span></div><div style="padding:18px;text-align:left"><div style="background:#fff8d6;border:2px solid #ffc107;padding:14px;border-radius:12px;text-align:center;margin-bottom:12px"><b style="font-size:20px">0286297016</b><br><small>Ekeigbo Ugwuoke - MoMo PSB</small></div><input type="number" id="payMeAmount" placeholder="Amount" style="background:#fff;color:#000;border:1px solid #ddd"><input id="payMeRef" placeholder="Session ID" style="background:#fff;color:#000;border:1px solid #ddd"><input type="file" accept="image/*" onchange="handleProof(this,'payme')"><img id="payMePreview" style="display:none;width:100%;border-radius:10px;margin-top:8px"><button class="btn" onclick="submitPayMe()">Submit</button></div></div></div>
+<div class="popup" id="popup"><div class="popup-box"><h3 id="popupTitle" style="color:var(--gold);margin-bottom:10px">Notice</h3><p id="popupMessage" style="margin-bottom:16px;line-height:1.5"></p><button class="btn" onclick="document.getElementById('popup').style.display='none'">OK</button></div></div>
+<div class="popup" id="adminPopup"><div class="popup-box"><h3 style="color:var(--gold);margin-bottom:12px">Admin Access</h3><input type="password" id="adminPopupPass" placeholder="KING123"><button class="btn" onclick="checkAdmin()">Enter</button><button class="btn btn-ghost" onclick="document.getElementById('adminPopup').style.display='none'" style="margin-top:8px">Cancel</button></div></div>
 
-<div id="authScreen" style="min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:20px;max-width:480px;margin:auto"><div style="text-align:center;margin-bottom:18px"><span style="font-size:40px">👑</span><h1 style="font-size:22px;font-weight:800;color:var(--gold)">KING COINS</h1><small style="color:var(--text2);font-size:10px">Bonus 100 + Total 1100 | 3% Fee | Daily 30+40=70 | Ref Separate</small></div><div class="card"><input type="email" id="loginEmail" placeholder="Email - e.g oduhappiness41@gmail.com"><input type="password" id="loginPass" placeholder="Password"><button class="btn" onclick="login()">Login</button><p style="text-align:center;margin:8px 0;color:var(--text2);font-size:11px">Don't have account?</p><button class="btn btn-ghost" onclick="document.getElementById('signupBox').style.display=document.getElementById('signupBox').style.display==='none'?'block':'none'" style="padding:10px">Sign Up - Get ₦100 Bonus (Total 1100)</button><div id="signupBox" style="display:none;margin-top:10px"><input id="signupName" placeholder="Full Name"><input id="signupEmail" placeholder="Email"><input type="password" id="signupPass" placeholder="Password"><button class="btn" onclick="signup()" style="padding:10px">Create Account + ₦100 Bonus = ₦1100</button></div></div></div>
+<div id="authScreen" style="min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:28px;max-width:500px;margin:auto"><div style="text-align:center;margin-bottom:28px"><span style="font-size:56px">👑</span><h1 style="font-size:28px;font-weight:800;color:var(--gold);margin-top:8px">KING COINS</h1></div><div class="card"><input type="email" id="loginEmail" placeholder="Email"><input type="password" id="loginPass" placeholder="Password"><button class="btn" onclick="login()">Login</button><p style="text-align:center;margin:14px 0;color:var(--text2);font-size:13px">Don't have account?</p><button class="btn btn-ghost" onclick="document.getElementById('signupBox').style.display=document.getElementById('signupBox').style.display==='none'?'block':'none'">Sign Up</button><div id="signupBox" style="display:none;margin-top:16px"><input id="signupName" placeholder="Full Name"><input id="signupEmail" placeholder="Email"><input type="password" id="signupPass" placeholder="Password"><button class="btn" onclick="signup()">Create Account</button></div></div></div>
 
 <div id="app" style="display:none">
-<div class="topbar"><div class="logo">👑 KING COINS <span style="font-size:9px;background:var(--green);color:#000;padding:2px 5px;border-radius:8px">3% FEE</span></div></div>
+<div class="topbar"><div class="logo">👑 KING COINS</div></div>
 
 <div id="homePage" class="page active"><div class="container">
-<div style="display:flex;justify-content:space-between;margin:3px 0 10px"><div><p style="font-size:9px;color:var(--text2)">Welcome back 👋</p><h2 id="homeUserName" style="font-size:16px;font-weight:800">Member</h2></div><div style="width:32px;height:32px;border-radius:8px;background:var(--card);display:flex;align-items:center;justify-content:center">👑</div></div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><div><p style="font-size:12px;color:var(--text2)">Welcome back</p><h2 id="homeUserName" style="font-size:22px;font-weight:800">Member</h2></div><div style="width:44px;height:44px;border-radius:14px;background:var(--card);border:1px solid #2a2d37;display:flex;align-items:center;justify-content:center;font-size:22px">👑</div></div>
 
-<div class="card professional-balance"><div style="display:flex;justify-content:space-between"><div><span style="font-size:8px;font-weight:800;opacity:.7">MAIN BALANCE - Total 1100 with Welcome Bonus 100</span><h1 style="font-size:28px;font-weight:800;margin-top:3px">₦<span id="balance">1100.00</span></h1><small style="font-size:9px;opacity:.7">Bonus ₦100 included | Base 1000 + 100 = 1100</small></div><div style="width:36px;height:36px;border-radius:8px;background:rgba(0,0,0,.15);display:flex;align-items:center;justify-content:center">💰</div></div><div style="display:flex;justify-content:space-between;margin-top:12px;padding-top:8px;border-top:1px solid rgba(0,0,0,.15);font-size:9px;font-weight:600;opacity:.7"><span>Available</span><span>Secure & Fast - 3% fee</span></div></div>
+<div class="balance-card"><div style="display:flex;justify-content:space-between;align-items:center"><div><span style="font-size:11px;font-weight:800;letter-spacing:1px;opacity:.7">MAIN BALANCE</span><h1>₦<span id="balance">1100.00</span></h1></div><div style="width:52px;height:52px;border-radius:16px;background:rgba(0,0,0,.12);display:flex;align-items:center;justify-content:center;font-size:26px">💰</div></div></div>
 
-<div class="referral-balance"><div style="font-size:9px;font-weight:800;opacity:.7">REFERRAL BALANCE - SEPARATE ACCOUNT (Not in main)</div><h2 style="font-size:22px;font-weight:800;margin-top:3px">₦<span id="refBalance">0.00</span></h2><small style="font-size:9px">Referral ₦200 per person - Separate - Don't add to main</small></div>
+<div class="ref-card"><div style="display:flex;justify-content:space-between;align-items:center"><div><span style="font-size:11px;font-weight:800;opacity:.7">REFERRAL BALANCE</span><h1 style="font-size:28px;font-weight:800;margin-top:4px">₦<span id="refBalance">0.00</span></h1></div><div style="width:48px;height:48px;border-radius:14px;background:rgba(0,0,0,.12);display:flex;align-items:center;justify-content:center;font-size:22px">👥</div></div></div>
 
-<div class="daily-box"><h4 style="color:var(--gold);font-size:11px;margin-bottom:5px">📈 DAILY INCOME - Tier System</h4><div style="display:flex;justify-content:space-between;font-size:10px;margin:3px 0"><span>Tier One: ₦30 per referral</span><span id="tierOneCount">0 users × ₦30 = ₦0</span></div><div style="display:flex;justify-content:space-between;font-size:10px;margin:3px 0"><span>Tier Two: ₦40 per referral</span><span id="tierTwoCount">0 users × ₦40 = ₦0</span></div><div style="border-top:1px dashed #444;margin:6px 0;padding-top:6px;display:flex;justify-content:space-between;font-weight:800;font-size:11px"><span>Total: 30+40=70 × count</span><span id="dailyTotal">₦0 - 3% = ₦0</span></div><small style="font-size:8px;color:var(--text2)">Ex: 100×70=7000 - 3% (210)=6790 daily | Company 3%</small></div>
+<div class="timer" id="withdrawTimerBox">⏰ <span id="withdrawTimer">Ready to withdraw</span></div>
 
-<div class="timer-box" id="withdrawTimerBox">⏰ <span id="withdrawTimer">Ready - Withdraw once per 24hrs - Min 7000</span></div>
+<div class="quick-actions"><button onclick="showPage('investPage')"><span>📈</span>Invest</button><button onclick="openPayMe()"><span>💳</span>Pay Me</button><button onclick="showPage('withdrawPage')"><span>💸</span>Withdraw</button><button onclick="showPage('historyPage')"><span>📋</span>History</button></div>
 
-<div class="quick-actions"><button onclick="showPage('investPage')"><div>📈</div>Invest</button><button onclick="openPayMe()"><div>💳</div>PayMe</button><button onclick="showPage('withdrawPage')"><div>💸</div>Withdraw<br><small style="font-size:6px">3% fee</small></button><button onclick="showPage('historyPage')"><div>📋</div>History</button></div>
-
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px"><div class="card" style="margin:0;padding:10px"><small style="color:var(--text2);font-size:9px">Total Invested</small><br><b style="color:var(--gold);font-size:13px">₦<span id="totalInvested">0</span></b></div><div class="card" style="margin:0;padding:10px"><small style="color:var(--text2);font-size:9px">Total Earned</small><br><b style="color:var(--gold);font-size:13px">₦<span id="totalEarned">0</span></b></div></div>
-<button class="btn" onclick="shareAndEarn()" style="padding:10px;font-size:11px">📤 Share & Earn - Ref ₦200 Separate</button>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px"><div class="card" style="margin:0"><span style="color:var(--text2);font-size:12px">Total Invested</span><br><strong style="color:var(--gold);font-size:18px">₦<span id="totalInvested">0</span></strong></div><div class="card" style="margin:0"><span style="color:var(--text2);font-size:12px">Total Earned</span><br><strong style="color:var(--gold);font-size:18px">₦<span id="totalEarned">0</span></strong></div></div>
 </div></div>
 
-<div id="investPage" class="page"><div class="container"><h2 style="margin:6px 0;font-size:14px">💎 5 Plans - Daily 30+40=70 - 3% Fee</h2><div class="card" style="padding:8px;border:1px solid rgba(255,193,7,.3)"><small style="font-size:9px">MoMo 0286297016 | 3% Fee | Daily 70×count -3% | Ref Separate | Min Withdraw 7000 Once 24hrs | Bonus 100 Total 1100</small></div>
-<div class="plan-card"><div class="plan-name" style="font-size:13px">1. Starter</div><div class="plan-amount">₦2,000 → ₦5,200</div><div class="plan-info">Daily 30 | 7 Days | Profit 3,200</div><button class="btn" onclick="openInvest(2000,'Starter',7,3200)" style="padding:10px">Invest ₦2,000</button></div>
-<div class="plan-card"><div class="plan-name" style="font-size:13px">2. Bronze</div><div class="plan-amount">₦4,000 → ₦10,400</div><div class="plan-info">Daily 40 | 10 Days | Profit 6,400</div><button class="btn" onclick="openInvest(4000,'Bronze',10,6400)" style="padding:10px">Invest ₦4,000</button></div>
-<div class="plan-card featured"><div class="plan-badge">70 DAILY</div><div class="plan-name" style="font-size:13px">3. Gold</div><div class="plan-amount">₦8,000 → ₦20,800</div><div class="plan-info">Daily 70 (30+40) ×14=980 -3%=950.6 | Profit 12,800</div><button class="btn" onclick="openInvest(8000,'Gold',14,12800)" style="padding:10px">Invest ₦8,000</button></div>
-<div class="plan-card"><div class="plan-name" style="font-size:13px">4. Platinum</div><div class="plan-amount">₦16,000 → ₦41,600</div><div class="plan-info">Daily 70 ×18=1260 -3%=1222.2 | Profit 25,600</div><button class="btn" onclick="openInvest(16000,'Platinum',18,25600)" style="padding:10px">Invest ₦16,000</button></div>
-<div class="plan-card" style="border:1.5px solid var(--gold)"><div class="plan-badge">KING</div><div class="plan-name" style="font-size:13px">5. Diamond</div><div class="plan-amount">₦32,000 → ₦83,200</div><div class="plan-info">Daily 70 ×21=1470 -3%=1425.9 | Profit 51,200</div><button class="btn" onclick="openInvest(32000,'Diamond',21,51200)" style="padding:10px">Invest ₦32,000 👑</button></div>
+<div id="investPage" class="page"><div class="container"><h2 style="font-size:20px;font-weight:800;margin:12px 0">Investment Plans</h2>
+<div class="plan-card"><div class="plan-name">Starter</div><div class="plan-amount">₦2,000</div><div style="color:var(--text2);font-size:13px;margin:6px 0">Return ₦5,200 • 7 Days</div><button class="btn" onclick="openInvest(2000,'Starter',7,3200)">Invest ₦2,000</button></div>
+<div class="plan-card"><div class="plan-name">Bronze</div><div class="plan-amount">₦4,000</div><div style="color:var(--text2);font-size:13px;margin:6px 0">Return ₦10,400 • 10 Days</div><button class="btn" onclick="openInvest(4000,'Bronze',10,6400)">Invest ₦4,000</button></div>
+<div class="plan-card featured"><div class="plan-badge">POPULAR</div><div class="plan-name">Gold</div><div class="plan-amount">₦8,000</div><div style="color:var(--text2);font-size:13px;margin:6px 0">Return ₦20,800 • 14 Days</div><button class="btn" onclick="openInvest(8000,'Gold',14,12800)">Invest ₦8,000</button></div>
+<div class="plan-card"><div class="plan-name">Platinum</div><div class="plan-amount">₦16,000</div><div style="color:var(--text2);font-size:13px;margin:6px 0">Return ₦41,600 • 18 Days</div><button class="btn" onclick="openInvest(16000,'Platinum',18,25600)">Invest ₦16,000</button></div>
+<div class="plan-card" style="border:1.5px solid var(--gold)"><div class="plan-badge">KING 👑</div><div class="plan-name">Diamond</div><div class="plan-amount">₦32,000</div><div style="color:var(--text2);font-size:13px;margin:6px 0">Return ₦83,200 • 21 Days</div><button class="btn" onclick="openInvest(32000,'Diamond',21,51200)">Invest ₦32,000</button></div>
 </div></div>
 
-<div id="withdrawPage" class="page"><div class="withdraw-head"><h2 style="font-size:14px">Main Balance</h2><h1 style="font-size:22px">₦<span id="withdrawBalance">1100.00</span></h1><p style="font-size:9px;margin-top:3px">3% Fee: 7k → 6,790 (Company 210) | Once per 24hrs | Min 7000</p><div style="background:rgba(0,0,0,.2);padding:6px;border-radius:6px;margin-top:6px;font-size:9px"><span id="withdrawTimerHead">Ready to withdraw</span></div></div><div class="container"><div class="card"><div style="background:#1a2a1a;padding:8px;border-radius:6px;margin-bottom:8px;border:1px solid var(--green)"><small style="color:var(--green);font-size:9px">REFERRAL BALANCE SEPARATE - Don't add to main</small><div style="display:flex;justify-content:space-between;margin-top:3px;font-size:11px"><span>Referral:</span><b>₦<span id="withdrawRefBalance">0.00</span></b></div><button class="btn btn-green" onclick="withdrawReferral()" style="padding:8px;font-size:10px">Withdraw Referral - 3% Fee - Separate</button></div><input type="number" id="withdrawAmount" placeholder="Main Min 7000 - Once per 24hrs"><input id="withdrawAccount" placeholder="Account 10 digits - Must be correct" maxlength="10"><input id="withdrawName" placeholder="Account Name - Exactly as bank" oninput="this.value=this.value.toUpperCase()"><button class="btn btn-red" onclick="withdraw()" style="padding:10px">Withdraw Main - 3% Fee - Once 24hrs</button><p id="withdrawPreview" style="font-size:9px;color:var(--text2);margin-top:5px;text-align:center"></p><div class="timer-box" id="withdrawTimerBox2" style="margin-top:8px">⏰ <span id="withdrawTimer2">Ready</span></div></div></div></div>
+<div id="withdrawPage" class="page"><div class="withdraw-head"><h2 style="font-size:14px;opacity:.8">Available to Withdraw</h2><h1>₦<span id="withdrawBalance">1100.00</span></h1><p style="font-size:12px;margin-top:8px;opacity:.8">Minimum ₦7,000 • 3% Fee • Once per 24hrs</p><div style="margin-top:12px;background:rgba(0,0,0,.15);padding:10px;border-radius:10px;font-size:13px;font-weight:700" id="withdrawTimerHead">Ready</div></div><div class="container"><div class="card"><div style="background:rgba(0,200,150,.1);border:1px solid var(--green);padding:14px;border-radius:12px;margin-bottom:14px"><div style="display:flex;justify-content:space-between;font-size:14px"><span>Referral Balance</span><b>₦<span id="withdrawRefBalance">0.00</span></b></div><button class="btn btn-green" onclick="withdrawReferral()" style="margin-top:10px">Withdraw Referral</button></div><input type="number" id="withdrawAmount" placeholder="Amount - Min ₦7,000"><input id="withdrawAccount" placeholder="Account Number - 10 digits" maxlength="10"><input id="withdrawName" placeholder="Account Name" oninput="this.value=this.value.toUpperCase()"><button class="btn btn-red" onclick="withdraw()">Withdraw</button><p id="withdrawPreview" style="font-size:12px;color:var(--text2);margin-top:8px;text-align:center"></p><div class="timer" id="withdrawTimerBox2" style="margin-top:12px"><span id="withdrawTimer2">Ready</span></div></div></div></div>
 
-<div id="historyPage" class="page"><div class="container"><h2 style="font-size:14px">History</h2><div id="historyList"></div></div></div>
-<div id="referralPage" class="page"><div class="container"><h2 style="font-size:14px">Referral - Separate - ₦200 Bonus</h2><div class="card" style="background:linear-gradient(135deg,#00c896,#00a86b);color:#000;padding:12px"><h3 style="font-size:13px">Referral Balance (Separate): ₦<span id="refPageBalance">0</span></h3><p style="font-size:10px;margin:4px 0">Referral ₦200 - NOT added to main - Different account</p><h3 style="margin-top:8px;font-size:12px">Total Referred: <span id="totalReferred">0</span></h3><div style="background:#000;color:var(--gold);padding:8px;border-radius:6px;text-align:center;margin:6px 0;font-weight:800;font-size:12px" id="refCodeBox"></div><button class="btn" onclick="copyCode()" style="background:#000;color:var(--gold);padding:8px;font-size:11px">Copy Code</button><div id="refLinkBox" style="background:var(--card2);padding:6px;border-radius:6px;font-size:10px;word-break:break-all;margin:5px 0;color:var(--text)"></div><button class="btn" onclick="copyLink()" style="padding:8px;font-size:11px">Copy Link</button></div>
-<div class="daily-box"><h4 style="color:var(--gold);font-size:11px">Daily Income</h4><div style="font-size:10px;margin:3px 0">Tier One: 30 per direct ref per day</div><div style="font-size:10px;margin:3px 0">Tier Two: 40 per indirect ref per day</div><div style="font-size:10px;margin:3px 0;font-weight:800">Total: (T1×30 + T2×40) - 3% fee</div><div style="font-size:9px;color:var(--text2);margin-top:4px">Ex: 100×70=7000 -3% (210)=6790 daily</div></div>
-</div></div>
+<div id="historyPage" class="page"><div class="container"><h2 style="font-size:20px;font-weight:800;margin:12px 0">History</h2><div id="historyList"></div></div></div>
+<div id="referralPage" class="page"><div class="container"><h2 style="font-size:20px;font-weight:800;margin:12px 0">Referral</h2><div class="ref-card"><h3>Referral Balance: ₦<span id="refPageBalance">0</span></h3><p style="font-size:13px;margin-top:6px;opacity:.8">₦200 per referral • Separate account</p><h3 style="margin-top:16px;font-size:16px">Total Referred: <span id="totalReferred">0</span></h3><div style="background:#000;color:var(--gold);padding:14px;border-radius:12px;text-align:center;margin:12px 0;font-weight:800;font-size:16px;letter-spacing:1px" id="refCodeBox"></div><button class="btn" onclick="copyCode()" style="background:#000;color:var(--gold)">Copy Code</button><div id="refLinkBox" style="background:var(--card2);padding:12px;border-radius:10px;font-size:13px;word-break:break-all;margin:10px 0;color:var(--text2)"></div><button class="btn btn-ghost" onclick="copyLink()">Copy Link</button></div></div></div>
 
-<div id="adminPage" class="page"><div class="container"><h2 style="font-size:14px">Admin</h2><div class="card" style="border:1.5px solid var(--gold);padding:10px"><h3 style="font-size:11px">Credit User - No Firebase - Local Only</h3><input id="adminSearchEmail" placeholder="oduhappiness41@gmail.com" value="oduhappiness41@gmail.com" onkeyup="findAdminUser()"><div id="adminFoundBox" style="display:none;background:#000;padding:6px;border-radius:6px;margin-bottom:5px;border:1px solid var(--gold)"><b id="adminFoundName" style="font-size:11px"></b><br><small id="adminFoundEmail" style="color:var(--text2);font-size:9px"></small><br><b style="color:var(--gold);font-size:11px">Main: ₦<span id="adminFoundBal">0</span> | Ref: ₦<span id="adminFoundRefBal">0</span></b></div><input type="number" id="adminAmount" placeholder="Amount"><div style="display:flex;gap:5px"><button class="btn btn-green" onclick="adminAdd()" style="flex:1;font-size:10px;padding:8px">ADD MAIN</button><button class="btn" onclick="adminAddRef()" style="flex:1;font-size:10px;padding:8px;background:#00c896;color:#000">ADD REF</button></div><div style="display:flex;gap:5px;margin-top:5px"><button class="btn btn-red" onclick="adminRemove()" style="flex:1;font-size:10px;padding:8px">REMOVE MAIN</button><button class="btn btn-red" onclick="adminRemoveRef()" style="flex:1;font-size:10px;padding:8px">REMOVE REF</button></div></div>
-<div class="card" style="padding:8px"><h3 style="font-size:11px">Total Users: <span id="adminTotalUsers">0</span> | 3% Fee | Bonus 100 Total 1100 | Ref Separate 200 | Daily 30+40</h3></div>
-<h3 style="margin:8px 0;font-size:12px">Pending Withdrawals 3%: <span id="pendingCount">0</span></h3><div id="adminWithdrawList"></div>
-<h3 style="margin:8px 0;font-size:12px">Pending Deposits: <span id="pendingDepCount">0</span></h3><div id="adminDepositList"></div>
-<h3 style="margin:8px 0;font-size:12px">All Users</h3><div id="adminUserList"></div>
-</div></div>
+<div id="adminPage" class="page"><div class="container"><h2 style="font-size:18px;font-weight:800;margin:12px 0">Admin Panel</h2><div class="card" style="border:1.5px solid var(--gold)"><input id="adminSearchEmail" placeholder="Search email" value="oduhappiness41@gmail.com" onkeyup="findAdminUser()"><div id="adminFoundBox" style="display:none;background:#000;padding:12px;border-radius:12px;margin-bottom:8px;border:1px solid var(--gold)"><b id="adminFoundName"></b><br><small id="adminFoundEmail" style="color:var(--text2)"></small><br><b style="color:var(--gold)">Main: ₦<span id="adminFoundBal">0</span> | Ref: ₦<span id="adminFoundRefBal">0</span></b></div><input type="number" id="adminAmount" placeholder="Amount"><div style="display:flex;gap:8px"><button class="btn btn-green" onclick="adminAdd()" style="flex:1">ADD MAIN</button><button class="btn" onclick="adminAddRef()" style="flex:1;background:#00c896;color:#000">ADD REFERRAL</button></div><div style="display:flex;gap:8px;margin-top:8px"><button class="btn btn-red" onclick="adminRemove()" style="flex:1">REMOVE MAIN</button><button class="btn btn-red" onclick="adminRemoveRef()" style="flex:1">REMOVE REF</button></div></div><div class="card"><h3 style="font-size:14px">Total Users: <span id="adminTotalUsers">0</span></h3></div><h3 style="margin:16px 0;font-size:15px">Pending Withdrawals: <span id="pendingCount">0</span></h3><div id="adminWithdrawList"></div><h3 style="margin:16px 0;font-size:15px">Pending Deposits: <span id="pendingDepCount">0</span></h3><div id="adminDepositList"></div><h3 style="margin:16px 0;font-size:15px">All Users</h3><div id="adminUserList"></div></div></div>
 
-<div id="profilePage" class="page"><div class="container"><div class="card" style="text-align:center;padding:12px"><div id="profileAvatar" style="font-size:32px;background:var(--gold);color:#000;width:50px;height:50px;border-radius:50%;margin:0 auto;line-height:50px;font-weight:800">U</div><h3 id="profileName" style="margin-top:6px;font-size:14px"></h3><p id="profileEmail" style="color:var(--text2);font-size:10px"></p><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px"><div style="background:var(--card2);padding:8px;border-radius:8px"><small style="font-size:9px">Main (1100 total)</small><br><b style="font-size:12px">₦<span id="profileMainBal">0</span></b></div><div style="background:var(--card2);padding:8px;border-radius:8px;border:1px solid var(--green)"><small style="font-size:9px">Ref Separate</small><br><b style="color:var(--green);font-size:12px">₦<span id="profileRefBal">0</span></b></div></div><button class="btn btn-red" onclick="logout()" style="padding:10px">Logout</button></div></div></div>
+<div id="profilePage" class="page"><div class="container"><div class="card" style="text-align:center"><div id="profileAvatar" style="font-size:40px;background:var(--gold);color:#000;width:64px;height:64px;border-radius:50%;margin:0 auto;line-height:64px;font-weight:800">U</div><h3 id="profileName" style="margin-top:12px;font-size:18px"></h3><p id="profileEmail" style="color:var(--text2);margin-top:4px"></p><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px"><div style="background:var(--card2);padding:14px;border-radius:12px"><small>Main</small><br><b>₦<span id="profileMainBal">0</span></b></div><div style="background:var(--card2);padding:14px;border-radius:12px;border:1px solid var(--green)"><small>Referral</small><br><b style="color:var(--green)">₦<span id="profileRefBal">0</span></b></div></div><button class="btn btn-red" onclick="logout()">Logout</button></div></div></div>
 
-<div class="nav"><button onclick="showPage('homePage')" class="active"><div>🏠</div>Home</button><button onclick="showPage('investPage')"><div>💰</div>Invest</button><button onclick="showPage('withdrawPage')"><div>💳</div>Withdraw</button><button onclick="showPage('historyPage')"><div>📈</div>History</button><button onclick="showPage('referralPage')"><div>👥</div>Refer</button><button id="adminNavBtn" onclick="openAdmin()" style="display:none"><div>🛡️</div>Admin</button><button onclick="showPage('profilePage')"><div>👤</div>Profile</button></div></div>
+<div class="nav"><button onclick="showPage('homePage')" class="active"><div>🏠</div>Home</button><button onclick="showPage('investPage')"><div>💰</div>Invest</button><button onclick="showPage('withdrawPage')"><div>💳</div>Withdraw</button><button onclick="showPage('historyPage')"><div>📈</div>History</button><button onclick="showPage('referralPage')"><div>👥</div>Referral</button><button id="adminNavBtn" onclick="openAdmin()" style="display:none"><div>🛡️</div>Admin</button><button onclick="showPage('profilePage')"><div>👤</div>Profile</button></div></div>
 
 <script>
 const ADMIN_EMAIL="admin@king.com";const ADMIN_CODE="KING123";
 let currentUser=JSON.parse(localStorage.getItem('kingUser'))||null;let isAdmin=localStorage.getItem('isAdmin')==='true';let balance=0;let referralBalance=0;
-let allUsers=JSON.parse(localStorage.getItem('allKingUsers'))||[];let transactions=JSON.parse(localStorage.getItem('kingTransactions'))||[];let withdrawals=JSON.parse(localStorage.getItem('kingWithdrawals'))||[];let deposits=JSON.parse(localStorage.getItem('kingDeposits'))||[];
+let allUsers=JSON.parse(localStorage.getItem('allKingUsers'))||[];let withdrawals=JSON.parse(localStorage.getItem('kingWithdrawals'))||[];let deposits=JSON.parse(localStorage.getItem('kingDeposits'))||[];
 let investProof='',payProof='';let curAmt=0,curPlan='',curDays=0,curProfit=0;
+
 function showPopup(t,m){document.getElementById('popupTitle').innerText=t;document.getElementById('popupMessage').innerText=m;document.getElementById('popup').style.display='flex';}
 function switchPay(t){document.getElementById('payMomoTab').style.display=t==='momo'?'block':'none';document.getElementById('payCardTab').style.display=t==='card'?'block':'none';document.getElementById('tabMomo').classList.toggle('active',t==='momo');document.getElementById('tabCard').classList.toggle('active',t==='card');}
-function openInvest(a,p,d,pr){curAmt=a;curPlan=p;curDays=d;curProfit=pr;document.getElementById('investModalPlan').innerText=p+' - ₦'+a.toLocaleString()+' → ₦'+(a+pr).toLocaleString();document.getElementById('investModalAmount').innerText='₦'+a.toLocaleString();document.getElementById('investPayModal').style.display='flex';switchPay('momo');investProof='';document.getElementById('investProofPreview').style.display='none';}
+function openInvest(a,p,d,pr){curAmt=a;curPlan=p;curDays=d;curProfit=pr;document.getElementById('investModalPlan').innerText=p+' Plan - ₦'+a.toLocaleString()+' → ₦'+(a+pr).toLocaleString();document.getElementById('investModalAmount').innerText='₦'+a.toLocaleString();document.getElementById('investPayModal').style.display='flex';switchPay('momo');investProof='';document.getElementById('investProofPreview').style.display='none';}
 function handleProof(input,type){const f=input.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{if(type==='invest'){investProof=e.target.result;document.getElementById('investProofPreview').src=investProof;document.getElementById('investProofPreview').style.display='block';}else{payProof=e.target.result;document.getElementById('payMePreview').src=payProof;document.getElementById('payMePreview').style.display='block';}};r.readAsDataURL(f);}
-function submitMomo(){const n=document.getElementById('momoSenderName').value;const ref=document.getElementById('momoRef').value;if(!n||!ref)return showPopup('Error','Enter name & ref');if(!investProof)return showPopup('Error','Upload proof to 0286297016');loadData();deposits.push({id:Date.now().toString(),email:currentUser.email,name:currentUser.name,amount:curAmt,ref:ref,senderName:n,status:'pending',method:'MoMo 0286297016',plan:curPlan,planAmount:curAmt,planDays:curDays,planProfit:curProfit,date:new Date().toLocaleString(),proof:investProof});localStorage.setItem('kingDeposits',JSON.stringify(deposits));document.getElementById('investPayModal').style.display='none';showPopup('Pending','Submitted to 0286297016');}
+function submitMomo(){const n=document.getElementById('momoSenderName').value;const ref=document.getElementById('momoRef').value;if(!n||!ref)return showPopup('Error','Enter name & reference');if(!investProof)return showPopup('Error','Upload proof');loadData();deposits.push({id:Date.now().toString(),email:currentUser.email,name:currentUser.name,amount:curAmt,ref:ref,senderName:n,status:'pending',method:'MoMo 0286297016',plan:curPlan,planAmount:curAmt,planDays:curDays,planProfit:curProfit,date:new Date().toLocaleString(),proof:investProof});localStorage.setItem('kingDeposits',JSON.stringify(deposits));document.getElementById('investPayModal').style.display='none';showPopup('Pending','Proof submitted');}
 function formatCard(i){let v=i.value.replace(/\D/g,'').slice(0,16);i.value=v.replace(/(.{4})/g,'$1 ').trim();}
 function formatExp(i){let v=i.value.replace(/\D/g,'').slice(0,4);if(v.length>2)v=v.slice(0,2)+'/'+v.slice(2);i.value=v;}
 function isValidCard(n){n=n.replace(/\s/g,'');if(n.length!==16)return false;let s=0,a=false;for(let j=n.length-1;j>=0;j--){let d=parseInt(n[j]);if(a){d*=2;if(d>9)d-=9;}s+=d;a=!a;}return s%10===0;}
-function submitCard(){const num=document.getElementById('cardNumber').value;const exp=document.getElementById('cardExpiry').value;const cvv=document.getElementById('cardCvv').value;const name=document.getElementById('cardName').value;const er=document.getElementById('cardError');er.style.display='none';if(!num||!exp||!cvv||!name){er.innerText='Fill all - must be correct';er.style.display='block';return;}if(!isValidCard(num)){er.innerText='Invalid card';er.style.display='block';return;}if(!/^\d{2}\/\d{2}$/.test(exp)){er.innerText='Invalid expiry';er.style.display='block';return;}if(!/^\d{3}$/.test(cvv)){er.innerText='Invalid CVV';er.style.display='block';return;}loadData();deposits.push({id:Date.now().toString(),email:currentUser.email,name:currentUser.name,amount:curAmt,ref:'CARD-'+num.slice(-4),senderName:name,status:'pending',method:'Card '+num.slice(-4),plan:curPlan,planAmount:curAmt,planDays:curDays,planProfit:curProfit,date:new Date().toLocaleString()});localStorage.setItem('kingDeposits',JSON.stringify(deposits));document.getElementById('investPayModal').style.display='none';showPopup('Pending','Card validated');}
+function submitCard(){const num=document.getElementById('cardNumber').value;const exp=document.getElementById('cardExpiry').value;const cvv=document.getElementById('cardCvv').value;const name=document.getElementById('cardName').value;const er=document.getElementById('cardError');er.style.display='none';if(!num||!exp||!cvv||!name){er.innerText='Fill all fields - must be correct';er.style.display='block';return;}if(!isValidCard(num)){er.innerText='Invalid card number';er.style.display='block';return;}if(!/^\d{2}\/\d{2}$/.test(exp)){er.innerText='Invalid expiry';er.style.display='block';return;}if(!/^\d{3}$/.test(cvv)){er.innerText='Invalid CVV';er.style.display='block';return;}loadData();deposits.push({id:Date.now().toString(),email:currentUser.email,name:currentUser.name,amount:curAmt,ref:'CARD-'+num.slice(-4),senderName:name,status:'pending',method:'Card',plan:curPlan,planAmount:curAmt,planDays:curDays,planProfit:curProfit,date:new Date().toLocaleString()});localStorage.setItem('kingDeposits',JSON.stringify(deposits));document.getElementById('investPayModal').style.display='none';showPopup('Pending','Card validated');}
 function openPayMe(){document.getElementById('payMeModal').style.display='flex';}
-function submitPayMe(){const amt=parseFloat(document.getElementById('payMeAmount').value);const ref=document.getElementById('payMeRef').value;if(!amt||!ref)return showPopup('Error','Enter amount & ref');if(!payProof)return showPopup('Error','Upload proof');loadData();deposits.push({id:Date.now().toString(),email:currentUser.email,name:currentUser.name,amount:amt,ref:ref,status:'pending',method:'PayMe 0286297016',date:new Date().toLocaleString(),proof:payProof});localStorage.setItem('kingDeposits',JSON.stringify(deposits));document.getElementById('payMeModal').style.display='none';showPopup('Pending','PayMe submitted');}
+function submitPayMe(){const amt=parseFloat(document.getElementById('payMeAmount').value);const ref=document.getElementById('payMeRef').value;if(!amt||!ref)return showPopup('Error','Enter amount & reference');if(!payProof)return showPopup('Error','Upload proof');loadData();deposits.push({id:Date.now().toString(),email:currentUser.email,name:currentUser.name,amount:amt,ref:ref,status:'pending',method:'PayMe 0286297016',date:new Date().toLocaleString(),proof:payProof});localStorage.setItem('kingDeposits',JSON.stringify(deposits));document.getElementById('payMeModal').style.display='none';showPopup('Pending','Submitted');}
 function findAdminUser(){const e=document.getElementById('adminSearchEmail').value.toLowerCase();const b=document.getElementById('adminFoundBox');let u=allUsers.find(x=>x.email.toLowerCase().includes(e));if(u&&e.length>1){document.getElementById('adminFoundName').innerText=u.name;document.getElementById('adminFoundEmail').innerText=u.email;document.getElementById('adminFoundBal').innerText=Number(u.balance||0).toLocaleString();document.getElementById('adminFoundRefBal').innerText=Number(u.referralBalance||0).toLocaleString();b.style.display='block';}else b.style.display='none';}
-function adminAdd(){loadData();const em=document.getElementById('adminSearchEmail').value.trim();const amt=parseFloat(document.getElementById('adminAmount').value);if(!em||!amt)return showPopup('Error','Enter email & amount');let idx=allUsers.findIndex(x=>x.email.toLowerCase()===em.toLowerCase());if(idx==-1)idx=allUsers.findIndex(x=>x.email.toLowerCase().includes(em.toLowerCase()));if(idx==-1)return showPopup('Not Found','User not found');allUsers[idx].balance=(allUsers[idx].balance||0)+amt;localStorage.setItem('allKingUsers',JSON.stringify(allUsers));if(currentUser&&currentUser.email===allUsers[idx].email){currentUser.balance=allUsers[idx].balance;balance=currentUser.balance;localStorage.setItem('kingUser',JSON.stringify(currentUser));}findAdminUser();showPopup('Added','₦'+amt.toLocaleString()+' added to main - Total now ₦'+Number(allUsers[idx].balance).toLocaleString());loadAdmin();updateUI();}
-function adminAddRef(){loadData();const em=document.getElementById('adminSearchEmail').value.trim();const amt=parseFloat(document.getElementById('adminAmount').value);if(!em||!amt)return showPopup('Error','Enter email & amount');let idx=allUsers.findIndex(x=>x.email.toLowerCase()===em.toLowerCase());if(idx==-1)idx=allUsers.findIndex(x=>x.email.toLowerCase().includes(em.toLowerCase()));if(idx==-1)return showPopup('Not Found','User not found');allUsers[idx].referralBalance=(allUsers[idx].referralBalance||0)+amt;localStorage.setItem('allKingUsers',JSON.stringify(allUsers));findAdminUser();showPopup('Added','₦'+amt.toLocaleString()+' added to REFERRAL SEPARATE - Not main');loadAdmin();updateUI();}
-function adminRemove(){loadData();const em=document.getElementById('adminSearchEmail').value.trim();const amt=parseFloat(document.getElementById('adminAmount').value);if(!em||!amt)return showPopup('Error','Enter email & amount');let idx=allUsers.findIndex(x=>x.email.toLowerCase()===em.toLowerCase());if(idx==-1)idx=allUsers.findIndex(x=>x.email.toLowerCase().includes(em.toLowerCase()));if(idx==-1)return showPopup('Not Found','User not found');allUsers[idx].balance=Math.max(0,(allUsers[idx].balance||0)-amt);localStorage.setItem('allKingUsers',JSON.stringify(allUsers));if(currentUser&&currentUser.email===allUsers[idx].email){currentUser.balance=allUsers[idx].balance;balance=currentUser.balance;localStorage.setItem('kingUser',JSON.stringify(currentUser));}findAdminUser();showPopup('Removed','Removed from main');loadAdmin();updateUI();}
-function adminRemoveRef(){loadData();const em=document.getElementById('adminSearchEmail').value.trim();const amt=parseFloat(document.getElementById('adminAmount').value);if(!em||!amt)return showPopup('Error','Enter email & amount');let idx=allUsers.findIndex(x=>x.email.toLowerCase()===em.toLowerCase());if(idx==-1)idx=allUsers.findIndex(x=>x.email.toLowerCase().includes(em.toLowerCase()));if(idx==-1)return showPopup('Not Found','User not found');allUsers[idx].referralBalance=Math.max(0,(allUsers[idx].referralBalance||0)-amt);localStorage.setItem('allKingUsers',JSON.stringify(allUsers));findAdminUser();showPopup('Removed','Removed from referral separate');loadAdmin();updateUI();}
-function quickAdd(em){const a=prompt('Amount ADD MAIN:','5000');const amt=parseFloat(a);if(!amt)return;let i=allUsers.findIndex(x=>x.email===em);if(i==-1)return;allUsers[i].balance+=amt;localStorage.setItem('allKingUsers',JSON.stringify(allUsers));loadAdmin();updateUI();showPopup('Added','Main added');}
-function quickAddRef(em){const a=prompt('Amount ADD REFERRAL SEPARATE:','200');const amt=parseFloat(a);if(!amt)return;let i=allUsers.findIndex(x=>x.email===em);if(i==-1)return;allUsers[i].referralBalance=(allUsers[i].referralBalance||0)+amt;localStorage.setItem('allKingUsers',JSON.stringify(allUsers));loadAdmin();updateUI();showPopup('Added','Referral separate added');}
+function adminAdd(){loadData();const em=document.getElementById('adminSearchEmail').value.trim();const amt=parseFloat(document.getElementById('adminAmount').value);if(!em||!amt)return showPopup('Error','Enter email & amount');let idx=allUsers.findIndex(x=>x.email.toLowerCase()===em.toLowerCase());if(idx==-1)idx=allUsers.findIndex(x=>x.email.toLowerCase().includes(em.toLowerCase()));if(idx==-1)return showPopup('Not Found','User not found');allUsers[idx].balance=(allUsers[idx].balance||0)+amt;localStorage.setItem('allKingUsers',JSON.stringify(allUsers));if(currentUser&&currentUser.email===allUsers[idx].email){currentUser.balance=allUsers[idx].balance;balance=currentUser.balance;localStorage.setItem('kingUser',JSON.stringify(currentUser));}findAdminUser();showPopup('Added','₦'+amt.toLocaleString()+' added');loadAdmin();updateUI();}
+function adminAddRef(){loadData();const em=document.getElementById('adminSearchEmail').value.trim();const amt=parseFloat(document.getElementById('adminAmount').value);if(!em||!amt)return showPopup('Error','Enter email & amount');let idx=allUsers.findIndex(x=>x.email.toLowerCase()===em.toLowerCase());if(idx==-1)idx=allUsers.findIndex(x=>x.email.toLowerCase().includes(em.toLowerCase()));if(idx==-1)return showPopup('Not Found','User not found');allUsers[idx].referralBalance=(allUsers[idx].referralBalance||0)+amt;localStorage.setItem('allKingUsers',JSON.stringify(allUsers));findAdminUser();showPopup('Added','₦'+amt.toLocaleString()+' added to referral');loadAdmin();updateUI();}
+function adminRemove(){loadData();const em=document.getElementById('adminSearchEmail').value.trim();const amt=parseFloat(document.getElementById('adminAmount').value);if(!em||!amt)return showPopup('Error','Enter email & amount');let idx=allUsers.findIndex(x=>x.email.toLowerCase()===em.toLowerCase());if(idx==-1)idx=allUsers.findIndex(x=>x.email.toLowerCase().includes(em.toLowerCase()));if(idx==-1)return showPopup('Not Found','User not found');allUsers[idx].balance=Math.max(0,(allUsers[idx].balance||0)-amt);localStorage.setItem('allKingUsers',JSON.stringify(allUsers));if(currentUser&&currentUser.email===allUsers[idx].email){currentUser.balance=allUsers[idx].balance;balance=currentUser.balance;localStorage.setItem('kingUser',JSON.stringify(currentUser));}findAdminUser();showPopup('Removed','Removed');loadAdmin();updateUI();}
+function adminRemoveRef(){loadData();const em=document.getElementById('adminSearchEmail').value.trim();const amt=parseFloat(document.getElementById('adminAmount').value);if(!em||!amt)return showPopup('Error','Enter email & amount');let idx=allUsers.findIndex(x=>x.email.toLowerCase()===em.toLowerCase());if(idx==-1)idx=allUsers.findIndex(x=>x.email.toLowerCase().includes(em.toLowerCase()));if(idx==-1)return showPopup('Not Found','User not found');allUsers[idx].referralBalance=Math.max(0,(allUsers[idx].referralBalance||0)-amt);localStorage.setItem('allKingUsers',JSON.stringify(allUsers));findAdminUser();showPopup('Removed','Removed from referral');loadAdmin();updateUI();}
 function startLiveAlert(){
-  const names=['Chinedu','Emeka','Ada','Tolu','Blessing','Stephen','Happiness Glory','John','Victor','Grace','Femi','Amaka','Uche','Ngozi','Chiamaka','Obinna','Chidera','Ifeoma','Chinedu','David','Samuel','Chinedu','Emeka','Happiness','Chinedu','Chinedu'];
-  const amounts=['7000','7000','7000','6,790','15,000','6,790','7000','20,800','7000','6,790','7000'];
+  const names=['Chinedu','Emeka','Ada','Tolu','Blessing','Stephen','Happiness Glory','John','Victor','Grace','Femi','Amaka','Uche','Ngozi','Chiamaka','Obinna','Chidera'];
   setInterval(()=>{
     const name=names[Math.floor(Math.random()*names.length)];
-    const amt=amounts[Math.floor(Math.random()*amounts.length)];
-    const acts=[`just withdraw ₦${amt}`,`just withdraw 7000`,`just got paid ₦${amt}`,`just withdraw ₦7000`];
-    const act=acts[Math.floor(Math.random()*acts.length)];
     const el=document.getElementById('liveAlert');
-    document.getElementById('liveAlertText').innerText=`${name} ${act} • now`;
+    document.getElementById('liveAlertText').innerText=`${name} just withdraw ₦7000`;
     el.style.display='flex';
-    setTimeout(()=>el.style.display='none',3500);
-  },2800);
+    setTimeout(()=>el.style.display='none',4000);
+  },3000);
 }
 function openAdmin(){if(!currentUser)return showPopup('Login','Login first');if(currentUser.email!==ADMIN_EMAIL)return showPopup('Denied','Admin only');if(!isAdmin){document.getElementById('adminPopup').style.display='flex';}else showPage('adminPage');}
 function checkAdmin(){const p=document.getElementById('adminPopupPass').value;if(p===ADMIN_CODE&&currentUser.email===ADMIN_EMAIL){isAdmin=true;localStorage.setItem('isAdmin','true');document.getElementById('adminPopup').style.display='none';showPage('adminPage');loadAdmin();}else showPopup('Error','Invalid code');}
-function loadData(){allUsers=JSON.parse(localStorage.getItem('allKingUsers'))||[];transactions=JSON.parse(localStorage.getItem('kingTransactions'))||[];withdrawals=JSON.parse(localStorage.getItem('kingWithdrawals'))||[];deposits=JSON.parse(localStorage.getItem('kingDeposits'))||[];}
+function loadData(){allUsers=JSON.parse(localStorage.getItem('allKingUsers'))||[];withdrawals=JSON.parse(localStorage.getItem('kingWithdrawals'))||[];deposits=JSON.parse(localStorage.getItem('kingDeposits'))||[];}
 function init(){
   loadData();
   if(currentUser){
@@ -164,7 +155,7 @@ function init(){
     document.getElementById('authScreen').style.display='none';document.getElementById('app').style.display='block';
     updateUI();loadAdmin();showPage('homePage');startLiveAlert();updateTimer();
     const w=document.getElementById('withdrawAmount');
-    if(w)w.addEventListener('input',function(){let v=parseFloat(this.value);let p=document.getElementById('withdrawPreview');if(v){let fee=v*0.03;let net=v*0.97;p.innerText='Withdraw ₦'+v.toLocaleString()+' → You get ₦'+net.toLocaleString()+' (97%) | Company 3% = ₦'+fee.toLocaleString()+' | Once per 24hrs';}else p.innerText='';});
+    if(w)w.addEventListener('input',function(){let v=parseFloat(this.value);let p=document.getElementById('withdrawPreview');if(v){let fee=v*0.03;let net=v*0.97;p.innerText='You get ₦'+net.toLocaleString()+' • Fee 3% ₦'+fee.toLocaleString();}else p.innerText='';});
     setInterval(updateTimer,1000);
   }else{document.getElementById('authScreen').style.display='flex';document.getElementById('app').style.display='none';}
 }
@@ -179,14 +170,14 @@ function updateTimer(){
   const el2=document.getElementById('withdrawTimer2');
   const head=document.getElementById('withdrawTimerHead');
   if(remain<=0||last===0){
-    if(el)el.innerText='Ready - You can withdraw (Min 7000, Once per 24hrs, 3% fee - You get 97%)';
-    if(el2)el2.innerText='Ready - You can withdraw now';
-    if(head)head.innerText='Ready - Once per 24hrs - 3% fee';
+    if(el)el.innerText='Ready to withdraw • Min ₦7,000 • Once per 24hrs';
+    if(el2)el2.innerText='Ready to withdraw';
+    if(head)head.innerText='Ready • Once per 24hrs';
   }else{
     const h=Math.floor(remain/(1000*60*60));
     const m=Math.floor((remain%(1000*60*60))/(1000*60));
     const s=Math.floor((remain%(1000*60))/1000);
-    const txt=`Next withdraw in: ${h}h ${m}m ${s}s - Once per 24hrs only`;
+    const txt=`Next withdraw in ${h}h ${m}m ${s}s`;
     if(el)el.innerText=txt;
     if(el2)el2.innerText=txt;
     if(head)head.innerText=txt;
@@ -200,7 +191,7 @@ function signup(){
   if(allUsers.find(u=>u.email===e))return showPopup('Error','Email exists');
   const refCode='KING-'+n.toUpperCase().replace(/\s/g,'').slice(0,6)+Math.floor(Math.random()*100);
   const refParam=new URLSearchParams(window.location.search).get('ref');
-  const user={name:n,email:e,pass:p,refCode:refCode,balance:1100,referralBalance:0,welcomeBonus:100,level1:[],level2:[],totalInvested:0,totalEarned:0,referrer:refParam,lastWithdraw:0};
+  const user={name:n,email:e,pass:p,refCode:refCode,balance:1100,referralBalance:0,level1:[],level2:[],totalInvested:0,totalEarned:0,referrer:refParam,lastWithdraw:0};
   if(refParam){
     let referrer=allUsers.find(u=>u.refCode===refParam);
     if(referrer){
@@ -215,11 +206,11 @@ function signup(){
   allUsers.push(user);
   localStorage.setItem('allKingUsers',JSON.stringify(allUsers));
   currentUser=user;balance=user.balance;referralBalance=0;
-  localStorage.setItem('kingUser',JSON.stringify(user));localStorage.setItem('kingBalance',balance);
+  localStorage.setItem('kingUser',JSON.stringify(user));
   init();
-  showPopup('Welcome!','Welcome bonus ₦100 added! Total balance ₦1100 (1000 + 100 bonus) | Referral ₦200 separate account');
+  showPopup('Welcome!','Bonus ₦100 added • Total ₦1,100');
 }
-function login(){const e=document.getElementById('loginEmail').value;const p=document.getElementById('loginPass').value;loadData();const u=allUsers.find(x=>x.email===e&&x.pass===p);if(u){currentUser=u;balance=u.balance;referralBalance=u.referralBalance||0;isAdmin=u.email===ADMIN_EMAIL;localStorage.setItem('kingUser',JSON.stringify(u));localStorage.setItem('kingBalance',balance);localStorage.setItem('isAdmin',isAdmin);init();}else showPopup('Error','Invalid login');}
+function login(){const e=document.getElementById('loginEmail').value;const p=document.getElementById('loginPass').value;loadData();const u=allUsers.find(x=>x.email===e&&x.pass===p);if(u){currentUser=u;balance=u.balance;referralBalance=u.referralBalance||0;isAdmin=u.email===ADMIN_EMAIL;localStorage.setItem('kingUser',JSON.stringify(u));localStorage.setItem('isAdmin',isAdmin);init();}else showPopup('Error','Invalid login');}
 function logout(){localStorage.removeItem('kingUser');localStorage.setItem('isAdmin','false');currentUser=null;isAdmin=false;init();}
 function updateUI(){
   if(!currentUser)return;
@@ -239,15 +230,6 @@ function updateUI(){
   document.getElementById('refCodeBox').innerText=currentUser.refCode||'';
   document.getElementById('refLinkBox').innerText=location.origin+'?ref='+(currentUser.refCode||'');
   document.getElementById('totalReferred').innerText=currentUser.level1?currentUser.level1.length:0;
-  const t1=currentUser.level1?currentUser.level1.length:0;
-  const t2=currentUser.level2?currentUser.level2.length:0;
-  const t1d=t1*30;const t2d=t2*40;const total=t1d+t2d;const fee=total*0.03;const net=total-fee;
-  const e1=document.getElementById('tierOneCount');
-  const e2=document.getElementById('tierTwoCount');
-  const et=document.getElementById('dailyTotal');
-  if(e1)e1.innerText=`${t1} users × ₦30 = ₦${t1d}`;
-  if(e2)e2.innerText=`${t2} users × ₦40 = ₦${t2d}`;
-  if(et)et.innerText=`₦${total} - 3% (₦${fee.toFixed(0)}) = ₦${net.toFixed(0)} daily`;
 }
 function withdraw(){
   const amt=parseFloat(document.getElementById('withdrawAmount').value);
@@ -260,12 +242,12 @@ function withdraw(){
     const rem=oneDay-(now-last);
     const h=Math.floor(rem/(1000*60*60));
     const m=Math.floor((rem%(1000*60*60))/(1000*60));
-    return showPopup('24hrs Limit','You can only withdraw once per 24hrs! Next in '+h+'h '+m+'m');
+    return showPopup('Limit','You can only withdraw once per 24hrs • Next in '+h+'h '+m+'m');
   }
-  if(amt<7000)return showPopup('Error','Min withdraw ₦7000 - Once per 24hrs');
-  if(acc.length!==10)return showPopup('Error','Account 10 digits - must be correct');
-  if(!name||name.length<3)return showPopup('Error','Account name must be correct');
-  if(balance<amt)return showPopup('Error','Insufficient main balance');
+  if(amt<7000)return showPopup('Error','Minimum ₦7,000');
+  if(acc.length!==10)return showPopup('Error','Account must be 10 digits');
+  if(!name||name.length<3)return showPopup('Error','Enter account name');
+  if(balance<amt)return showPopup('Error','Insufficient balance');
   const fee=amt*0.03;const net=amt*0.97;
   balance-=amt;currentUser.balance=balance;currentUser.lastWithdraw=now;
   loadData();
@@ -273,26 +255,26 @@ function withdraw(){
   localStorage.setItem('kingWithdrawals',JSON.stringify(withdrawals));
   let i=allUsers.findIndex(x=>x.email===currentUser.email);if(i!==-1)allUsers[i]=currentUser;
   localStorage.setItem('allKingUsers',JSON.stringify(allUsers));
-  localStorage.setItem('kingUser',JSON.stringify(currentUser));localStorage.setItem('kingBalance',balance);
-  showPopup('Submitted','Main ₦'+amt.toLocaleString()+' → You get ₦'+net.toLocaleString()+' (97%) | Fee 3% ₦'+fee.toLocaleString()+' | Next withdraw after 24hrs');
+  localStorage.setItem('kingUser',JSON.stringify(currentUser));
+  showPopup('Submitted','Withdraw ₦'+amt.toLocaleString()+' → You get ₦'+net.toLocaleString());
   updateUI();updateTimer();
 }
 function withdrawReferral(){
   const amt=referralBalance;
-  if(amt<100)return showPopup('Error','Min referral withdraw ₦100 - Separate account');
+  if(amt<100)return showPopup('Error','Minimum referral withdraw ₦100');
   const acc=document.getElementById('withdrawAccount').value;
   const name=document.getElementById('withdrawName').value;
-  if(acc.length!==10)return showPopup('Error','Enter 10 digits - must be correct');
-  if(!name||name.length<3)return showPopup('Error','Account name must be correct');
+  if(acc.length!==10)return showPopup('Error','Enter 10 digits account');
+  if(!name||name.length<3)return showPopup('Error','Enter account name');
   const fee=amt*0.03;const net=amt*0.97;
   currentUser.referralBalance=0;referralBalance=0;
   loadData();
   withdrawals.push({id:Date.now().toString(),email:currentUser.email,name:currentUser.name,amount:amt,fee:fee,netAmount:net,account:acc,accountName:name,status:'pending',type:'referral',date:new Date().toLocaleString()});
   localStorage.setItem('kingWithdrawals',JSON.stringify(withdrawals));
-  let i=allUsers.findIndex(x=>x.email===currentUser.email);if(i!==-1){allUsers[i].referralBalance=0;allUsers[i].balance=currentUser.balance;}
+  let idx=allUsers.findIndex(x=>x.email===currentUser.email);if(idx!==-1){allUsers[idx].referralBalance=0;allUsers[idx].balance=currentUser.balance;}
   localStorage.setItem('allKingUsers',JSON.stringify(allUsers));
   localStorage.setItem('kingUser',JSON.stringify(currentUser));
-  showPopup('Referral Withdraw','Ref ₦'+amt.toLocaleString()+' → You get ₦'+net.toLocaleString()+' (97%) | Fee 3% ₦'+fee.toLocaleString()+' | Separate account');
+  showPopup('Submitted','Referral ₦'+amt.toLocaleString()+' → You get ₦'+net.toLocaleString());
   updateUI();
 }
 function loadAdmin(){
@@ -301,18 +283,19 @@ function loadAdmin(){
   document.getElementById('adminTotalUsers').innerText=allUsers.filter(u=>u.email!==ADMIN_EMAIL).length;
   document.getElementById('pendingCount').innerText=withdrawals.filter(w=>w.status==='pending').length;
   document.getElementById('pendingDepCount').innerText=deposits.filter(d=>d.status==='pending').length;
-  document.getElementById('adminWithdrawList').innerHTML=withdrawals.filter(w=>w.status==='pending').map(w=>`<div class="admin-card"><b style="font-size:11px">${w.name} - ${w.email} ${w.type==='referral'?'(REF SEPARATE)':'(MAIN)'}</b><br><small style="font-size:10px">₦${w.amount} → User ₦${w.netAmount.toFixed(2)} (97%) Fee 3% ₦${w.fee.toFixed(2)}<br>Acc: ${w.account} - ${w.accountName} - 24hrs once</small><br><button class="btn btn-green" onclick="approveW('${w.id}')" style="padding:6px;font-size:10px">Approve Pay ₦${w.netAmount.toFixed(2)}</button><button class="btn btn-red" onclick="rejectW('${w.id}')" style="padding:6px;font-size:10px">Reject</button></div>`).join('')||'<small>No pending</small>';
-  document.getElementById('adminDepositList').innerHTML=deposits.filter(d=>d.status==='pending').map(d=>`<div class="admin-card"><b style="font-size:11px">${d.name} - ${d.plan||''}</b><small style="font-size:10px"> ₦${d.amount} - ${d.email} Ref:${d.ref}</small><br>${d.proof?`<img src="${d.proof}" style="width:100%;border-radius:5px;margin:3px 0;max-height:80px">`:''}<br><button class="btn btn-green" onclick="approveD('${d.id}')" style="padding:6px;font-size:10px">Approve</button><button class="btn btn-red" onclick="rejectD('${d.id}')" style="padding:6px;font-size:10px">Reject</button></div>`).join('')||'<small>No pending</small>';
-  document.getElementById('adminUserList').innerHTML=allUsers.filter(u=>u.email!==ADMIN_EMAIL).map(u=>`<div class="admin-card" style="display:flex;justify-content:space-between;align-items:center"><div><b style="font-size:10px">${u.name}</b><br><small style="font-size:8px">${u.email}</small><br><small style="font-size:9px">Main:₦${Number(u.balance||0).toFixed(0)} Ref:₦${Number(u.referralBalance||0).toFixed(0)} T1:${u.level1?u.level1.length:0}×30 T2:${u.level2?u.level2.length:0}×40 Daily:${((u.level1?u.level1.length:0)*30+(u.level2?u.level2.length:0)*40)} -3%</small></div><div style="display:flex;flex-direction:column;gap:2px"><button onclick="quickAdd('${u.email}')" style="background:var(--gold);border:none;padding:3px 5px;border-radius:3px;font-size:7px;font-weight:800">ADD MAIN</button><button onclick="quickAddRef('${u.email}')" style="background:var(--green);border:none;padding:3px 5px;border-radius:3px;font-size:7px;font-weight:800">ADD REF</button></div></div>`).join('');
+  document.getElementById('adminWithdrawList').innerHTML=withdrawals.filter(w=>w.status==='pending').map(w=>`<div class="admin-card"><b>${w.name} - ${w.email} ${w.type==='referral'?'(REFERRAL)':'(MAIN)'}</b><br>₦${w.amount} → ₦${w.netAmount.toFixed(2)} (3% fee ₦${w.fee.toFixed(2)})<br>Acc: ${w.account} - ${w.accountName}<br><button class="btn btn-green" onclick="approveW('${w.id}')">Approve ₦${w.netAmount.toFixed(2)}</button><button class="btn btn-red" onclick="rejectW('${w.id}')">Reject</button></div>`).join('')||'No pending';
+  document.getElementById('adminDepositList').innerHTML=deposits.filter(d=>d.status==='pending').map(d=>`<div class="admin-card"><b>${d.name} - ${d.plan||''}</b> ₦${d.amount}<br>${d.email}<br>${d.proof?`<img src="${d.proof}" style="width:100%;border-radius:8px;margin:6px 0;max-height:120px">`:''}<button class="btn btn-green" onclick="approveD('${d.id}')">Approve</button><button class="btn btn-red" onclick="rejectD('${d.id}')">Reject</button></div>`).join('')||'No pending';
+  document.getElementById('adminUserList').innerHTML=allUsers.filter(u=>u.email!==ADMIN_EMAIL).map(u=>`<div class="admin-card" style="display:flex;justify-content:space-between;align-items:center"><div><b>${u.name}</b><br><small>${u.email}</small><br>Main: ₦${Number(u.balance||0).toFixed(0)} | Ref: ₦${Number(u.referralBalance||0).toFixed(0)}</div><div style="display:flex;flex-direction:column;gap:4px"><button onclick="quickAdd('${u.email}')" style="background:var(--gold);border:none;padding:6px 10px;border-radius:6px;font-size:10px;font-weight:800">ADD MAIN</button><button onclick="quickAddRef('${u.email}')" style="background:var(--green);border:none;padding:6px 10px;border-radius:6px;font-size:10px;font-weight:800">ADD REF</button></div></div>`).join('');
 }
-function approveW(id){loadData();let w=withdrawals.find(x=>x.id===id);if(!w)return;w.status='approved';localStorage.setItem('kingWithdrawals',JSON.stringify(withdrawals));loadAdmin();showPopup('Approved','Paid ₦'+w.netAmount.toFixed(2)+' (97%) Fee 3% ₦'+w.fee.toFixed(2));}
-function rejectW(id){loadData();let w=withdrawals.find(x=>x.id===id);if(!w)return;w.status='rejected';let u=allUsers.find(x=>x.email===w.email);if(u){if(w.type==='referral'){u.referralBalance=(u.referralBalance||0)+w.amount;}else{u.balance+=w.amount;}}localStorage.setItem('allKingUsers',JSON.stringify(allUsers));localStorage.setItem('kingWithdrawals',JSON.stringify(withdrawals));loadAdmin();showPopup('Rejected','Refunded to '+(w.type==='referral'?'referral separate':'main'));}
-function approveD(id){loadData();let d=deposits.find(x=>x.id===id);if(!d)return;d.status='approved';let u=allUsers.find(x=>x.email===d.email);if(u){u.balance+=d.amount;if(d.plan){u.totalInvested=(u.totalInvested||0)+d.planAmount;}}localStorage.setItem('allKingUsers',JSON.stringify(allUsers));localStorage.setItem('kingDeposits',JSON.stringify(deposits));loadAdmin();showPopup('Approved','₦'+d.amount+' credited to main');}
+function approveW(id){loadData();let w=withdrawals.find(x=>x.id===id);if(!w)return;w.status='approved';localStorage.setItem('kingWithdrawals',JSON.stringify(withdrawals));loadAdmin();showPopup('Approved','Paid ₦'+w.netAmount.toFixed(2));}
+function rejectW(id){loadData();let w=withdrawals.find(x=>x.id===id);if(!w)return;w.status='rejected';let u=allUsers.find(x=>x.email===w.email);if(u){if(w.type==='referral'){u.referralBalance=(u.referralBalance||0)+w.amount;}else{u.balance+=w.amount;}}localStorage.setItem('allKingUsers',JSON.stringify(allUsers));localStorage.setItem('kingWithdrawals',JSON.stringify(withdrawals));loadAdmin();showPopup('Rejected','Refunded');}
+function approveD(id){loadData();let d=deposits.find(x=>x.id===id);if(!d)return;d.status='approved';let u=allUsers.find(x=>x.email===d.email);if(u){u.balance+=d.amount;if(d.plan){u.totalInvested=(u.totalInvested||0)+d.planAmount;}}localStorage.setItem('allKingUsers',JSON.stringify(allUsers));localStorage.setItem('kingDeposits',JSON.stringify(deposits));loadAdmin();showPopup('Approved','₦'+d.amount+' credited');}
 function rejectD(id){loadData();let d=deposits.find(x=>x.id===id);if(!d)return;d.status='rejected';localStorage.setItem('kingDeposits',JSON.stringify(deposits));loadAdmin();showPopup('Rejected','Rejected');}
-function loadHistory(){loadData();document.getElementById('historyList').innerHTML=withdrawals.filter(w=>w.email===currentUser.email).map(w=>`<div style="padding:6px;background:var(--card2);border-radius:6px;margin:4px 0;border-left:3px solid ${w.type==='referral'?'var(--green)':'var(--gold)'};font-size:10px"><b>${w.type==='referral'?'REFERRAL SEPARATE':'MAIN'} ${w.status.toUpperCase()}</b> ₦${w.amount} → ₦${w.netAmount.toFixed(2)} (3% fee ₦${w.fee.toFixed(2)})<br><small>${w.account} - ${w.accountName} - ${w.date}</small></div>`).join('')||'<small>No history</small>';}
-function copyCode(){navigator.clipboard.writeText(document.getElementById('refCodeBox').innerText);showPopup('Copied','Code copied - ₦200 separate');}
-function copyLink(){navigator.clipboard.writeText(document.getElementById('refLinkBox').innerText);showPopup('Copied','Link copied - ₦200 separate');}
-function shareAndEarn(){showPopup('Share','Share link - You get ₦200 referral in SEPARATE account - Not main | Daily 30+40=70 -3%');}
+function loadHistory(){loadData();document.getElementById('historyList').innerHTML=withdrawals.filter(w=>w.email===currentUser.email).map(w=>`<div style="padding:12px;background:var(--card2);border-radius:12px;margin:8px 0;border-left:3px solid ${w.type==='referral'?'var(--green)':'var(--gold)'}"><b>${w.type==='referral'?'REFERRAL':'MAIN'} • ${w.status.toUpperCase()}</b><br>₦${w.amount} → ₦${w.netAmount.toFixed(2)}<br><small>${w.account} - ${w.accountName} • ${w.date}</small></div>`).join('')||'No history';}
+function copyCode(){navigator.clipboard.writeText(document.getElementById('refCodeBox').innerText);showPopup('Copied','Code copied');}
+function copyLink(){navigator.clipboard.writeText(document.getElementById('refLinkBox').innerText);showPopup('Copied','Link copied');}
+function quickAdd(em){const a=prompt('Amount ADD MAIN:','5000');const amt=parseFloat(a);if(!amt)return;let i=allUsers.findIndex(x=>x.email===em);if(i==-1)return;allUsers[i].balance+=amt;localStorage.setItem('allKingUsers',JSON.stringify(allUsers));loadAdmin();updateUI();}
+function quickAddRef(em){const a=prompt('Amount ADD REFERRAL:','200');const amt=parseFloat(a);if(!amt)return;let i=allUsers.findIndex(x=>x.email===em);if(i==-1)return;allUsers[i].referralBalance=(allUsers[i].referralBalance||0)+amt;localStorage.setItem('allKingUsers',JSON.stringify(allUsers));loadAdmin();updateUI();}
 
 if(allUsers.length===0){allUsers.push({name:"Admin",email:ADMIN_EMAIL,pass:"1234",refCode:"KING-ADMIN",balance:100000,referralBalance:0,level1:[],level2:[],totalInvested:0,totalEarned:0,lastWithdraw:0});}
 if(!allUsers.find(u=>u.email==="nnamdistephenchinedu@gmail.com")){allUsers.push({name:"Stephen",email:"nnamdistephenchinedu@gmail.com",pass:"1234",refCode:"KING-STEPHEN",balance:5000,referralBalance:0,level1:[],level2:[],totalInvested:0,totalEarned:0,lastWithdraw:0});}
@@ -321,4 +304,4 @@ localStorage.setItem('allKingUsers',JSON.stringify(allUsers));
 init();
 </script>
 </body>
-</html>
+</html>  
